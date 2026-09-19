@@ -1,15 +1,8 @@
 # AGENTS.md
 
-Current App Store train: `1.0` (`1`) for macOS and iOS/iPadOS.
+Current App Store train: `1.0` (`5`) for macOS and iOS/iPadOS.
 
-Read in this order:
-
-- [README](./README.md)
-- [Runbook](./RUNBOOK.md)
-- [Domain contract](./docs/domain-contract.md) for shared Swift/Python behavior
-- [pyproject.toml](./pyproject.toml)
-- `TeslaCam.xcodeproj`
-- `.github/workflows/` when CI behavior matters
+Read task-relevant guidance: `README.md` for the overview; `RUNBOOK.md` for build/release work; `docs/domain-contract.md` for shared Swift/Python behavior; `pyproject.toml` for Python packaging; the Xcode project for target membership; `.github/workflows/` only for CI changes.
 
 ## Repo map
 
@@ -36,8 +29,7 @@ Read in this order:
 - Whitespace check: `git diff --check`
 
 No dedicated lint, format, or Python typecheck config is present. Do not invent
-one. Use `git diff --check`, `unittest`, and the native build/test lane as the
-available checks.
+one. Use `git diff --check` and the focused tests for the affected boundary. Run the full Python or native lane when the change warrants it.
 
 Native commands require either `TESLACAM_BUILD_ENV` or
 `/Users/bolyki/dev/source/build-env.sh`. If neither exists, report that setup
@@ -71,3 +63,17 @@ Rules:
 - Shared behavior changes update the domain contract, fixtures, and both test surfaces.
 - Relevant verification ran, or the exact blocker is listed.
 - Generated files, build output, vendor assets, and `_legacy/` stay untouched unless in scope.
+
+Local disposable tests may be run and repaired within the requested task without repeated approval. Keep release, signing, production access and existing owner holds under their documented authority.
+
+## Working guidance — GPT-6 Astra
+
+Based on [OpenAI's Astra prompting guidance](https://developers.openai.com/api/docs/guides/latest-model#prompting-best-practices), reviewed 2026-09-19. These are working instructions, not a change to model or API settings.
+
+- Complete the authorized task through implementation and relevant verification. Make routine choices yourself; ask only when a missing decision materially changes the result or requires new authority. Prepare reviewable work before requesting any necessary final approval.
+- Current user instructions take precedence over repository and skill guidance within system and tool constraints. Preserve explicit exclusions and owner holds. Historical plans and session notes do not grant current authorization. If a file or skill blocks progress, identify its exact path and rule.
+- Keep changes small and practical. Inspect current source and Git status, preserve unrelated work, and use existing conventions. Do not add speculative abstractions, dependencies, or unrelated cleanup. Commit, push, deploy, install, and live-service changes require authorization for that action.
+- Use the reasoning effort the task needs. Follow explicit project delegation rules; otherwise use subagents only when requested, with bounded independent tasks and distinct file ownership. Batch independent reads; serialize dependent operations and conflicting edits.
+- Run meaningful checks for the changed behavior and required project gates. Avoid tests that merely repeat low-impact edits. Broaden or repeat verification only after changes, failures, or unresolved concerns. Distinguish local checks from device, browser, and live-service evidence.
+- Write concise, plain, outcome-first updates. State what changed, why, verification, and material gaps. Avoid filler and unnecessary formatting.
+- Keep durable instructions in AGENTS.md and maintained product documentation. Do not create duplicate assistant instruction files or disposable plans, transcripts, status reports, and screenshots in source directories unless requested. Preserve source, tests, fixtures, assets, licences, and operational evidence regardless of who created them.
