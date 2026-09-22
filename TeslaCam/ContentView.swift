@@ -20,7 +20,12 @@ struct ContentView: View {
       // Dynamic Island region and content is inset below it.
       .statusBarHidden(verticalSizeClass == .compact)
       #endif
-      .onAppear { state.onAppear() }
+      .onAppear {
+        state.onAppear()
+        #if DEBUG && os(iOS)
+        applyScreenshotSceneIfNeeded()
+        #endif
+      }
       .alert("Error", isPresented: $state.showError) {
         Button("OK", role: .cancel) {}
       } message: {
@@ -87,6 +92,24 @@ struct ContentView: View {
     }
     return true
   }
+
+  #if DEBUG && os(iOS)
+  private func applyScreenshotSceneIfNeeded() {
+    guard let scene = ProcessInfo.processInfo.environment["TESLACAM_SCREENSHOT_SCENE"] else { return }
+    switch scene {
+    case "02-playback":
+      state.togglePlay()
+    case "03-cameras":
+      state.setFocusedCamera(.front)
+    case "04-timeline":
+      state.setRecentRange(minutes: 5)
+    case "05-export":
+      state.exportOverlayOptions.telemetryHUD = true
+    default:
+      break
+    }
+  }
+  #endif
 }
 
 #if os(macOS)
@@ -250,7 +273,7 @@ private struct IOSContentView: View {
       // it straight to the workspace and let the scene background bleed behind via
       // `.background()`'s own ignoresSafeArea. `isWide` picks the split-column vs
       // vertical layout; it's a pure layout decision, not a safe-area hack.
-      let isWide = proxy.size.width > proxy.size.height
+      let isWide = horizontalSizeClass == .regular || proxy.size.width > proxy.size.height
       Group {
         if state.isIndexing {
           IndexingScreen(state: state)
@@ -327,34 +350,57 @@ private struct IOSWorkspace: View {
   // MARK: Compact (portrait) layout
 
   private var compactBody: some View {
-    ScrollView {
-      VStack(alignment: .leading, spacing: TeslaCamTheme.Spacing.l) {
-        TeslaCamPageHeader(title: "TeslaCam", subtitle: headerSubtitle, subtitleSystemImage: "car.fill")
-          .teslaCamReveal(index: 0, trigger: revealTrigger)
+    ScrollViewReader { proxy in
+      ScrollView {
+        VStack(alignment: .leading, spacing: TeslaCamTheme.Spacing.l) {
+          TeslaCamPageHeader(title: "Tescam", subtitle: headerSubtitle, subtitleSystemImage: "car.fill")
+            .id("screenshot-overview")
+            .teslaCamReveal(index: 0, trigger: revealTrigger)
 
-        PreviewPanelCard(
-          state: state,
-          playbackUI: playbackUI,
-          maxAvailableHeight: playerHeight,
-          usesCompactPhonePreview: true,
-          fixedHeight: playerHeight
-        )
-        .teslaCamReveal(index: 1, trigger: revealTrigger)
+          PreviewPanelCard(
+            state: state,
+            playbackUI: playbackUI,
+            maxAvailableHeight: playerHeight,
+            usesCompactPhonePreview: true,
+            fixedHeight: playerHeight
+          )
+          .id("screenshot-playback")
+          .teslaCamReveal(index: 1, trigger: revealTrigger)
 
-        transportSection.teslaCamReveal(index: 2, trigger: revealTrigger)
-        scrubberSection.teslaCamReveal(index: 3, trigger: revealTrigger)
-        rangeSection.teslaCamReveal(index: 4, trigger: revealTrigger)
-        cameraSection.teslaCamReveal(index: 5, trigger: revealTrigger)
-        exportSection.teslaCamReveal(index: 6, trigger: revealTrigger)
+          transportSection.teslaCamReveal(index: 2, trigger: revealTrigger)
+          scrubberSection
+            .id("screenshot-timeline")
+            .teslaCamReveal(index: 3, trigger: revealTrigger)
+          rangeSection.teslaCamReveal(index: 4, trigger: revealTrigger)
+          cameraSection
+            .id("screenshot-cameras")
+            .teslaCamReveal(index: 5, trigger: revealTrigger)
+          exportSection
+            .id("screenshot-export")
+            .teslaCamReveal(index: 6, trigger: revealTrigger)
+        }
+        .frame(maxWidth: contentColumnWidth)
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, pagePadding)
+        .padding(.top, TeslaCamTheme.Spacing.s)
       }
-      .frame(maxWidth: contentColumnWidth)
-      .frame(maxWidth: .infinity)
-      .padding(.horizontal, pagePadding)
-      .padding(.top, TeslaCamTheme.Spacing.s)
+      .scrollIndicators(.hidden)
+      .scrollDismissesKeyboard(.interactively)
+      .onAppear {
+        #if DEBUG
+        guard let scene = ProcessInfo.processInfo.environment["TESLACAM_SCREENSHOT_SCENE"] else { return }
+        let anchor = scene.replacingOccurrences(of: #"^\d{2}-"#, with: "", options: .regularExpression)
+        DispatchQueue.main.async {
+          var transaction = Transaction()
+          transaction.disablesAnimations = true
+          withTransaction(transaction) {
+            proxy.scrollTo("screenshot-\(anchor)", anchor: .top)
+          }
+        }
+        #endif
+      }
+      .safeAreaInset(edge: .bottom, spacing: 0) { exportCTABar }
     }
-    .scrollIndicators(.hidden)
-    .scrollDismissesKeyboard(.interactively)
-    .safeAreaInset(edge: .bottom, spacing: 0) { exportCTABar }
   }
 
   // MARK: Wide (landscape / iPad) layout
@@ -823,7 +869,7 @@ private struct DemoVideoWallTile: View {
             Text("DEMO")
           }
           .font(TeslaCamTheme.Typography.label)
-          .foregroundStyle(Color.white.opacity(0.62))
+          .foregroundStyle(TeslaCamTheme.Colors.textSecondary)
         }
 
         Spacer()
@@ -831,7 +877,7 @@ private struct DemoVideoWallTile: View {
         HStack(spacing: TeslaCamTheme.Spacing.xs) {
           ForEach(0..<18, id: \.self) { index in
             Rectangle()
-              .fill(index % 5 == 0 ? TeslaCamTheme.Colors.accent.opacity(0.34) : Color.white.opacity(0.10))
+              .fill(index % 5 == 0 ? TeslaCamTheme.Colors.accent.opacity(0.34) : TeslaCamTheme.Colors.stroke)
               .frame(width: 2, height: CGFloat(10 + (index % 4) * 6))
           }
         }
@@ -1150,7 +1196,7 @@ private struct PreviewPanelCard: View {
       .clipShape(RoundedRectangle(cornerRadius: TeslaCamTheme.Metrics.cardCorner, style: .continuous))
       .overlay(
         RoundedRectangle(cornerRadius: TeslaCamTheme.Metrics.cardCorner, style: .continuous)
-          .stroke(TeslaCamTheme.Colors.stroke, lineWidth: 1)
+          .stroke(TeslaCamTheme.Colors.stroke, lineWidth: 0.5)
       )
     }
     .frame(maxWidth: .infinity, maxHeight: fillsContainer ? .infinity : nil)
@@ -2358,7 +2404,7 @@ private struct IconButtonStyle: ButtonStyle {
       )
       .overlay(
         RoundedRectangle(cornerRadius: TeslaCamTheme.Metrics.compactCorner, style: .continuous)
-          .stroke(TeslaCamTheme.Colors.stroke, lineWidth: 1)
+          .stroke(TeslaCamTheme.Colors.stroke, lineWidth: 0.5)
       )
       .opacity(configuration.isPressed ? 0.82 : 1)
       .contentShape(RoundedRectangle(cornerRadius: TeslaCamTheme.Metrics.compactCorner, style: .continuous))
@@ -2382,7 +2428,7 @@ private struct QuickActionButtonStyle: ButtonStyle {
       )
       .overlay(
         RoundedRectangle(cornerRadius: TeslaCamTheme.Metrics.compactCorner, style: .continuous)
-          .stroke(TeslaCamTheme.Colors.stroke, lineWidth: 1)
+          .stroke(TeslaCamTheme.Colors.stroke, lineWidth: 0.5)
       )
       .contentShape(RoundedRectangle(cornerRadius: TeslaCamTheme.Metrics.compactCorner, style: .continuous))
   }
@@ -2402,7 +2448,7 @@ private struct CompactRangeButtonStyle: ButtonStyle {
       )
       .overlay(
         RoundedRectangle(cornerRadius: TeslaCamTheme.Metrics.compactCorner, style: .continuous)
-          .stroke(TeslaCamTheme.Colors.stroke, lineWidth: 1)
+          .stroke(TeslaCamTheme.Colors.stroke, lineWidth: 0.5)
       )
       .contentShape(RoundedRectangle(cornerRadius: TeslaCamTheme.Metrics.compactCorner, style: .continuous))
   }

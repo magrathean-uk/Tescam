@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Current App Store train: `1.0` (`5`) for macOS and iOS/iPadOS.
+Current App Store train: `1.0` (`6`) for macOS and iOS/iPadOS.
 
 Read task-relevant guidance: `README.md` for the overview; `RUNBOOK.md` for build/release work; `docs/domain-contract.md` for shared Swift/Python behavior; `pyproject.toml` for Python packaging; the Xcode project for target membership; `.github/workflows/` only for CI changes.
 

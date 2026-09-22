@@ -312,6 +312,8 @@ class SwiftForbiddenPatternTests(unittest.TestCase):
         self.assertIn("wideBody", workspace)
         self.assertIn("compactBody", workspace)
         self.assertNotIn("ScrollView(.horizontal", workspace)
+        ios_content = _swift_block(source, "private struct IOSContentView")
+        self.assertIn("horizontalSizeClass == .regular || proxy.size.width > proxy.size.height", ios_content)
 
     def test_engrave_telemetry_is_opt_in_and_defaults_off(self):
         # Justification: telemetry burn-in should remain explicit even when the
@@ -537,6 +539,51 @@ class SwiftForbiddenPatternTests(unittest.TestCase):
         self.assertIn("naturalSizes: naturalSizes", metal)
         self.assertIn("var naturalSizes: [Camera: CGSize]", ipad_view)
         self.assertIn("var naturalSizes: [Camera: CGSize]", mac_view)
+
+    def test_ios_theme_uses_native_grouped_semantics(self):
+        # Justification: the Teslatlas v6 visual family is system-adaptive on
+        # iPhone and iPad. Hard-coded white-on-near-black colours make the app
+        # ignore light appearance and diverge from that shared design language.
+        source = (SWIFT_SHIPPING_ROOT / "Utils.swift").read_text(encoding="utf-8")
+        ios_colours = source[source.index("#if os(iOS)"):source.index("#else", source.index("#if os(iOS)"))]
+        self.assertIn("Color(uiColor: .systemGroupedBackground)", ios_colours)
+        self.assertIn("Color(uiColor: .secondarySystemGroupedBackground)", ios_colours)
+        self.assertIn("Color(uiColor: .label)", ios_colours)
+        self.assertIn("Color(uiColor: .secondaryLabel)", ios_colours)
+        self.assertNotIn("Color.white.opacity(0.94)", ios_colours)
+
+    def test_theme_uses_teslatlas_card_geometry(self):
+        # Justification: a 10pt continuous card with a quiet half-point border
+        # is the shared Teslatlas/Tescam surface primitive.
+        source = (SWIFT_SHIPPING_ROOT / "Utils.swift").read_text(encoding="utf-8")
+        self.assertIn("static let cardCorner: CGFloat = 10", source)
+        self.assertIn("lineWidth: 0.5", source)
+
+    def test_ios_does_not_force_dark_appearance(self):
+        # Justification: iOS follows the user's system appearance. macOS keeps
+        # its intentionally dark review workspace.
+        source = (SWIFT_SHIPPING_ROOT / "Utils.swift").read_text(encoding="utf-8")
+        helper = _swift_block(source, "func preferredTeslaCamColorScheme()")
+        self.assertIn("#if os(macOS)", helper)
+        self.assertIn("environment(\\.colorScheme, .dark)", helper)
+        self.assertIn("#else", helper)
+
+    def test_app_store_capture_defines_five_stable_scenes(self):
+        # Justification: the ASC artwork must be repeatable from real sample-mode
+        # UI on every platform rather than assembled from stale ad-hoc captures.
+        source = (REPO_ROOT / "TeslaCamUITests" / "TeslaCamUITests.swift").read_text(encoding="utf-8")
+        self.assertIn("testAppStoreScreenshots", source)
+        for scene in ("01-overview", "02-playback", "03-cameras", "04-timeline", "05-export"):
+            self.assertIn(scene, source)
+        self.assertIn("TESLACAM_SCREENSHOT_DIR", source)
+        self.assertIn("app.windows.firstMatch.screenshot()", source)
+        mac_source = (SWIFT_SHIPPING_ROOT / "Main.swift").read_text(encoding="utf-8")
+        self.assertIn("width: 1440, height: 900", mac_source)
+        content_source = (SWIFT_SHIPPING_ROOT / "ContentView.swift").read_text(encoding="utf-8")
+        self.assertIn('TeslaCamPageHeader(title: "Tescam"', content_source)
+        self.assertIn("TESLACAM_SCREENSHOT_SCENE", content_source)
+        self.assertIn('.id("screenshot-export")', content_source)
+        self.assertIn("proxy.scrollTo", content_source)
 
 
 class TestSurfaceTests(unittest.TestCase):

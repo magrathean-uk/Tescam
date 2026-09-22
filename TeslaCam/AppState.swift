@@ -180,10 +180,10 @@ struct ExportStore {
     trimEndDate: Date
   ) -> String {
     guard !sets.isEmpty else {
-      return "teslacam_\(preset.outputLabel).\(preset.defaultExtension)"
+      return "tescam_\(preset.outputLabel).\(preset.defaultExtension)"
     }
     let suffix = "\(filenameStamp(trimStartDate))_to_\(filenameStamp(trimEndDate))"
-    return "teslacam_\(suffix)_\(preset.outputLabel).\(preset.defaultExtension)"
+    return "tescam_\(suffix)_\(preset.outputLabel).\(preset.defaultExtension)"
   }
 
   func resolvedOutputURL(
@@ -814,7 +814,7 @@ final class AppState: ObservableObject {
 
   func currentLayoutPresetData() throws -> Data {
     let preset = CustomLayoutPreset(
-      name: "TeslaCam Layout",
+      name: "Tescam Layout",
       layoutRequest: layoutRequest,
       previewLayoutMode: previewLayoutMode,
       focusedCamera: focusedCamera,
@@ -863,7 +863,7 @@ final class AppState: ObservableObject {
     #else
     // On iPad, export to app scratch space, then offer share.
     let scratchDir = FileManager.default.temporaryDirectory
-      .appendingPathComponent("teslacam_export", isDirectory: true)
+      .appendingPathComponent("tescam_export", isDirectory: true)
     try? FileManager.default.createDirectory(at: scratchDir, withIntermediateDirectories: true)
     let filename = previewOnly ? "preview_\(defaultExportFilename())" : defaultExportFilename()
     let outputURL = scratchDir.appendingPathComponent(filename)

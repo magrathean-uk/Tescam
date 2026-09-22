@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Optional pre-commit hook for Teslacam.
+# Optional pre-commit hook for Tescam.
 #
 # Runs the fast checks every commit should clear:
 #   - the full Python unittest suite

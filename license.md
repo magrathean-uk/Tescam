@@ -1,13 +1,13 @@
-# License — Teslacam
+# License — Tescam
 
 ## This Project
 
-Teslacam is **proprietary software** owned by Magrathean UK Ltd.
+Tescam is **proprietary software** owned by Magrathean UK Ltd.
 
 > See [`LICENSE`](./LICENSE) for the full proprietary licence text.
 > Copyright © 2026 Magrathean UK Ltd. All rights reserved.
 
-This file (`LICENSE.md`) is the **third-party notice and component inventory** for Teslacam, supplemented by `TeslaCam/Resources/LICENSES.md`. The Teslacam source itself is governed exclusively by [`LICENSE`](./LICENSE).
+This file (`LICENSE.md`) is the **third-party notice and component inventory** for Tescam, supplemented by `TeslaCam/Resources/LICENSES.md`. The Tescam source itself is governed exclusively by [`LICENSE`](./LICENSE).
 
 ---
 
@@ -19,7 +19,7 @@ No external Swift Package Manager or CocoaPods dependencies are declared. The ap
 uses Apple system frameworks only (AVFoundation, Metal, CoreLocation, etc.) under
 the Apple SDK licence agreement.
 
-Teslacam acknowledges two MIT-licensed reference projects whose ideas were studied
+Tescam acknowledges two MIT-licensed reference projects whose ideas were studied
 but whose code was **not** copied — they are reimplemented natively in Swift/Metal.
 This acknowledgement is recorded in `TeslaCam/Resources/LICENSES.md`.
 

@@ -37,7 +37,7 @@ if ! command -v xcodebuild >/dev/null 2>&1; then
   exit 1
 fi
 
-DERIVED_DATA="${TESLACAM_DERIVED_DATA:-${XCODE_DERIVED_DATA_PATH:-/Users/bolyki/dev/library/derived-data}/Teslacam-tests}"
+DERIVED_DATA="${TESLACAM_DERIVED_DATA:-${XCODE_DERIVED_DATA_PATH:-/Users/bolyki/dev/library/derived-data}/Tescam-tests}"
 
 xcodebuild \
   -project TeslaCam.xcodeproj \

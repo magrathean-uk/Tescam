@@ -527,11 +527,11 @@ final class NativeExportController: ObservableObject {
       // exports otherwise stall when the Mac idle-sleeps. No-op on iOS.
       let activityToken = ProcessInfo.processInfo.beginActivity(
         options: [.userInitiated, .idleSystemSleepDisabled],
-        reason: "TeslaCam export"
+        reason: "Tescam export"
       )
       defer { ProcessInfo.processInfo.endActivity(activityToken) }
       let tempRoot = URL(fileURLWithPath: NSTemporaryDirectory())
-        .appendingPathComponent("teslacam_export_\(UUID().uuidString)", isDirectory: true)
+        .appendingPathComponent("tescam_export_\(UUID().uuidString)", isDirectory: true)
       try fm.createDirectory(at: tempRoot, withIntermediateDirectories: true)
       let logRoot = tempRoot.appendingPathComponent("logs", isDirectory: true)
       try fm.createDirectory(at: logRoot, withIntermediateDirectories: true)
@@ -792,7 +792,7 @@ final class NativeExportController: ObservableObject {
       throw NSError(domain: "TeslaCam", code: 11, userInfo: [NSLocalizedDescriptionKey: "Failed to create report."])
     }
     context.beginPDFPage(nil)
-    drawReportLine("TeslaCam Export Report", y: 730, size: 22, context: context, mediaBox: mediaBox)
+    drawReportLine("Tescam Export Report", y: 730, size: 22, context: context, mediaBox: mediaBox)
     drawReportLine("Range: \(plan.selectedRangeText)", y: 690, size: 12, context: context, mediaBox: mediaBox)
     drawReportLine("Duration: \(formatHMS(plan.totalDuration))", y: 670, size: 12, context: context, mediaBox: mediaBox)
     drawReportLine("Cameras: \(plan.enabledCameras.sorted { $0.rawValue < $1.rawValue }.map(\.displayName).joined(separator: ", "))", y: 650, size: 12, context: context, mediaBox: mediaBox)
@@ -1018,7 +1018,7 @@ final class NativeExportController: ObservableObject {
       includingPropertiesForKeys: [.contentModificationDateKey, .isDirectoryKey]
     ) else { return }
 
-    for entry in entries where entry.lastPathComponent.hasPrefix("teslacam_export_") {
+    for entry in entries where entry.lastPathComponent.hasPrefix("tescam_export_") {
       let values = try? entry.resourceValues(forKeys: [.contentModificationDateKey, .isDirectoryKey])
       guard values?.isDirectory == true else { continue }
       let modified = values?.contentModificationDate ?? .distantPast

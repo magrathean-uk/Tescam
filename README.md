@@ -1,6 +1,6 @@
-# Teslacam
+# Tescam
 
-Teslacam ships two developer surfaces from one repo:
+Tescam ships two developer surfaces from one repo:
 
 Built by [Magrathean UK](https://magrathean.uk).
 
@@ -18,7 +18,7 @@ The native app runs on Apple Silicon Macs, iPhone, and iPad from one codebase â€
 - [Current ASC platform metadata](./docs/releases/current-asc-platform-version.md)
 - [1.0 release marker](./docs/releases/v1.0-app-store.md)
 
-Current App Store train: `1.0` (`1`) for macOS and iOS/iPadOS. The Xcode project is the version/build source of truth.
+Current App Store train: `1.0` (`6`) for macOS and iOS/iPadOS. The Xcode project is the version/build source of truth.
 
 ## Repo map
 
@@ -105,17 +105,17 @@ CLI exports default to `--mode evidence-hevc`, matching the app's Evidence HEVC 
 
 Copyright Â© 2026 Magrathean UK Ltd. All rights reserved.
 
-Teslacam is proprietary software. See [`LICENSE`](./LICENSE) for the full licence text. Third-party components and their licences are listed in [`license.md`](./license.md) and `TeslaCam/Resources/LICENSES.md`. Public availability of this repository does not grant any right to copy, modify, redistribute, or use the software outside the licence terms.
+Tescam is proprietary software. See [`LICENSE`](./LICENSE) for the full licence text. Third-party components and their licences are listed in [`license.md`](./license.md) and `TeslaCam/Resources/LICENSES.md`. Public availability of this repository does not grant any right to copy, modify, redistribute, or use the software outside the licence terms.
 
 ### User-supplied recordings and privacy
 
-Teslacam processes video and audio recordings from your Tesla's TeslaCam and Sentry Mode storage. **You are solely responsible for the lawful collection, retention, export, and onward sharing of those recordings**, which may contain personal data of identifiable individuals (drivers, passengers, pedestrians, neighbours, members of the public). Compliance with the **UK GDPR**, the **Data Protection Act 2018**, applicable surveillance and broadcast laws, and any tenancy or premises rules around camera placement is your responsibility. Magrathean UK Ltd. accepts no responsibility for how recordings processed by Teslacam are used.
+Tescam processes video and audio recordings from your Tesla's TeslaCam and Sentry Mode storage. **You are solely responsible for the lawful collection, retention, export, and onward sharing of those recordings**, which may contain personal data of identifiable individuals (drivers, passengers, pedestrians, neighbours, members of the public). Compliance with the **UK GDPR**, the **Data Protection Act 2018**, applicable surveillance and broadcast laws, and any tenancy or premises rules around camera placement is your responsibility. Magrathean UK Ltd. accepts no responsibility for how recordings processed by Tescam are used.
 
 ### Trademarks and disclaimers
 
 Tesla, the Tesla logo, TeslaCam, and Sentry Mode are trademarks or registered trademarks of Tesla, Inc. FFmpeg is a trademark of the FFmpeg developers. Apple, the Apple logo, iOS, macOS, and Swift are trademarks of Apple Inc.
 
-Teslacam is **not affiliated with, endorsed by, sponsored by, or in any way officially connected to** Tesla, Inc., the FFmpeg project, or Apple Inc. References to these names exist solely for descriptive interoperability. All trademarks remain the property of their respective owners.
+Tescam is **not affiliated with, endorsed by, sponsored by, or in any way officially connected to** Tesla, Inc., the FFmpeg project, or Apple Inc. References to these names exist solely for descriptive interoperability. All trademarks remain the property of their respective owners.
 
 For licensing or commercial enquiries, email <contact@magrathean.uk>.
 

@@ -93,25 +93,25 @@ nonisolated extension Array {
 enum TeslaCamTheme {
   enum Colors {
     #if os(iOS)
-    static let background = Color(red: 0.045, green: 0.047, blue: 0.055)
-    static let backgroundGlow = Color(red: 0.22, green: 0.45, blue: 0.92).opacity(0.16)
-    static let backgroundWarmGlow = Color(red: 0.93, green: 0.38, blue: 0.28).opacity(0.08)
-    static let surface = Color.white.opacity(0.04)
-    static let surfaceElevated = Color.white.opacity(0.065)
-    static let chromeBar = Color.white.opacity(0.055)
-    static let stroke = Color.white.opacity(0.08)
-    static let accent = Color(red: 0.24, green: 0.54, blue: 0.93)
-    static let accentSoft = accent.opacity(0.22)
-    static let textPrimary = Color.white.opacity(0.94)
-    static let textSecondary = Color.white.opacity(0.72)
-    static let textTertiary = Color.white.opacity(0.50)
-    static let gapFill = Color(red: 0.17, green: 0.12, blue: 0.12)
-    static let gapAccent = Color(red: 0.93, green: 0.38, blue: 0.28)
+    static let background = Color(uiColor: .systemGroupedBackground)
+    static let backgroundGlow = Color.accentColor.opacity(0.08)
+    static let backgroundWarmGlow = Color(uiColor: .systemOrange).opacity(0.035)
+    static let surface = Color(uiColor: .secondarySystemGroupedBackground)
+    static let surfaceElevated = Color(uiColor: .tertiarySystemGroupedBackground)
+    static let chromeBar = Color(uiColor: .secondarySystemBackground).opacity(0.92)
+    static let stroke = Color(uiColor: .separator).opacity(0.55)
+    static let accent = Color(uiColor: .systemBlue)
+    static let accentSoft = Color(uiColor: .systemBlue).opacity(0.14)
+    static let textPrimary = Color(uiColor: .label)
+    static let textSecondary = Color(uiColor: .secondaryLabel)
+    static let textTertiary = Color(uiColor: .tertiaryLabel)
+    static let gapFill = Color(uiColor: .systemRed).opacity(0.10)
+    static let gapAccent = Color(uiColor: .systemRed)
     static let overlayScrim = Color.black.opacity(0.78)
-    static let overlaySurface = Color.white.opacity(0.08)
-    static let overlaySurfaceStrong = Color(red: 0.035, green: 0.036, blue: 0.042)
-    static let controlKnob = Color.white.opacity(0.88)
-    static let controlKnobStroke = Color.white.opacity(0.2)
+    static let overlaySurface = Color(uiColor: .tertiarySystemGroupedBackground)
+    static let overlaySurfaceStrong = Color(uiColor: .secondarySystemGroupedBackground)
+    static let controlKnob = Color(uiColor: .systemBackground)
+    static let controlKnobStroke = Color(uiColor: .separator)
     #else
     static let background = Color(red: 0.045, green: 0.047, blue: 0.055)
     static let backgroundGlow = Color(red: 0.22, green: 0.45, blue: 0.92).opacity(0.16)
@@ -152,11 +152,11 @@ enum TeslaCamTheme {
     static let toolbarHeight: CGFloat = 52
 
     #if os(iOS)
-    static let cardCorner: CGFloat = 14
-    static let controlCorner: CGFloat = 12
+    static let cardCorner: CGFloat = 10
+    static let controlCorner: CGFloat = 10
     static let compactCorner: CGFloat = 10
     #else
-    static let cardCorner: CGFloat = 8
+    static let cardCorner: CGFloat = 10
     static let controlCorner: CGFloat = 7
     static let compactCorner: CGFloat = 7
     #endif
@@ -332,7 +332,7 @@ struct TeslaCamSceneBackground: View {
     TeslaCamTheme.Colors.background
       .overlay(
         LinearGradient(
-          colors: [Color.white.opacity(0.04), .clear],
+          colors: [TeslaCamTheme.Colors.surface.opacity(0.42), .clear],
           startPoint: .top,
           endPoint: .bottom
         )
@@ -365,7 +365,7 @@ private struct TeslaCamCardModifier: ViewModifier {
       .background(fill, in: RoundedRectangle(cornerRadius: radius, style: .continuous))
       .overlay(
         RoundedRectangle(cornerRadius: radius, style: .continuous)
-          .stroke(TeslaCamTheme.Colors.stroke, lineWidth: 1)
+          .stroke(TeslaCamTheme.Colors.stroke, lineWidth: 0.5)
       )
   }
 }
@@ -381,7 +381,7 @@ private struct GlassSurfaceModifier: ViewModifier {
       .background(role.fill, in: RoundedRectangle(cornerRadius: radius, style: .continuous))
       .overlay(
         RoundedRectangle(cornerRadius: radius, style: .continuous)
-          .stroke(role.stroke, lineWidth: 1)
+          .stroke(role.stroke, lineWidth: 0.5)
       )
   }
 }
@@ -409,8 +409,13 @@ extension View {
     buttonStyle(CompactButtonStyle(role: role, size: size))
   }
 
+  @ViewBuilder
   func preferredTeslaCamColorScheme() -> some View {
+    #if os(macOS)
     environment(\.colorScheme, .dark)
+    #else
+    self
+    #endif
   }
 }
 

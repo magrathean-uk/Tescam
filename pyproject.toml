@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "See repository license and bundled third-party licenses."}
 authors = [
-  {name = "Teslacam contributors"}
+  {name = "Tescam contributors"}
 ]
 dependencies = []
 classifiers = [

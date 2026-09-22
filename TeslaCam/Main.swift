@@ -20,18 +20,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
 
     let content = ContentView().environmentObject(state)
     let window = NSWindow(
-      contentRect: NSRect(x: 0, y: 0, width: 1400, height: 900),
+      contentRect: NSRect(x: 0, y: 0, width: 1440, height: 900),
       styleMask: [.titled, .closable, .resizable, .miniaturizable],
       backing: .buffered,
       defer: false
     )
     window.center()
-    window.title = "TeslaCam"
+    window.title = "Tescam"
     window.identifier = NSUserInterfaceItemIdentifier("TeslaCam.MainWindow")
     window.isRestorable = false
     window.isReleasedWhenClosed = false
     let hostingController = NSHostingController(rootView: content)
     window.contentViewController = hostingController
+    window.setFrame(NSRect(x: 0, y: 0, width: 1440, height: 900), display: false)
+    window.center()
 
     NSApp.setActivationPolicy(.regular)
 

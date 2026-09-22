@@ -1,8 +1,8 @@
-# Security Policy — Teslacam
+# Security Policy — Tescam
 
 ## Private Reporting
 
-Report vulnerabilities through GitHub private vulnerability reporting or email `contact@magrathean.uk` with subject `SECURITY: Teslacam`.
+Report vulnerabilities through GitHub private vulnerability reporting or email `contact@magrathean.uk` with subject `SECURITY: Tescam`.
 
 Do not publish credentials, private keys, database dumps, signing certificates, or exploit details.
 

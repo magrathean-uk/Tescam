@@ -111,7 +111,7 @@ struct MacEventSidebar: View {
   }
 
   private var sourceTitle: String {
-    state.rootURL?.lastPathComponent ?? "TeslaCam"
+    state.rootURL?.lastPathComponent ?? "Tescam"
   }
 
   private var sourceDetail: String {

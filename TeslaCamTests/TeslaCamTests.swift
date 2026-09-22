@@ -247,7 +247,7 @@ struct TeslaCamTests {
   }
 
   @Test func compactControlsStayVisuallySmallButKeepTouchTargets() async throws {
-    #expect(TeslaCamTheme.Metrics.cardCorner == 8)
+    #expect(TeslaCamTheme.Metrics.cardCorner == 10)
     #expect(TeslaCamTheme.Metrics.controlCorner == 7)
     #expect(TeslaCamTheme.Metrics.compactCorner == 7)
     #expect(CompactControlSize.command.visualHeight == TeslaCamTheme.Metrics.compactControlHeight)

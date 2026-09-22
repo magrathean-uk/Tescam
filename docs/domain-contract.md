@@ -1,4 +1,4 @@
-# Teslacam Domain Contract
+# Tescam Domain Contract
 
 This contract pins the behavior that must stay aligned between the native macOS app and the Python CLI. The app remains the shipping macOS export path. The CLI remains portable and dependency-light.
 

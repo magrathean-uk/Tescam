@@ -1,64 +1,19 @@
 {
   "items": [
-    {
-      "family": "iphone",
-      "slot": 1,
-      "filename": "01-dashboard.png",
-      "path": "marketing/screenshots/asc_out/iphone/01-dashboard.png"
-    },
-    {
-      "family": "iphone",
-      "slot": 2,
-      "filename": "02-export-range.png",
-      "path": "marketing/screenshots/asc_out/iphone/02-export-range.png"
-    },
-    {
-      "family": "iphone",
-      "slot": 3,
-      "filename": "03-cameras.png",
-      "path": "marketing/screenshots/asc_out/iphone/03-cameras.png"
-    },
-    {
-      "family": "iphone",
-      "slot": 4,
-      "filename": "04-export-settings.png",
-      "path": "marketing/screenshots/asc_out/iphone/04-export-settings.png"
-    },
-    {
-      "family": "iphone",
-      "slot": 5,
-      "filename": "05-export-progress.png",
-      "path": "marketing/screenshots/asc_out/iphone/05-export-progress.png"
-    },
-    {
-      "family": "ipad",
-      "slot": 1,
-      "filename": "01-dashboard.png",
-      "path": "marketing/screenshots/asc_out/ipad/01-dashboard.png"
-    },
-    {
-      "family": "ipad",
-      "slot": 2,
-      "filename": "02-export-range.png",
-      "path": "marketing/screenshots/asc_out/ipad/02-export-range.png"
-    },
-    {
-      "family": "ipad",
-      "slot": 3,
-      "filename": "03-cameras.png",
-      "path": "marketing/screenshots/asc_out/ipad/03-cameras.png"
-    },
-    {
-      "family": "ipad",
-      "slot": 4,
-      "filename": "04-export-settings.png",
-      "path": "marketing/screenshots/asc_out/ipad/04-export-settings.png"
-    },
-    {
-      "family": "ipad",
-      "slot": 5,
-      "filename": "05-export-progress.png",
-      "path": "marketing/screenshots/asc_out/ipad/05-export-progress.png"
-    }
+    {"family":"iphone","slot":1,"filename":"01-overview.png","path":"marketing/screenshots/asc_out/iphone/01-overview.png"},
+    {"family":"iphone","slot":2,"filename":"02-playback.png","path":"marketing/screenshots/asc_out/iphone/02-playback.png"},
+    {"family":"iphone","slot":3,"filename":"03-cameras.png","path":"marketing/screenshots/asc_out/iphone/03-cameras.png"},
+    {"family":"iphone","slot":4,"filename":"04-timeline.png","path":"marketing/screenshots/asc_out/iphone/04-timeline.png"},
+    {"family":"iphone","slot":5,"filename":"05-export.png","path":"marketing/screenshots/asc_out/iphone/05-export.png"},
+    {"family":"ipad","slot":1,"filename":"01-overview.png","path":"marketing/screenshots/asc_out/ipad/01-overview.png"},
+    {"family":"ipad","slot":2,"filename":"02-playback.png","path":"marketing/screenshots/asc_out/ipad/02-playback.png"},
+    {"family":"ipad","slot":3,"filename":"03-cameras.png","path":"marketing/screenshots/asc_out/ipad/03-cameras.png"},
+    {"family":"ipad","slot":4,"filename":"04-timeline.png","path":"marketing/screenshots/asc_out/ipad/04-timeline.png"},
+    {"family":"ipad","slot":5,"filename":"05-export.png","path":"marketing/screenshots/asc_out/ipad/05-export.png"},
+    {"family":"mac","slot":1,"filename":"01-overview.png","path":"marketing/screenshots/asc_out/mac/01-overview.png"},
+    {"family":"mac","slot":2,"filename":"02-playback.png","path":"marketing/screenshots/asc_out/mac/02-playback.png"},
+    {"family":"mac","slot":3,"filename":"03-cameras.png","path":"marketing/screenshots/asc_out/mac/03-cameras.png"},
+    {"family":"mac","slot":4,"filename":"04-timeline.png","path":"marketing/screenshots/asc_out/mac/04-timeline.png"},
+    {"family":"mac","slot":5,"filename":"05-export.png","path":"marketing/screenshots/asc_out/mac/05-export.png"}
   ]
 }

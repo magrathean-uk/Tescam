@@ -1,4 +1,7 @@
 import XCTest
+#if os(iOS)
+import UIKit
+#endif
 
 final class TeslaCamUITests: XCTestCase {
   override func setUpWithError() throws {
@@ -90,6 +93,42 @@ final class TeslaCamUITests: XCTestCase {
     add(attachment)
   }
 
+  @MainActor
+  func testAppStoreScreenshots() throws {
+    let app = launchApp(mode: "sample")
+    XCTAssertTrue(app.descendants(matching: .any)["loaded-screen"].waitForExistence(timeout: 5))
+
+    try capture(app, named: "01-overview")
+
+    #if os(macOS)
+    app.typeKey(" ", modifierFlags: [])
+    #else
+    activate(app.descendants(matching: .any)["toggle-playback"])
+    #endif
+    try capture(app, named: "02-playback")
+
+    #if os(iOS)
+    app.swipeUp()
+    #endif
+    activate(app.descendants(matching: .any)["camera-front"])
+    try capture(app, named: "03-cameras")
+
+    #if os(macOS)
+    // The sample timeline is shorter than five minutes, so that preset leaves
+    // the Mac workspace unchanged and produces a duplicate App Store image.
+    activate(app.descendants(matching: .any)["range-current-minute"])
+    #else
+    activate(app.descendants(matching: .any)["range-last-5m"])
+    #endif
+    try capture(app, named: "04-timeline")
+
+    #if os(iOS)
+    app.swipeUp()
+    XCTAssertTrue(app.descendants(matching: .any)["export-video"].waitForExistence(timeout: 5))
+    #endif
+    try capture(app, named: "05-export")
+  }
+
   private func launchApp(mode: String) -> XCUIApplication {
     let app = XCUIApplication()
     app.launchEnvironment["TESLACAM_UI_TEST_MODE"] = mode
@@ -108,5 +147,38 @@ final class TeslaCamUITests: XCTestCase {
       button.tap()
       #endif
     }
+  }
+
+  private func activate(_ element: XCUIElement) {
+    guard element.waitForExistence(timeout: 3) else { return }
+    #if os(macOS)
+    element.click()
+    #else
+    element.tap()
+    #endif
+  }
+
+  private func capture(_ app: XCUIApplication, named name: String) throws {
+    #if os(macOS)
+    let screenshot = app.windows.firstMatch.screenshot()
+    #else
+    let screenshot = app.screenshot()
+    #endif
+    let attachment = XCTAttachment(screenshot: screenshot)
+    attachment.name = name
+    attachment.lifetime = .keepAlways
+    add(attachment)
+
+    guard let root = ProcessInfo.processInfo.environment["TESLACAM_SCREENSHOT_DIR"], !root.isEmpty else {
+      return
+    }
+    #if os(macOS)
+    let platform = "mac"
+    #else
+    let platform = UIDevice.current.userInterfaceIdiom == .pad ? "ipad" : "iphone"
+    #endif
+    let directory = URL(fileURLWithPath: root, isDirectory: true).appendingPathComponent(platform)
+    try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    try screenshot.pngRepresentation.write(to: directory.appendingPathComponent("\(name).png"), options: .atomic)
   }
 }

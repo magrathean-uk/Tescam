@@ -177,7 +177,7 @@ struct TeslaCamPillPicker<Value: Hashable>: View {
     )
     .overlay(
       RoundedRectangle(cornerRadius: TeslaCamTheme.Metrics.controlCorner, style: .continuous)
-        .stroke(TeslaCamTheme.Colors.stroke, lineWidth: 1)
+        .stroke(TeslaCamTheme.Colors.stroke, lineWidth: 0.5)
     )
     .accessibilityElement(children: .contain)
     .accessibilityLabel(accessibilityLabel)

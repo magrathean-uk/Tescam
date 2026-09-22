@@ -1,6 +1,6 @@
 # Runbook
 
-Current App Store train: `1.0` (`1`). Release copy and ASC commands live in `docs/releases/current-asc-platform-version.md`; the compact train marker is `docs/releases/v1.0-app-store.md`.
+Current App Store train: `1.0` (`6`). Release copy and ASC commands live in `docs/releases/current-asc-platform-version.md`; the compact train marker is `docs/releases/v1.0-app-store.md`.
 
 ## Setup
 
@@ -121,7 +121,7 @@ CI runs `TeslaCamTests` only; UI tests are local via `script/test_native.sh`.
 
 ## Release checks
 
-- Confirm `MARKETING_VERSION = 1.0` and `CURRENT_PROJECT_VERSION = 1` from the Xcode project before archive/upload work.
+- Confirm `MARKETING_VERSION = 1.0` and `CURRENT_PROJECT_VERSION = 6` from the Xcode project before archive/upload work.
 - Cold launch starts on onboarding until a source folder is chosen.
 - The loaded timeline shows exact range, export preset, duplicate policy, and per-camera controls.
 - Existing-output exports choose a unique filename instead of clobbering.

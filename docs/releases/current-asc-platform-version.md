@@ -1,203 +1,152 @@
-# TeslaCam - App Store Connect Platform Version Information
+# Tescam — Current App Store Connect Release
 
-Source: current ASC copy prepared for the 1.0 release. Plain text only.
+This is the maintained handoff for the live App Store Connect 1.0 train. Read
+the identifiers back from ASC before any future mutation because version,
+build, localization, screenshot-set, and review-submission IDs are
+environment-specific.
 
-## Version
+## Live release records
 
-- App: TeslaCam
-- Platform: macOS and iOS/iPadOS
-- macOS Bundle ID: `com.magrathean.TeslaCam`
-- iOS Bundle ID: `com.magrathean.TeslaCam.iPad`
-- Version Number: `1.0`
-- Build Number: `1`
-- App Store app id: not present in the current ASC app list yet
+- App: `Tescam`
+- App Store app ID: `6787877132`
+- Bundle ID, both platforms: `com.magrathean.teslacam`
+- Version: `1.0`
+- Build: `6`
 - Copyright: `2026 Magrathean UK Ltd.`
+- Release mode: manual; both platform submissions are waiting for review
 
-## Promotional Text
+### iOS and iPadOS
 
-Limit: 170 characters
+- Version ID: `1c9b09c1-b884-44f1-a59c-4478cfec2fac`
+- Version localization ID (`en-GB`): `0366f1e5-30f8-40ee-aff0-b30adb73c320`
+- Build ID: `1c78a2d9-1d6e-4480-9608-43b636ed078c`
+- Processing state: `VALID`
+- Version state: `WAITING_FOR_REVIEW`
+- Review submission ID: `c1ebf203-c395-49d4-8176-23a51101297f`
 
-```text
-Review TeslaCam footage fast. Drop in a folder, inspect every camera, scrub recorded time, and export evidence clips locally.
-```
+### macOS
 
-Characters: 123
+- Version ID: `e2e1a2f1-2fb5-4774-a05a-c982d511769d`
+- Version localization ID (`en-GB`): `74075979-ed03-4bd6-a50f-8e0209bf2980`
+- Build ID: `e8f0627d-dc3a-47bd-95cf-c3a469fb7f6c`
+- Processing state: `VALID`
+- Version state: `WAITING_FOR_REVIEW`
+- Review submission ID: `be6e0fd2-844b-4627-9457-2c5dcce9882f`
+- Review detail ID: `c98e7890-eb7a-4995-b39f-41d92d2f0bdc`
 
-## Description
+### Shared App Info
 
-Limit: 4000 characters
+- App Info localization ID (`en-GB`): `5fbbaa15-3dca-4bdb-8f7b-11d9f2e4ef17`
+- Name: `Tescam`
+- Subtitle: `Review TeslaCam footage`
+- Age-rating declaration: `socialMedia = false` and
+  `socialMediaAgeRestricted = false`; all other stored answers remain the
+  existing no-objectionable-content values
 
-```text
-TeslaCam is a local-first reviewer and exporter for TeslaCam and Sentry Mode footage.
+## Review response and submission
 
-Drop in a TeslaCam folder and the app builds a clean timeline from the camera clips it finds. Review four-camera HW3 footage or six-camera HW4 footage in a fixed grid, jump through recorded time, inspect embedded telemetry when available, and export the selected range.
+The build 5 iOS submission `6f62d392-3197-4ee4-9883-f2c074bb64de` and macOS
+submission `96b9ef23-e543-44ac-9654-07ebd2988654` were cancelled so the same
+1.0 versions could be attached to renamed build 6. The new submissions are
+both `WAITING_FOR_REVIEW`.
 
-WHY TESLACAM
+The App Review notes for both platforms now explain that Tescam is an
+independent local file utility, contains no Tesla-owned artwork or media, does
+not access Tesla accounts or APIs, and uses “TeslaCam” only as a compatibility
+reference. They link to the public source and support site, state that no Tesla
+authorization or licence is claimed, and ask App Review to identify any exact
+metadata or asset it considers misleading.
 
-Simple folder workflow. Choose or drop a TeslaCam, SavedClips, SentryClips, or RecentClips folder and let the app organize the clips.
+## Live URLs
 
-One useful timeline. TeslaCam merges clips by time, skips dead gaps while seeking, and keeps the review surface focused on footage that exists.
+- Marketing: `https://teslacam.eu/`
+- Support: `https://teslacam.eu/#support`
+- Privacy policy: `https://teslacam.eu/privacy/`
+- Terms: `https://teslacam.eu/terms/`
+- EULA: Apple standard EULA; no custom ASC EULA is configured
 
-Multi-camera review. HW3 footage appears as a 2x2 grid. HW4 footage appears as an adaptive six-camera grid.
+The marketing and support URLs are stored on both platform localizations. The
+privacy-policy URL is stored on the shared App Info localization. ASC has no
+separate terms-URL field when the standard Apple EULA is used.
 
-Telemetry-aware. When Tesla embeds telemetry, the app shows speed, GPS, pedal, gear, brake, signal, heading, and G-force information alongside the footage.
+The matching website is live from Magrathean `main` at commit `6f611fd9`, with
+iPhone, iPad, and Mac routes and platform-specific screenshot assets. Cloudflare
+deployment run `34770584560` completed successfully.
 
-Evidence exports. Export selected ranges as original camera tracks where possible or HEVC evidence clips with telemetry overlays when needed.
+## Store copy
 
-Local by design. Video processing happens on your device. No account, cloud upload, tracking service, or external telemetry pipeline is required.
+### iPhone and iPad
 
-WHAT YOU GET
-
-Folder Import
-Open a TeslaCam storage folder directly from local disk, removable storage, or Files.
-
-Camera Grid
-Review synchronized front, back, repeater, side, and pillar cameras in one view.
-
-Timeline
-Scrub through recorded footage without spending time on long empty periods between clips.
-
-Clip Information
-See clip time, selected range, camera coverage, and available vehicle telemetry.
-
-Export
-Export the selected snippet for review, insurance, evidence, or personal archive workflows.
-
-REQUIREMENTS
-
-- TeslaCam, SavedClips, SentryClips, or RecentClips media exported by a Tesla vehicle.
-- Embedded telemetry is optional and depends on the source clips produced by the vehicle.
-
-PRIVACY
-
-TeslaCam processes user-selected video files locally. Recordings can contain people, vehicles, locations, and other personal data. You are responsible for lawful collection, retention, export, and sharing of footage.
-
-TeslaCam is not affiliated with, endorsed by, or sponsored by Tesla, Inc.
-```
-
-Characters: 2125
-
-## Keywords
-
-Limit: 100 bytes
+Promotional text:
 
 ```text
-tesla,teslacam,sentry,dashcam,ev,video,clip,export,telemetry,gps,hevc,camera,evidence
+Review TeslaCam footage, trim the useful range, and export evidence clips locally on iPhone and iPad.
 ```
 
-Bytes: 89
-
-## What's New in This Version
-
-Limit: 4000 characters
+Description:
 
 ```text
-TeslaCam 1.0 is the first App Store release.
+Tescam helps Tesla owners review TeslaCam and Sentry Mode footage on iPhone and iPad. Load a camera folder, inspect the six-camera timeline, trim the useful range, choose the cameras you need, and export clear evidence clips with native HEVC.
 
-- Drop in a TeslaCam, SavedClips, SentryClips, or RecentClips folder and build one usable timeline.
-- Review HW3 four-camera footage and HW4 six-camera footage in a fixed grid.
-- Scrub recorded time without wasting space on dead gaps between clips.
-- Inspect GPS, speed, pedal, gear, brake, signal, heading, and G-force telemetry when Tesla embeds it.
-- Export selected clips with the original camera tracks or evidence-ready HEVC with telemetry overlays.
+The app is built for local review workflows: timeline scrubbing, camera selection, export range controls, duplicate-aware scanning, and telemetry engraving options where supported by the source footage.
+
+Tescam processes user-selected recordings on device. You stay responsible for collecting, retaining, and sharing footage lawfully.
 ```
 
-Characters: 547
+### Mac
 
-## URLs
-
-- Marketing URL: `https://magrathean.uk/`
-- Support URL: `https://magrathean.uk/`
-- Privacy Policy URL: fill before submission
-- EULA / Terms URL: fill before submission
-
-## Screenshots and App Preview
-
-- Ready iPhone screenshot: `/Users/bolyki/dev/source/Teslacam/.cache/appstore-screens-v1/ready/iphone/01-review-export-iphone.png`
-- Ready iPad screenshot: `/Users/bolyki/dev/source/Teslacam/.cache/appstore-screens-v1/ready/ipad/01-review-export-ipad.png`
-- macOS screenshots: user will capture manually.
-- App Preview: none supplied.
-
-Upload device types:
-
-- iPhone screenshot: `IPHONE_69`
-- iPad screenshot: `IPAD_PRO_3GEN_129`
-
-## Routing App Coverage File
-
-Not applicable. TeslaCam is not a Maps routing app and does not need a `.geojson` routing coverage file.
-
-## Version Release Settings
-
-Use manual release after App Review approval unless a different release date is selected in App Store Connect.
-
-## Phased Release and Rating
-
-- Phased Release for Automatic Updates: No for 1.0.
-- Reset Overview Rating: No.
-
-## App Review Information
-
-Sign-in required: No.
-
-Notes:
+Promotional text:
 
 ```text
-TeslaCam is a local-first TeslaCam and Sentry Mode footage reviewer/exporter. It processes only user-selected video folders and does not require an account or network service.
-
-To test without real TeslaCam footage, launch the app and use the built-in demo/sample mode. The demo opens a sample timeline with multi-camera layout, timeline controls, telemetry values, and export controls.
-
-For real footage testing, choose a folder containing TeslaCam, SavedClips, SentryClips, or RecentClips MP4 files named with Tesla timestamp and camera names.
-
-The app is not affiliated with, endorsed by, or sponsored by Tesla, Inc.
+Review TeslaCam footage, trim the useful range, and export evidence clips locally on your Mac.
 ```
 
-Contact:
+Description:
 
-- Email: `contact@magrathean.uk`
-- Phone: fill in App Store Connect account contact phone
+```text
+Tescam helps Tesla owners review TeslaCam and Sentry Mode footage on Mac. Load a camera folder, inspect the six-camera timeline, trim the useful range, choose the cameras you need, and export clear evidence clips with native HEVC.
 
-## ASC CLI Handoff
+The app is built for local review workflows: timeline scrubbing, synchronized camera playback, camera selection, export range controls, duplicate-aware scanning, and telemetry engraving options where supported by the source footage.
 
-The installed CLI is `/opt/homebrew/bin/asc`.
+Tescam processes user-selected recordings on your Mac. You stay responsible for collecting, retaining, and sharing footage lawfully.
+```
 
-Auth and app lookup:
+Keywords on both platforms:
+
+```text
+tescam,dashcam,tesla,sentry,video,export,evidence,hevc,car,camera
+```
+
+## Screenshots
+
+The checked-in upload assets are under `marketing/screenshots/asc_out/` and
+contain five distinct images for each mobile family and four for Mac:
+
+- iPhone: `marketing/screenshots/asc_out/iphone/`, `APP_IPHONE_67`, 1320 × 2868
+- iPad: `marketing/screenshots/asc_out/ipad/`, `APP_IPAD_PRO_3GEN_129`, 2064 × 2752
+- Mac: `marketing/screenshots/asc_out/mac/`, `APP_DESKTOP`, 2880 × 1800
+
+The 14 uploaded assets passed `asc screenshots validate` with zero errors and
+zero warnings. Their upload state was `COMPLETE` when this handoff was
+refreshed. A fifth Mac capture was retained locally but not uploaded because
+its decoded pixels duplicated another Mac screenshot.
+
+## Build and metadata checks
 
 ```sh
-/opt/homebrew/bin/asc auth status
-/opt/homebrew/bin/asc apps list --output json
+APP_ID=6787877132
+VERSION=1.0
+
+/opt/homebrew/bin/asc builds list --app "$APP_ID" --version "$VERSION" --build-number 6 --processing-state all
+/opt/homebrew/bin/asc versions view --version-id 1c9b09c1-b884-44f1-a59c-4478cfec2fac --include-build --include-submission
+/opt/homebrew/bin/asc versions view --version-id e2e1a2f1-2fb5-4774-a05a-c982d511769d --include-build --include-submission
+/opt/homebrew/bin/asc localizations list --version 1c9b09c1-b884-44f1-a59c-4478cfec2fac --include appScreenshotSets
+/opt/homebrew/bin/asc localizations list --version e2e1a2f1-2fb5-4774-a05a-c982d511769d --include appScreenshotSets
+/opt/homebrew/bin/asc review submissions-list --app "$APP_ID"
 ```
 
-After the TeslaCam app record exists, set:
-
-```sh
-APP_ID="<teslacam-app-id>"
-VERSION="1.0"
-BUILD="1"
-```
-
-Inspect or create the version:
-
-```sh
-/opt/homebrew/bin/asc versions list --app "$APP_ID"
-/opt/homebrew/bin/asc versions create --app "$APP_ID" --version "$VERSION" --platform IOS
-```
-
-Build number and upload:
-
-```sh
-/opt/homebrew/bin/asc builds next-build-number --app "$APP_ID" --version "$VERSION" --platform IOS
-/opt/homebrew/bin/asc builds upload --app "$APP_ID" --ipa "/path/to/TeslaCam.ipa"
-```
-
-Screenshots:
-
-```sh
-/opt/homebrew/bin/asc screenshots upload --app "$APP_ID" --version "$VERSION" --path "/Users/bolyki/dev/source/Teslacam/.cache/appstore-screens-v1/ready/iphone" --device-type IPHONE_69
-/opt/homebrew/bin/asc screenshots upload --app "$APP_ID" --version "$VERSION" --path "/Users/bolyki/dev/source/Teslacam/.cache/appstore-screens-v1/ready/ipad" --device-type IPAD_PRO_3GEN_129
-```
-
-Readiness:
-
-```sh
-/opt/homebrew/bin/asc validate --app "$APP_ID" --version "$VERSION" --platform IOS
-```
+Do not release from this handoff. Both versions are already submitted and
+waiting for review. The canonical ASC validation reported zero blocking errors;
+it retained only keyword warnings and the App Privacy publication check that
+the public API cannot verify. App Privacy publication remains a manual ASC
+check because the public API does not expose its publish state.

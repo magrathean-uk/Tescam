@@ -1,0 +1,105 @@
+defaults:
+  background:
+    type: linear
+    colors:
+      - "#050817"
+      - "#30376F"
+    direction: 90
+
+project:
+  name: Tescam iPhone App Store screenshots
+  device: iPhone 16 Pro Max - Natural Titanium - Portrait
+  output_dir: asc_out/iphone
+  output_size: iPhone6_9
+
+screenshots:
+  01-overview:
+    content:
+      - type: text
+        content: "Every angle,\nat a glance"
+        color: "#FFFFFF"
+        position: [50%, 8%]
+        size: 78
+        weight: bold
+      - type: text
+        content: "Review all six TeslaCam cameras in sync."
+        color: "#C9D2EA"
+        position: [50%, 16%]
+        size: 38
+      - type: image
+        asset: raw/iphone/01-overview.png
+        frame: true
+        position: [50%, 59%]
+        scale: 0.78
+  02-playback:
+    content:
+      - type: text
+        content: "Precise playback"
+        color: "#FFFFFF"
+        position: [50%, 9%]
+        size: 78
+        weight: bold
+      - type: text
+        content: "Scrub, skip and replay the moment."
+        color: "#C9D2EA"
+        position: [50%, 16%]
+        size: 38
+      - type: image
+        asset: raw/iphone/02-playback.png
+        frame: true
+        position: [50%, 59%]
+        scale: 0.78
+  03-cameras:
+    content:
+      - type: text
+        content: "Choose every angle"
+        color: "#FFFFFF"
+        position: [50%, 9%]
+        size: 78
+        weight: bold
+      - type: text
+        content: "Focus one camera or keep the full grid."
+        color: "#C9D2EA"
+        position: [50%, 16%]
+        size: 38
+      - type: image
+        asset: raw/iphone/03-cameras.png
+        frame: true
+        position: [50%, 59%]
+        scale: 0.78
+  04-timeline:
+    content:
+      - type: text
+        content: "Trim the moment"
+        color: "#FFFFFF"
+        position: [50%, 9%]
+        size: 78
+        weight: bold
+      - type: text
+        content: "Set an exact export range in seconds."
+        color: "#C9D2EA"
+        position: [50%, 16%]
+        size: 38
+      - type: image
+        asset: raw/iphone/04-timeline.png
+        frame: true
+        position: [50%, 59%]
+        scale: 0.78
+  05-export:
+    content:
+      - type: text
+        content: "Export your way"
+        color: "#FFFFFF"
+        position: [50%, 9%]
+        size: 78
+        weight: bold
+      - type: text
+        content: "Choose H.264 or H.265, with telemetry."
+        color: "#C9D2EA"
+        position: [50%, 16%]
+        size: 38
+      - type: image
+        asset: raw/iphone/05-export.png
+        frame: true
+        position: [50%, 59%]
+        scale: 0.78
