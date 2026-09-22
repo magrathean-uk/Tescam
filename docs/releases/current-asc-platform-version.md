@@ -69,9 +69,9 @@ The marketing and support URLs are stored on both platform localizations. The
 privacy-policy URL is stored on the shared App Info localization. ASC has no
 separate terms-URL field when the standard Apple EULA is used.
 
-The matching website is live from Magrathean `main` at commit `6f611fd9`, with
+The matching website is live from Magrathean `main` at commit `d68e6440`, with
 iPhone, iPad, and Mac routes and platform-specific screenshot assets. Cloudflare
-deployment run `34770584560` completed successfully.
+deployment run `35693409557` completed successfully.
 
 ## Store copy
 
