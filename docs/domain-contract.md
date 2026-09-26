@@ -85,15 +85,15 @@ Both Swift and Python implementations must keep the fixture cases under `fixture
 Fixtures under `fixtures/domain/cases/*.json` are the source of truth.
 Each fixture carries four expected blocks:
 
-- `expected_scan` — keyed by every duplicate policy
+- `expected_scan`; keyed by every duplicate policy
   (`merge-by-time`, `prefer-newest`, `keep-all`); locks `scan_manifest`
   output minus the `schema_version` / `type` envelope
-- `expected_layout` — keyed by every profile (`auto`, `legacy4`,
+- `expected_layout`; keyed by every profile (`auto`, `legacy4`,
   `sixcam`); locks `layout_manifest` output for that profile
-- `expected_selection` — keyed by every duplicate policy; locks
+- `expected_selection`; keyed by every duplicate policy; locks
   `selected_sets_manifest` after running `select_clip_sets` over the
   scanned clip-sets with a stub probe (every clip = 60 s)
-- `expected_output` — locks `apply_output_conflict_policy` against the
+- `expected_output`; locks `apply_output_conflict_policy` against the
   default filename derived from the fixture's natural clip range:
   the three-step `unique` cascade, the `overwrite` resolution, and the
   typed `RuntimeError` raised by the `error` policy
@@ -114,12 +114,11 @@ Authoring a new fixture only requires a minimal skeleton:
 Drop it under `fixtures/domain/cases/` and run:
 
 ```bash
-source .cache/build-env.sh && source .cache/venv/bin/activate
 python3 script/regen_fixtures.py
 python3 -m unittest tests.test_domain_contract
 ```
 
-`script/regen_fixtures.py` is idempotent — running it on existing
+`script/regen_fixtures.py` is idempotent; running it on existing
 fixtures produces no diff. Re-run it whenever the contract surfaces
 change (`scan_manifest`, `layout_manifest`, `selected_sets_manifest`,
 or `apply_output_conflict_policy`), then commit the regenerated
@@ -132,11 +131,12 @@ The matching parity tests are:
 - `test_shared_selection_fixtures_round_trip_through_select_clip_sets_for_all_duplicate_policies`
 - `test_shared_output_fixtures_match_apply_output_conflict_policy_for_all_policies`
 
-Native parity (Swift) currently covers scan and layout via
-`sharedDomainFixturesMatchNativeScanManifestsForAllDuplicatePolicies`
-and `sharedLayoutFixturesMatchNativeLayoutPlan`. Selection and output
-Swift parity tests are unblocked by the `expected_selection` /
-`expected_output` blocks; see plan note 01 step 3.
+Native parity in `TeslaCamTests/TeslaCamTests.swift` covers these surfaces:
+
+- `sharedDomainFixturesMatchNativeScanManifestsForAllDuplicatePolicies`
+- `sharedLayoutFixturesMatchNativeLayoutPlan`
+- `sharedSelectionFixturesMatchNativeSelectionManifestForAllDuplicatePolicies`
+- `sharedOutputFixturesMatchNativeOutputContractForEveryPolicy`
 
 ## Implementation ownership
 

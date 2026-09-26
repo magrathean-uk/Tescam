@@ -1,168 +1,83 @@
-# Runbook
+# Development runbook
 
-Current App Store train: `1.0` (`6`). Release copy and ASC commands live in `docs/releases/current-asc-platform-version.md`; the compact train marker is `docs/releases/v1.0-app-store.md`.
+These instructions are for maintainers authorised to work on Tescam under the [repository licence](LICENSE). Run commands from the repository root. Product usage is in [README.md](README.md).
 
-## Setup
+## Python CLI
 
-Use Python 3.9+ for the CLI. The package has no runtime Python
-dependencies in `pyproject.toml`.
+Use Python 3.9 or newer. The package declares no runtime Python dependencies. Install into an active virtual environment when package installation is needed:
 
-```bash
+```sh
 python3 -m pip install -e .
 ```
 
-For render and integration coverage, keep `ffmpeg` and `ffprobe` on `PATH`.
-For HEVC CLI export, the local ffmpeg build needs `libx265` support.
+The repository entry point is `./teslacam-cli`; `python3 teslacam.py` and `./teslacam.sh` call the same module. The installed command is `teslacam-cli`.
 
-Native app builds use Xcode. `script/test_native.sh` and
-`script/build_and_run.sh` resolve `TESLACAM_BUILD_ENV` first, then fall back
-to `/Users/bolyki/dev/source/build-env.sh`. If neither exists, the scripts stop
-before invoking `xcodebuild`; treat that as a setup blocker.
+Rendering needs `ffmpeg` and `ffprobe` on `PATH`, or explicit `--ffmpeg` and `--ffprobe` paths. HEVC modes need an FFmpeg build with `libx265`.
 
-## CLI
-
-Primary command from the repo root:
-
-```bash
-./teslacam-cli
+```sh
+./teslacam-cli /path/to/TeslaCam --dry-run-json manifest.json
 ```
 
-Compatibility adapters to the same Python module:
+This scans and writes a plan without rendering. The CLI defaults to `evidence-hevc`. Native Original passthrough, camera-track cuts and telemetry engraving remain app features.
 
-```bash
-python3 teslacam.py
-./teslacam.sh
+## Validation
+
+Choose checks for the changed boundary:
+
+| Change | Check |
+| --- | --- |
+| Shared scan, layout, selection or output rules | `python3 -m unittest tests.test_domain_contract` |
+| Python CLI or rendering | `python3 -m unittest discover tests` |
+| FFmpeg integration | `python3 -m unittest tests.test_integration` |
+| Native app | `script/test_native.sh` |
+| Whitespace | `git diff --check` |
+
+Integration tests require FFmpeg and FFprobe; tests with missing tools can be skipped. Real-footage tests have additional source and render opt-ins described in `tests/test_integration.py`. Check the test output before claiming that a lane passed.
+
+There is no dedicated lint, formatter or Python typecheck configuration. Use the existing checks instead of inventing a canonical lint command.
+
+Shared changes must update [the domain contract](docs/domain-contract.md), fixtures in `fixtures/domain/cases/`, and Python and Swift coverage. Regenerate fixture expectations with:
+
+```sh
+python3 script/regen_fixtures.py
+python3 -m unittest tests.test_domain_contract
 ```
 
-Optional install:
+Inspect the resulting fixture changes. Fixture parity, native tests and a successful build do not establish ordinary-user or device acceptance.
 
-```bash
-pip install .
-teslacam-cli
-```
+## Native app
 
-Useful Python lanes:
+Use Xcode on macOS. Both native scripts source a build environment before invoking Xcode. Set `TESLACAM_BUILD_ENV` to a compatible environment script; they also recognise the maintainer's existing fallback configured in the scripts. A missing environment is a setup blocker, not a reason to bypass the scripts with ad hoc build commands.
 
-```bash
-python3 -m unittest tests.test_scanner tests.test_layouts tests.test_timing tests.test_cli tests.test_domain_contract
-python3 -m unittest discover tests
-python3 -m unittest tests.test_integration
-```
-
-Domain dry-run comparison:
-
-```bash
-teslacam-cli /absolute/path/to/TeslaCam --dry-run-json manifest.json
-```
-
-The CLI default mode is `evidence-hevc`, the portable ffmpeg equivalent of the
-app's Evidence HEVC export intent. Native Original passthrough muxing and
-telemetry engraving stay in the app path.
-
-The integration test expects working `ffmpeg` fixtures.
-
-## Lint, format, and typecheck
-
-No dedicated lint, formatter, or Python typecheck config is present in this
-repo. Do not add or run a guessed tool as if it were canonical.
-
-Available hygiene checks:
-
-```bash
-git diff --check
-python3 -m unittest discover tests
+```sh
 script/test_native.sh
+script/build_and_run.sh
 ```
 
-Use the native lane as the Swift compile/typecheck check. Use Python
-`unittest` as the Python regression gate.
+The test script builds for testing, runs `TeslaCamTests`, then runs `TeslaCamUITests`. The run script stops an existing Tescam process, builds the macOS app and launches it. `.codex/environments/environment.toml` uses that run script.
 
-## Native macOS app
+The project contains `TeslaCam` and `TeslaCam iPad` schemes. The local scripts above target macOS. For mobile UI boundaries and source registration, see [the iOS/iPadOS guide](docs/architecture-deepening/07-ios-ipados-app.md).
 
-Use `script/test_native.sh` for the native lane. It resolves `TESLACAM_BUILD_ENV` first and falls back to `/Users/bolyki/dev/source/build-env.sh`, then runs build-for-testing plus the app and UI test targets.
+Native export is the app's shipping export path. Keep export plans, preflight, preview layouts and camera controls aligned. The 4-camera grid has two columns and two rows; the 6-camera grid has three columns and two rows. Missing cameras use black placeholders.
 
-```bash
-script/test_native.sh
-```
+## Debugging and acceptance
 
-Use `script/build_and_run.sh` to build and launch the app locally. The Codex
-environment file `.codex/environments/environment.toml` points its Run action
-at this script.
+Debug builds accept `TESLACAM_DEBUG_SOURCE` for a local source folder. `TESLACAM_UI_TEST_MODE=blank` exercises onboarding; `TESLACAM_UI_TEST_MODE=sample` supplies the sample timeline. Keep diagnostics local and use the app's Show Log action after a failed or cancelled export.
 
-Known Xcode schemes:
+For playback, layout or export changes, verify the affected flow with representative footage: source selection, gaps and duplicates, camera selection, range selection, export, cancellation and output conflicts. Mobile UI changes also need checks in portrait and landscape with safe areas intact. Keep the manual codec picker and Engrave telemetry control.
 
-- `TeslaCam`
-- `TeslaCam iPad`
+## Existing CI
 
-CI runs `TeslaCamTests` only; UI tests are local via `script/test_native.sh`.
+The Python workflow runs the full unittest suite on Python 3.10 and 3.12 after installing FFmpeg and the package. The native workflow builds on `macos-26` with signing disabled and runs `TeslaCamTests`. It does not run the local UI test lane.
 
-## CI
+These descriptions refer to [.github/workflows/python-tests.yml](.github/workflows/python-tests.yml) and [.github/workflows/native-tests.yml](.github/workflows/native-tests.yml). Do not treat a workflow description as evidence of a current green run.
 
-- `.github/workflows/python-tests.yml` installs ffmpeg, installs the package
-  editable, and runs `python -m unittest discover tests` on Python 3.10 and 3.12.
-- `.github/workflows/native-tests.yml` builds `TeslaCam` on `macos-26`, disables
-  code signing, and runs `TeslaCamTests` with `test-without-building`.
+## Releases
 
-## Architecture checks
+Keep release records in [docs/releases/](docs/releases/). Compare the Xcode project's version and build with those records before authorised release work. Store status in those files is a recorded snapshot, not a live App Store query.
 
-- Keep domain changes covered by shared fixtures and `docs/domain-contract.md`.
-- Keep CLI planning pure; rendering and human output stay behind adapters.
-- Keep native export behind validated plan plus preflight.
-- Keep camera layout changes reflected in scan manifests, preview, native export, and CLI dry-run output.
-- Keep derived build folders ignored and out of git.
+Signing, uploads, publication and production access require their existing authority. Keep platform bundle identifiers, screenshots and App Store Connect operations separate. Do not replace owner holds with historical instructions.
 
-## Debug flow
+## Optional local hook
 
-- `TESLACAM_DEBUG_SOURCE=/absolute/path/to/TeslaCam` injects a source in Debug builds.
-- `TESLACAM_UI_TEST_MODE=blank` gives empty onboarding.
-- `TESLACAM_UI_TEST_MODE=sample` gives a sample timeline.
-- Use the in-app `Show Log` action after failed or cancelled exports.
-- When gap or layout logic changes, verify true-time spacing, visible gap preview, duplicate handling, and HW4 camera detection.
-
-## Release checks
-
-- Confirm `MARKETING_VERSION = 1.0` and `CURRENT_PROJECT_VERSION = 6` from the Xcode project before archive/upload work.
-- Cold launch starts on onboarding until a source folder is chosen.
-- The loaded timeline shows exact range, export preset, duplicate policy, and per-camera controls.
-- Existing-output exports choose a unique filename instead of clobbering.
-- HW4 names `left`, `right`, `left_pillar`, and `right_pillar` map to the centered 3x3 layout.
-- Native export stays the only shipping mac app path.
-- Debug builds show recent debug events for fast triage.
-- Keep macOS and iOS/iPadOS bundle identifiers, screenshots, and ASC platform operations separate as documented under `docs/releases/`.
-
-## Done criteria for Codex tasks
-
-- Current worktree state was checked and unrelated dirty changes were preserved.
-- Commands and conventions used were derived from this repo, CI, scripts, or project files.
-- Docs stay aligned across app and CLI when shared behavior changes.
-- Domain behavior changes update `docs/domain-contract.md`, fixtures, Python tests, and Swift parity tests.
-- Relevant verification ran, or the blocker is named with the command that failed.
-- Generated exports, build products, `_legacy/`, and vendor/runtime assets remain untouched unless explicitly in scope.
-
-## Optional pre-commit hook
-
-`script/pre-commit.example.sh` is a ready-to-use hook that runs the fast
-per-commit gates: full Python unittest suite, whitespace check on the
-staged diff, and a cache-leak tripwire that flags any `TeslaCam-*`
-folder appearing in user-level `~/Library/Developer/Xcode/DerivedData`
-newer than the repo's `.cache/` (catches an `xcodebuild` invocation
-that bypassed `-derivedDataPath`).
-
-Install opt-in:
-
-```bash
-cp script/pre-commit.example.sh .git/hooks/pre-commit
-chmod +x .git/hooks/pre-commit
-```
-
-Skip a single commit with `git commit --no-verify`. Native xcodebuild
-tests are deliberately not run by the hook — those go through
-`script/test_native.sh` before push.
-
-## Guardrails
-
-- `TeslaCam/Resources/LICENSES.md` and `TeslaCam/Resources/ffmpeg_bin/` are support assets, not dev notes.
-- The CLI stays dependency-light and cross-platform.
-- `./teslacam-cli` is the active CLI entrypoint; `teslacam.py` and `teslacam.sh` are adapters.
-- `teslacam_legacy_macos.sh` is legacy reference only, not the native app export path.
-- Keep app and CLI output behavior aligned for duplicate handling, time trimming, and layout selection.
+`script/pre-commit.example.sh` offers a Python test lane, staged whitespace check and a DerivedData cache tripwire. Hook installation is opt-in. It does not replace the native lane and is not installed automatically by the project.

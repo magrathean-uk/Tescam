@@ -1,51 +1,36 @@
-# License — Tescam
+# Licensing and third-party notices
 
-## This Project
+## Tescam source
 
-Tescam is **proprietary software** owned by Magrathean UK Ltd.
+Tescam is proprietary software owned by Magrathean UK Ltd. Copyright © 2026 Magrathean UK Ltd. All rights reserved.
 
-> See [`LICENSE`](./LICENSE) for the full proprietary licence text.
-> Copyright © 2026 Magrathean UK Ltd. All rights reserved.
+[LICENSE](LICENSE) contains the controlling terms. Public repository access permits inspection as described there; it does not grant general rights to clone, modify or redistribute the source. This overview adds no licence grant and changes no existing rights. App Store binary use has the separate terms described in section 6 of LICENSE.
 
-This file (`LICENSE.md`) is the **third-party notice and component inventory** for Tescam, supplemented by `TeslaCam/Resources/LICENSES.md`. The Tescam source itself is governed exclusively by [`LICENSE`](./LICENSE).
+Licensing enquiries: [contact@magrathean.uk](mailto:contact@magrathean.uk).
 
----
+## Reference acknowledgements
 
-## Third-Party Dependencies
+The existing [app acknowledgements](TeslaCam/Resources/LICENSES.md) identify these MIT-licensed references and describe the native Swift/Metal implementation:
 
-### Swift application — `TeslaCam.xcodeproj`
+| Reference | Existing attribution |
+| --- | --- |
+| [Sentry-Six](https://github.com/ChadR23/Sentry-Six) | Copyright (c) 2025 Chad |
+| [tesla-sentry-viewer-frontend](https://github.com/denysvitali/tesla-sentry-viewer-frontend) | Copyright (c) 2025 Denys Vitali |
 
-No external Swift Package Manager or CocoaPods dependencies are declared. The app
-uses Apple system frameworks only (AVFoundation, Metal, CoreLocation, etc.) under
-the Apple SDK licence agreement.
+Those acknowledgements are preserved. They are not a complete audit of source provenance or of a distributed binary's licence obligations.
 
-Tescam acknowledges two MIT-licensed reference projects whose ideas were studied
-but whose code was **not** copied — they are reimplemented natively in Swift/Metal.
-This acknowledgement is recorded in `TeslaCam/Resources/LICENSES.md`.
+## Components and distribution
 
-| Reference project | License | Acknowledgement file |
-|-------------------|---------|----------------------|
-| [Sentry-Six](https://github.com/ChadR23/Sentry-Six) — Copyright © 2025 Chad | MIT | `TeslaCam/Resources/LICENSES.md` |
-| [tesla-sentry-viewer-frontend](https://github.com/denysvitali/tesla-sentry-viewer-frontend) — Copyright © 2025 Denys Vitali | MIT | `TeslaCam/Resources/LICENSES.md` |
+The current Xcode project declares no external Swift package or CocoaPods dependencies. The native app uses Apple frameworks, including AVFoundation and Metal, and exports through its native engine.
 
-### Python CLI — `pyproject.toml` / `teslacam_cli/`
+The Python package declares no runtime Python dependencies. Its build requirements are `setuptools>=68` and `wheel`. CLI rendering uses separately supplied FFmpeg and FFprobe; HEVC modes require `libx265` support. The licences and obligations for those tools depend on the actual build and components supplied.
 
-The Python CLI has **no runtime dependencies** (pure stdlib). Build tooling only:
+The repository also contains FFmpeg and FFprobe binaries under `TeslaCam/Resources/ffmpeg_bin/` and older shell helpers. They are not listed in the current app targets' resource build phases. Their presence still needs to be considered when distributing repository contents. The existing reference acknowledgements do not document those binaries' exact provenance, configuration or complete licence notices. Verify those facts for the exact artefacts before redistribution; this document does not certify compliance.
 
-| Package | License | Declared in |
-|---------|---------|-------------|
-| `setuptools` *(build)* | MIT | `pyproject.toml` |
-| `wheel` *(build)* | MIT | `pyproject.toml` |
+Third-party components retain their own rights and terms, as stated in section 5 of LICENSE. Do not replace their terms with Tescam's proprietary licence.
 
-### Legacy Swift package — `_legacy/Package.swift`
+## Names and user material
 
-The legacy macOS target (`TeslaCamPro`) has no external package dependencies.
+[TRADEMARKS.md](TRADEMARKS.md) records the project's trade-mark notices. Tescam is independent of Tesla. User-supplied recordings remain subject to the responsibilities in LICENSE and the [published privacy notice](https://teslacam.eu/privacy/).
 
----
-
-## License Obligations Summary
-
-| License | Action required on redistribution |
-|---------|-----------------------------------|
-| MIT (reference only) | No code copied; acknowledgement in `TeslaCam/Resources/LICENSES.md` already satisfies attribution expectations. |
-| MIT (build tools) | Retain copyright notice and licence text for any redistributed build artefacts. |
+The root notice inventory is tracked as `license.md`. The existing legal text refers to it as `LICENSE.md`; links in this documentation use the tracked filename.
