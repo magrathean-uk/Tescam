@@ -8,4 +8,4 @@ Include the app version and build or source commit, device and operating system,
 
 Use synthetic or anonymised examples where possible. Logs, manifests, paths, screenshots and footage can reveal locations, timestamps, number plates and other personal information. Do not send original footage unless it is needed and you are authorised to share it.
 
-For authorised source development, see [RUNBOOK.md](RUNBOOK.md). For licensing questions, see [license.md](license.md). Report vulnerabilities privately through [SECURITY.md](SECURITY.md).
+For authorised source development, see [the runbook](../docs/development/runbook.md). For licensing questions, see [third-party notices](../docs/legal/third-party-notices.md). Report vulnerabilities privately through [SECURITY.md](SECURITY.md).

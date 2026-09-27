@@ -1,10 +1,27 @@
-# Tescam
+<p align="center">
+  <img src="https://raw.githubusercontent.com/magrathean-uk/magrathean-uk/main/assets/icons/teslacam.png" width="96" height="96" alt="">
+</p>
 
-Tescam is a TeslaCam footage browser and exporter for macOS, iPhone, and iPad, with a separate Python command line interface for scripted or interactive exports. The native app is the shipping macOS export path. The CLI is a portable, dependency-light ffmpeg workflow for macOS, Linux, and Windows.
+<h1 align="center">Tescam</h1>
 
-The project is maintained by [Magrathean UK](https://magrathean.uk). The app and CLI read TeslaCam clip trees, resolve camera names and duplicate clips, and plan a selected time range for export. The app also provides synchronized playback.
+<p align="center">A TeslaCam and Sentry Mode footage browser and exporter for macOS, iPhone and iPad, with a portable Python CLI.</p>
 
-## What it supports
+<p align="center">
+  <a href="https://teslacam.eu/">Website</a> ·
+  <a href="docs/index.md">Documentation</a> ·
+  <a href="https://teslacam.eu/privacy/">Privacy</a>
+</p>
+
+## Overview
+
+Tescam is maintained by Magrathean. The native SwiftUI app and the Python CLI both read
+TeslaCam clip trees, resolve camera names and duplicate clips, and plan a selected time
+range for export. The app is the shipping macOS, iPhone and iPad export path and adds
+synchronized playback; the CLI is a portable, dependency-light ffmpeg workflow for macOS,
+Linux and Windows. The App Store release is under review; the CLI ships from this
+repository's source.
+
+## Features
 
 - Native SwiftUI app targets for macOS and iOS/iPadOS, sharing the indexing, playback, telemetry, layout, and native export engine.
 - macOS review workspace plus an adaptive iPhone and iPad interface.
@@ -24,7 +41,7 @@ The current Xcode targets use native export and do not include FFmpeg in their r
 - `script/test_native.sh`: native build and test lane.
 - `script/build_and_run.sh`: local macOS build and launch helper.
 - `tools/`: local utilities, including the overlay generator.
-- `docs/domain-contract.md`: shared scan, layout, selection, output, and telemetry boundaries.
+- `docs/architecture/domain-contract.md`: shared scan, layout, selection, output, and telemetry boundaries.
 - `_legacy/`: reference-only material.
 
 ## Requirements
@@ -105,19 +122,24 @@ There is no dedicated lint, formatter, or Python typecheck configuration in this
 
 ## Documentation
 
-- [Runbook](RUNBOOK.md): setup, CLI options, native commands, debug flow, and release checks.
-- [Domain contract](docs/domain-contract.md): shared camera, duplicate, layout, output, and telemetry behavior.
-- [iOS and iPadOS architecture](docs/architecture-deepening/07-ios-ipados-app.md): entry points, adaptive layout, safe areas, and export controls.
-- [Support](SUPPORT.md) and [contribution guidance](CONTRIBUTING.md).
-- [Recorded App Store metadata](docs/releases/current-asc-platform-version.md) and [release marker](docs/releases/v1.0-app-store.md). These are repository snapshots.
-- [Security policy](SECURITY.md): reporting route, scope, and safe-harbor terms.
+- [Documentation index](docs/index.md)
+- [Runbook](docs/development/runbook.md): setup, CLI options, native commands, debug flow, and release checks.
+- [Domain contract](docs/architecture/domain-contract.md): shared camera, duplicate, layout, output, and telemetry behavior.
+- [iOS and iPadOS architecture](docs/architecture/ios-ipados-app.md): entry points, adaptive layout, safe areas, and export controls.
+- [Support](.github/SUPPORT.md) and [contribution guidance](.github/CONTRIBUTING.md).
+- [Recorded App Store metadata](docs/development/current-asc-platform-version.md), a repository snapshot.
+- [Security policy](.github/SECURITY.md): reporting route, scope, and safe-harbor terms.
 
-## License and privacy
+## Licence
 
-Tescam is proprietary software owned by Magrathean UK Ltd. Copyright © 2026 Magrathean UK Ltd. All rights reserved. Read the complete terms in [`LICENSE`](LICENSE). The third-party notice and component inventory is in [`license.md`](license.md), with the app asset at [`TeslaCam/Resources/LICENSES.md`](TeslaCam/Resources/LICENSES.md).
+Tescam is proprietary; all rights reserved. Copyright © 2026 MAGRATHEAN UK LTD. See
+[LICENSE](LICENSE) and [NOTICE](NOTICE) for the bundled third-party FFmpeg component. The
+full third-party inventory is in [docs/legal/third-party-notices.md](docs/legal/third-party-notices.md),
+trade-mark notices are in [docs/legal/trademarks.md](docs/legal/trademarks.md), and App
+Store distribution and your responsibility for recordings are in
+[docs/legal/overview.md](docs/legal/overview.md). Tescam is independent. It is not
+affiliated with, endorsed by or supported by Tesla, Inc.
 
-See [TRADEMARKS.md](TRADEMARKS.md) for the existing notices. Tescam is independent of Tesla.
+For licensing enquiries, use [contact@magrathean.uk](mailto:contact@magrathean.uk). For security reports, follow [.github/SECURITY.md](.github/SECURITY.md).
 
-Tescam processes recordings selected by the user. Those recordings can contain personal data, including images or audio of drivers, passengers, pedestrians, or other members of the public. The user is responsible for lawful collection, retention, export, and sharing, including compliance with applicable data protection, surveillance, tenancy, and premises rules.
-
-For licensing enquiries, use [contact@magrathean.uk](mailto:contact@magrathean.uk). For security reports, follow [SECURITY.md](SECURITY.md).
+<sub>© 2026 MAGRATHEAN UK LTD · <a href="https://github.com/magrathean-uk/.github/blob/main/LEGAL.md">Legal</a></sub>

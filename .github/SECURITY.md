@@ -24,7 +24,7 @@ Telemetry may include location and vehicle data. Telemetry engraving is off by d
 
 ## Scope & Safe Harbour
 
-Magrathean UK Ltd. will not pursue a good-faith researcher for security disclosures that:
+MAGRATHEAN UK LTD will not pursue a good-faith researcher for security disclosures that:
 - Target non-production test systems or researcher-owned environments;
 - Avoid persistence, destructive changes, denial of service, and access to personal or customer data;
 - Report promptly and permit reasonable time for remediation;
@@ -36,4 +36,4 @@ No safe harbour covers phishing, credential stuffing, accessing private producti
 
 ## Limitations
 
-This document describes repository policy, not a security audit or a guarantee about user-provided recordings, operating-system services, or destinations chosen through a share sheet. User handling of recordings remains subject to the terms in `LICENSE`.
+This document describes repository policy, not a security audit or a guarantee about user-provided recordings, operating-system services, or destinations chosen through a share sheet. User handling of recordings remains subject to the terms in [`LICENSE`](../LICENSE).

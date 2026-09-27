@@ -1,0 +1,15 @@
+Tescam
+Copyright © 2026 MAGRATHEAN UK LTD
+
+Tescam is proprietary software. See LICENSE for the controlling terms.
+
+This repository includes third-party material:
+FFmpeg and FFprobe (TeslaCam/Resources/ffmpeg_bin/) — GNU General Public License — built
+with --enable-gpl, --enable-libx264 and --enable-libx265, which makes this a GPL build of
+FFmpeg. Distributing it requires giving recipients the GPL licence text and the
+corresponding source for the exact build. See docs/legal/third-party-notices.md.
+
+Sentry-Six and tesla-sentry-viewer-frontend — MIT — reference projects credited in
+TeslaCam/Resources/LICENSES.md; their code is not vendored in this app.
+
+Tescam is independent. It is not affiliated with, endorsed by or supported by Tesla, Inc.

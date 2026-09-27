@@ -1,106 +1,24 @@
-Magrathean UK Ltd. — Proprietary Software Licence (Tescam)
+Tescam
 
-Copyright (c) 2026 Magrathean UK Ltd. All rights reserved.
+Copyright © 2026 MAGRATHEAN UK LTD ("Magrathean"). All rights reserved.
 
-1. Ownership.
-   This repository and its original source code, documentation, configuration,
-   schemas, tests, designs, build scripts, and all other contents (the
-   "Software") are the proprietary property of Magrathean UK Ltd., a company
-   registered in England and Wales (Company No. 16955343) with registered
-   office at 16 Caledonian Court West Street, Watford, England, WD17 1RY
-   ("Magrathean"). All right, title, and interest in and to the Software,
-   including all associated intellectual-property rights, are owned by
-   Magrathean and its licensors.
+1. Ownership. This repository and its contents (the "Software") belong to Magrathean,
+   except the third-party components listed in NOTICE, which keep their own licences.
 
-2. No Licence Granted by Default.
-   Public availability of this repository on a hosted code-sharing platform
-   does not constitute a grant of any licence to copy, modify, publish,
-   distribute, sublicense, sell, lease, host as a service, perform, display,
-   or create derivative works from the Software. No licence, express or
-   implied, is granted under any patent, copyright, trade mark, trade
-   secret, or other intellectual-property right of Magrathean except as
-   expressly set out in a separate written agreement signed by an
-   authorised representative of Magrathean.
+2. Reading the source. The Software is published so that it can be read. You may view it,
+   and fork it on GitHub, to the extent GitHub's Terms of Service allow.
 
-3. Permitted Internal Use.
-   Magrathean and its directors, employees, and authorised contractors may
-   use, modify, build, test, deploy, and improve the Software for internal
-   business purposes.
+3. Everything else is reserved. Unless Magrathean agrees in writing, you may not use, copy,
+   modify, merge, publish, distribute, sublicense or sell the Software or any part of it, or
+   make works based on it. This does not restrict anything the law allows you to do
+   regardless of a licence.
 
-4. Reading and Inspection.
-   Members of the public may view this repository through the hosted-platform
-   interface for the purpose of evaluating Magrathean's products, services,
-   and engineering practices. This permission does not include the right to
-   clone, fork, redistribute, modify, or incorporate the Software (or any
-   portion of it) into any other work.
+4. The app. Using a released version of Tescam is governed by its terms of use
+   (https://teslacam.eu/terms/), not by this licence.
 
-5. Third-Party Components.
-   The Software may incorporate or be distributed alongside third-party
-   components governed by their own licences. Those third-party components
-   are listed in `LICENSE.md` and `TeslaCam/Resources/LICENSES.md`. Nothing
-   in this Licence limits, modifies, or supersedes the rights granted
-   directly by those third-party licences for those third-party components.
+5. No warranty. To the extent the law allows, the Software is provided "as is", without
+   warranty of any kind, and Magrathean is not liable for any loss arising from it.
 
-6. App Store Distribution.
-   Where the Software corresponds to an application distributed through the
-   Apple App Store, the end-user terms applicable to the binary distributed
-   through that store (including Apple's Licensed Application End User
-   Licence Agreement) govern that end use, in addition to and not in
-   derogation of this Licence as it applies to the source repository.
+6. Law. This licence is governed by the law of England and Wales.
 
-7. Trade Marks.
-   "Magrathean", "Magrathean UK", and "Tescam" are trade marks or
-   unregistered trade marks of Magrathean. References in the Software to
-   third-party names, logos, or trade marks (including, without limitation,
-   Tesla, Tesla, Inc., the Tesla logo, TeslaCam, Sentry Mode, Apple, iOS,
-   macOS, Swift, FFmpeg, and HEVC) are for descriptive interoperability
-   only. All such marks remain the property of their respective owners.
-   The Software is not affiliated with, endorsed by, sponsored by, or in
-   any way officially connected to Tesla, Inc., FFmpeg, or Apple Inc.
-
-8. User-Supplied Recordings.
-   The Software processes video and audio recordings supplied by the
-   licensee from Tesla TeslaCam and Sentry Mode storage. The licensee is
-   solely responsible for: (a) the lawful collection, retention, export,
-   and onward sharing of those recordings (which may contain personal
-   data of identifiable individuals, including third parties); and (b)
-   compliance with applicable data-protection, privacy, surveillance,
-   and broadcast laws, including the UK GDPR and the Data Protection
-   Act 2018.
-
-9. Termination.
-   Any unauthorised use of the Software automatically terminates any
-   permissions granted under sections 3 and 4 of this Licence and may give
-   rise to civil and criminal liability under applicable copyright, trade
-   mark, contract, and trade-secret laws.
-
-10. No Warranty.
-    THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTY OF
-    ANY KIND, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE, INCLUDING
-    WITHOUT LIMITATION ANY IMPLIED WARRANTY OF MERCHANTABILITY, SATISFACTORY
-    QUALITY, FITNESS FOR A PARTICULAR PURPOSE, ACCURACY, COMPLETENESS, OR
-    NON-INFRINGEMENT. NOTHING IN THIS PARAGRAPH EXCLUDES OR LIMITS LIABILITY
-    THAT CANNOT LAWFULLY BE EXCLUDED OR LIMITED.
-
-11. Limitation of Liability.
-    TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL MAGRATHEAN, ITS
-    DIRECTORS, OFFICERS, EMPLOYEES, OR CONTRACTORS BE LIABLE FOR ANY INDIRECT,
-    INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, OR
-    FOR ANY LOSS OF PROFITS, REVENUE, DATA, BUSINESS OPPORTUNITY, GOODWILL,
-    OR ANTICIPATED SAVINGS, ARISING OUT OF OR IN CONNECTION WITH THE
-    SOFTWARE OR THIS LICENCE, WHETHER IN CONTRACT, TORT (INCLUDING
-    NEGLIGENCE), STRICT LIABILITY, OR OTHERWISE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGES. NOTHING IN THIS PARAGRAPH EXCLUDES OR
-    LIMITS LIABILITY FOR DEATH OR PERSONAL INJURY CAUSED BY NEGLIGENCE,
-    FRAUD OR FRAUDULENT MISREPRESENTATION, OR ANY OTHER LIABILITY THAT
-    CANNOT LAWFULLY BE EXCLUDED OR LIMITED.
-
-12. Governing Law and Jurisdiction.
-    This Licence and any non-contractual obligations arising out of or in
-    connection with it are governed by the laws of England and Wales. The
-    courts of England and Wales have exclusive jurisdiction.
-
-13. Contact.
-    For licensing enquiries, contact: contact@magrathean.uk
-    Magrathean UK Ltd., 16 Caledonian Court West Street, Watford, England,
-    WD17 1RY.
+Permission requests: contact@magrathean.uk

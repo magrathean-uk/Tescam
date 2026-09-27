@@ -5,6 +5,16 @@ the identifiers back from ASC before any future mutation because version,
 build, localization, screenshot-set, and review-submission IDs are
 environment-specific.
 
+## Release summary
+
+Tescam 1.0 is the first App Store release. It provides local TeslaCam and Sentry Mode
+review, synchronized multi-camera playback, timeline range selection, camera selection,
+telemetry-aware workflows, and native evidence export on iPhone, iPad, and Mac. Store assets
+are under `marketing/screenshots/asc_out/`: five iPhone screenshots, five iPad screenshots,
+and four distinct Mac screenshots (a fifth Mac capture duplicated another and was not
+uploaded). The upload and review manifests are `marketing/screenshots/asc_out/asc_upload.json`
+and `asc_review.json`.
+
 ## Live release records
 
 - App: `Tescam`
@@ -12,7 +22,7 @@ environment-specific.
 - Bundle ID, both platforms: `com.magrathean.teslacam`
 - Version: `1.0`
 - Build: `6`
-- Copyright: `2026 Magrathean UK Ltd.`
+- Copyright: `2026 MAGRATHEAN UK LTD`
 - Release mode: manual; both platform submissions are waiting for review
 
 ### iOS and iPadOS

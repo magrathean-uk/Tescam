@@ -1,6 +1,6 @@
 # Development runbook
 
-These instructions are for maintainers authorised to work on Tescam under the [repository licence](LICENSE). Run commands from the repository root. Product usage is in [README.md](README.md).
+These instructions are for maintainers authorised to work on Tescam under the [repository licence](../../LICENSE). Run commands from the repository root. Product usage is in [README.md](../../README.md).
 
 ## Python CLI
 
@@ -36,7 +36,7 @@ Integration tests require FFmpeg and FFprobe; tests with missing tools can be sk
 
 There is no dedicated lint, formatter or Python typecheck configuration. Use the existing checks instead of inventing a canonical lint command.
 
-Shared changes must update [the domain contract](docs/domain-contract.md), fixtures in `fixtures/domain/cases/`, and Python and Swift coverage. Regenerate fixture expectations with:
+Shared changes must update [the domain contract](../architecture/domain-contract.md), fixtures in `fixtures/domain/cases/`, and Python and Swift coverage. Regenerate fixture expectations with:
 
 ```sh
 python3 script/regen_fixtures.py
@@ -56,7 +56,7 @@ script/build_and_run.sh
 
 The test script builds for testing, runs `TeslaCamTests`, then runs `TeslaCamUITests`. The run script stops an existing Tescam process, builds the macOS app and launches it. `.codex/environments/environment.toml` uses that run script.
 
-The project contains `TeslaCam` and `TeslaCam iPad` schemes. The local scripts above target macOS. For mobile UI boundaries and source registration, see [the iOS/iPadOS guide](docs/architecture-deepening/07-ios-ipados-app.md).
+The project contains `TeslaCam` and `TeslaCam iPad` schemes. The local scripts above target macOS. For mobile UI boundaries and source registration, see [the iOS/iPadOS guide](../architecture/ios-ipados-app.md).
 
 Native export is the app's shipping export path. Keep export plans, preflight, preview layouts and camera controls aligned. The 4-camera grid has two columns and two rows; the 6-camera grid has three columns and two rows. Missing cameras use black placeholders.
 
@@ -70,14 +70,14 @@ For playback, layout or export changes, verify the affected flow with representa
 
 The Python workflow runs the full unittest suite on Python 3.10 and 3.12 after installing FFmpeg and the package. The native workflow builds on `macos-26` with signing disabled and runs `TeslaCamTests`. It does not run the local UI test lane.
 
-These descriptions refer to [.github/workflows/python-tests.yml](.github/workflows/python-tests.yml) and [.github/workflows/native-tests.yml](.github/workflows/native-tests.yml). Do not treat a workflow description as evidence of a current green run.
+These descriptions refer to [.github/workflows/python-tests.yml](../../.github/workflows/python-tests.yml) and [.github/workflows/native-tests.yml](../../.github/workflows/native-tests.yml). Do not treat a workflow description as evidence of a current green run.
 
 ## Releases
 
-Keep release records in [docs/releases/](docs/releases/). Compare the Xcode project's version and build with those records before authorised release work. Store status in those files is a recorded snapshot, not a live App Store query.
+Keep release records in [docs/development/](.). Compare the Xcode project's version and build with those records before authorised release work. Store status in those files is a recorded snapshot, not a live App Store query.
 
 Signing, uploads, publication and production access require their existing authority. Keep platform bundle identifiers, screenshots and App Store Connect operations separate. Do not replace owner holds with historical instructions.
 
 ## Optional local hook
 
-`script/pre-commit.example.sh` offers a Python test lane, staged whitespace check and a DerivedData cache tripwire. Hook installation is opt-in. It does not replace the native lane and is not installed automatically by the project.
+`script/pre-commit.example.sh` (repository root) offers a Python test lane, staged whitespace check and a DerivedData cache tripwire. Hook installation is opt-in. It does not replace the native lane and is not installed automatically by the project.

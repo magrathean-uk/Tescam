@@ -8,9 +8,9 @@ version = "0.1.0"
 description = "Cross-platform interactive CLI for composing TeslaCam multi-camera footage"
 readme = "README.md"
 requires-python = ">=3.9"
-license = {text = "See repository license and bundled third-party licenses."}
+license = {text = "See repository LICENSE and NOTICE."}
 authors = [
-  {name = "Tescam contributors"}
+  {name = "MAGRATHEAN UK LTD", email = "contact@magrathean.uk"}
 ]
 dependencies = []
 classifiers = [

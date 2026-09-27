@@ -20,7 +20,10 @@ Tescam contains a SwiftUI app for macOS, iPhone, and iPad, plus a dependency-lig
 - Preserve the manual codec picker and the opt-in telemetry engraving control.
 - Do not add Sentry, analytics, or external crash telemetry. Keep diagnostics local.
 - Do not edit vendor or runtime assets, generated output, or `TeslaCam/Resources/LICENSES.md` unless the task covers them.
-- Keep release and App Store facts in `docs/releases/`.
+- Keep release and App Store facts in `docs/development/`.
+- Legal files (`LICENSE`, `NOTICE`, `docs/legal/`, contributor terms, copyright and
+  attribution strings) are owner-controlled: change them only on the owner's explicit
+  instruction.
 - Preserve unrelated working-tree changes. Do not use `--break-system-packages`.
 - Complete authorized work through relevant checks, including safe local edits, tests, dependency setup and Git operations needed for the task. Make routine decisions and use existing authorization without repeated permission requests.
 - Preserve owner holds and the documented authority for signing, release, publishing and live-service changes. Ask only when an action needs authority beyond the current request or materially changes its scope.

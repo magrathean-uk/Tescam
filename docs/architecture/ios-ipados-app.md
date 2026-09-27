@@ -85,7 +85,7 @@ The demo placeholder (no footage) mirrors this: `columns = count > 4 ? 3 : 2`.
 - Manual export controls are preserved on iOS: the codec picker binds `state.exportPreset`
   (`setExportPreset`), and the **Engrave telemetry** switch binds `exportOverlayOptions.telemetryHUD`
   (default off). `TeslaCam/NativeExportController.swift` is the current export implementation and
-  `docs/domain-contract.md` owns the shared preset contract.
+  `docs/architecture/domain-contract.md` owns the shared preset contract.
 - **Export HUD flip fix:** the engraved telemetry HUD text rendered upside-down only on iOS.
   `ExportOverlayDrawing.drawText` had an iOS-only branch that flipped the CoreText coordinate system
   (`translateBy(y: canvasHeight)` + `scaleBy(1,-1)`). The pixel-buffer context is already y-up: the
