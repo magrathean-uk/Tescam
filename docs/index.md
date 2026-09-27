@@ -21,6 +21,6 @@ Tescam's documentation, beyond the [README](../README.md).
 
 ## Legal
 
-- [Legal overview](legal/overview.md): App Store distribution and recording responsibility.
+- [Legal overview](legal/overview.md): the GPL and App Store distribution, and recording responsibility.
 - [Third-party notices](legal/third-party-notices.md)
 - [Trademarks](legal/trademarks.md)

@@ -1,13 +1,20 @@
 # Legal overview
 
-Two points LICENSE does not spell out: how Tescam relates to App Store distribution, and
-your responsibility for the recordings you process with it.
+Two points LICENSE does not spell out: how the GPL relates to App Store distribution, and
+your responsibility for the recordings you process with Tescam.
 
-## App Store distribution
+## Licence and App Store distribution
 
-LICENSE governs this source repository. A released Tescam binary distributed through the
-Apple App Store is also governed by Apple's Licensed Application End User Licence Agreement
-for that use. Neither licence replaces the other.
+The source in this repository is licensed under the GNU General Public License, version 3
+only ([LICENSE](../../LICENSE)). MAGRATHEAN UK LTD ("Magrathean") owns the copyright and also
+distributes a built Tescam app through the Apple App Store, where Apple's Licensed
+Application End User Licence Agreement governs that copy. The two are separate grants from
+the copyright owner: the App Store terms do not reduce your rights under the GPL to the
+source here, and the GPL does not change Apple's terms for the App Store copy.
+
+The App Store build contains only Magrathean's code and Apple frameworks; it does not include
+FFmpeg. Contributions are accepted on the terms in [CONTRIBUTING](../../.github/CONTRIBUTING.md),
+which let Magrathean ship them in that build.
 
 ## Your recordings
 

@@ -1,6 +1,6 @@
 ## Change
 
-Describe the problem and resulting behaviour. Source changes require permission under the repository licence; see CONTRIBUTING.md.
+Describe the problem and resulting behaviour. Contributions are accepted on the terms in CONTRIBUTING.md.
 
 ## Validation
 

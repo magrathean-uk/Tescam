@@ -3,24 +3,26 @@
 Components and material in Tescam that carry their own licence, separate from the Tescam
 source licence.
 
-MAGRATHEAN UK LTD ("Magrathean") owns Tescam. [`LICENSE`](../../LICENSE) is the controlling
-licence for the repository; this page does not change it. Third-party components keep their
-own licences, as `LICENSE` and [`NOTICE`](../../NOTICE) state.
+MAGRATHEAN UK LTD ("Magrathean") owns Tescam and licenses it under GPL-3.0-only
+([`LICENSE`](../../LICENSE)); this page does not change that. Third-party components keep their
+own licences, as [`NOTICE`](../../NOTICE) states.
 
 ## FFmpeg and FFprobe (GPL)
 
-`TeslaCam/Resources/ffmpeg_bin/ffmpeg` and `ffprobe` are FFmpeg project binaries tracked in
-this public repository. They report `--enable-gpl`, `--enable-libx264` and
-`--enable-libx265` in their build configuration, which makes them a GPL build of FFmpeg
-(FFmpeg without `--enable-gpl` is LGPL; with it, and with `libx264`/`libx265` enabled, the
-build is GPL-licensed). They are not part of either app target's Resources build phase, so
-they are not currently included in the built app; the binaries themselves are present in the
-public repository.
+`TeslaCam/Resources/ffmpeg_bin/ffmpeg` and `ffprobe` are FFmpeg 7.1 binaries: a third-party
+static build for Apple silicon, tracked in this repository. Their build configuration
+includes `--enable-gpl`, `--enable-libx264` and `--enable-libx265`, so they are licensed under
+the GNU General Public License, version 2 or later, which is compatible with Tescam's
+GPL-3.0-only. `ffmpeg -version` prints the full configuration.
 
-Distributing software that includes a GPL-licensed component requires giving recipients the
-GPL licence text and the corresponding source for that component. [`NOTICE`](../../NOTICE)
-carries the component entry; the licence text and the exact FFmpeg/x264/x265 source
-corresponding to these built binaries are not yet attached in this repository.
+The command-line tool falls back to these binaries when no other FFmpeg is found. They are
+not part of either app target's Resources build phase, so the app does not include them.
+
+Source: the FFmpeg 7.1 release is at <https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz>, and
+x264 and x265 are at <https://code.videolan.org/videolan/x264> and
+<https://bitbucket.org/multicoreware/x265_git>. For the complete corresponding source of these
+exact binaries, including the other libraries in their configuration, write to
+[contact@magrathean.uk](mailto:contact@magrathean.uk).
 
 ## Reference acknowledgements
 

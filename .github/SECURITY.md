@@ -36,4 +36,4 @@ No safe harbour covers phishing, credential stuffing, accessing private producti
 
 ## Limitations
 
-This document describes repository policy, not a security audit or a guarantee about user-provided recordings, operating-system services, or destinations chosen through a share sheet. User handling of recordings remains subject to the terms in [`LICENSE`](../LICENSE).
+This document describes repository policy, not a security audit or a guarantee about user-provided recordings, operating-system services, or destinations chosen through a share sheet. Your responsibility for recordings is set out in the [legal overview](../docs/legal/overview.md) and the [Tescam terms](https://teslacam.eu/terms/).

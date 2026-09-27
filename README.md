@@ -50,9 +50,9 @@ For the CLI, use Python 3.9 or newer, `ffmpeg`, and `ffprobe`. Evidence and loss
 
 For the native app, use Xcode on macOS. The current project targets macOS 26 and iOS/iPadOS 26. The Xcode project is the version and build source of truth. The project currently declares version `1.0`, build `6`; this is not a claim about live App Store availability.
 
-## CLI quick start for authorized maintainers
+## CLI quick start
 
-Authorized maintainers can run the CLI from the repository root:
+Run the CLI from the repository root:
 
 ```sh
 ./teslacam-cli
@@ -65,7 +65,7 @@ python3 teslacam.py
 ./teslacam.sh
 ```
 
-The package declares no runtime Python dependencies. An editable install into an active virtual environment is optional for an authorized maintainer who wants the `teslacam-cli` entry point on `PATH`:
+The package declares no runtime Python dependencies. An editable install into an active virtual environment is optional if you want the `teslacam-cli` entry point on `PATH`:
 
 ```sh
 python3 -m pip install -e .
@@ -132,14 +132,17 @@ There is no dedicated lint, formatter, or Python typecheck configuration in this
 
 ## Licence
 
-Tescam is proprietary; all rights reserved. Copyright © 2026 MAGRATHEAN UK LTD. See
-[LICENSE](LICENSE) and [NOTICE](NOTICE) for the bundled third-party FFmpeg component. The
-full third-party inventory is in [docs/legal/third-party-notices.md](docs/legal/third-party-notices.md),
-trade-mark notices are in [docs/legal/trademarks.md](docs/legal/trademarks.md), and App
-Store distribution and your responsibility for recordings are in
-[docs/legal/overview.md](docs/legal/overview.md). Tescam is independent. It is not
-affiliated with, endorsed by or supported by Tesla, Inc.
+Tescam is free software under the [GNU General Public License, version 3](LICENSE)
+(GPL-3.0-only). Copyright © 2026 MAGRATHEAN UK LTD. You may use, study, change and share it
+on the terms of that licence. [NOTICE](NOTICE) lists the bundled FFmpeg build and where its
+source is; the full third-party inventory is in
+[docs/legal/third-party-notices.md](docs/legal/third-party-notices.md). The licence covers the
+code, not the Tescam name or icon: see [docs/legal/trademarks.md](docs/legal/trademarks.md).
+App Store distribution and your responsibility for recordings are in
+[docs/legal/overview.md](docs/legal/overview.md). Contributions: see
+[CONTRIBUTING](.github/CONTRIBUTING.md). Tescam is independent. It is not affiliated with,
+endorsed by or supported by Tesla, Inc.
 
-For licensing enquiries, use [contact@magrathean.uk](mailto:contact@magrathean.uk). For security reports, follow [.github/SECURITY.md](.github/SECURITY.md).
+Questions: [contact@magrathean.uk](mailto:contact@magrathean.uk). Security reports: [.github/SECURITY.md](.github/SECURITY.md).
 
-<sub>© 2026 MAGRATHEAN UK LTD · <a href="https://github.com/magrathean-uk/.github/blob/main/LEGAL.md">Legal</a></sub>
+<sub>© 2026 MAGRATHEAN UK LTD · GPL-3.0-only · <a href="https://github.com/magrathean-uk/.github/blob/main/LEGAL.md">Legal</a></sub>
