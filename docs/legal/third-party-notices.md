@@ -26,7 +26,8 @@ exact binaries, including the other libraries in their configuration, write to
 
 ## Reference acknowledgements
 
-The app's own [acknowledgements file](../../TeslaCam/Resources/LICENSES.md) credits two
+The app's own [acknowledgements file](../../TeslaCam/Resources/LICENSES.md), bundled with
+the app, states Tescam's GPL-3.0-only licence and where its source is, and credits two
 MIT-licensed reference projects that the native Swift/Metal implementation drew ideas from,
 without vendoring their code:
 
