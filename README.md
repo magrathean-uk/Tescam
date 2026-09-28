@@ -46,7 +46,7 @@ The current Xcode targets use native export and do not include FFmpeg in their r
 
 ## Requirements
 
-For the CLI, use Python 3.9 or newer, `ffmpeg`, and `ffprobe`. Evidence and lossless HEVC modes require an ffmpeg build with `libx265`.
+For the CLI, use Python 3.9 or newer, `ffmpeg`, and `ffprobe`. The CLI test suite and package build are verified with Python 3.14.7. Evidence and lossless HEVC modes require an ffmpeg build with `libx265`.
 
 For the native app, use Xcode on macOS. The current project targets macOS 26 and iOS/iPadOS 26. The Xcode project is the version and build source of truth. The project currently declares version `1.0`, build `6`; this is not a claim about live App Store availability.
 
