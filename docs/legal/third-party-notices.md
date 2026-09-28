@@ -40,7 +40,8 @@ without vendoring their code:
 The Xcode project declares no external Swift package or CocoaPods dependencies; the native
 app uses only Apple frameworks (including AVFoundation and Metal). The Python package
 (`teslacam-cli`) declares no runtime dependencies; its build requirements are
-`setuptools>=68` and `wheel`.
+`setuptools>=82.0.1` and `wheel>=0.48.0`. Both are MIT-licensed build tools and are not
+distributed with the package.
 
 ## Names
 
