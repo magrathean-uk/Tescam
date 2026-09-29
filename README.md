@@ -94,7 +94,7 @@ script/test_native.sh
 script/build_and_run.sh
 ```
 
-The native test script resolves `TESLACAM_BUILD_ENV` when set, otherwise uses the local fallback configured in the script. An explicit missing override stops the script. If no compatible build environment is available, it stops before invoking `xcodebuild`. The test lane runs the macOS app build, `TeslaCamTests`, and `TeslaCamUITests`.
+The native test script resolves `TESLACAM_BUILD_ENV` when set, otherwise uses the local fallback configured in the script (`build-env.sh` under `BOLYKI_SOURCE_ROOT`, default `~/dev/source`). An explicit missing override stops the script. If no compatible build environment is available, or it does not route `XCODE_DERIVED_DATA_PATH`, it stops before invoking `xcodebuild`. The test lane runs the macOS app build, `TeslaCamTests`, and `TeslaCamUITests`.
 
 The `TeslaCam` and `TeslaCam iPad` schemes are the maintained app schemes. Keep new Swift files registered for both app targets when they are shared. The iOS/iPadOS UI must continue to bind through the existing `AppState` surface.
 

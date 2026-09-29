@@ -37,7 +37,8 @@ resolve_build_env() {
     printf '%s\n' "$TESLACAM_BUILD_ENV"; return 0
   fi
   if [[ -f "$ROOT/.cache/build-env.sh" ]]; then printf '%s\n' "$ROOT/.cache/build-env.sh"; return 0; fi
-  if [[ -f "/Users/bolyki/dev/source/build-env.sh" ]]; then printf '%s\n' "/Users/bolyki/dev/source/build-env.sh"; return 0; fi
+  local default_env="${BOLYKI_SOURCE_ROOT:-$HOME/dev/source}/build-env.sh"
+  if [[ -f "$default_env" ]]; then printf '%s\n' "$default_env"; return 0; fi
   return 1
 }
 

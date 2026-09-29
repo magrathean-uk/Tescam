@@ -15,15 +15,15 @@ resolve_build_env() {
     return 1
   fi
 
-  local default_env="/Users/bolyki/dev/source/build-env.sh"
+  local default_env="${BOLYKI_SOURCE_ROOT:-$HOME/dev/source}/build-env.sh"
   if [[ -f "$default_env" ]]; then
     printf '%s\n' "$default_env"
     return 0
   fi
 
-  cat >&2 <<'EOM'
+  cat >&2 <<EOM
 Missing build environment script.
-Set TESLACAM_BUILD_ENV to a valid build-env.sh, or create /Users/bolyki/dev/source/build-env.sh.
+Set TESLACAM_BUILD_ENV to a valid build-env.sh, or create $default_env.
 EOM
   return 1
 }
@@ -37,7 +37,12 @@ if ! command -v xcodebuild >/dev/null 2>&1; then
   exit 1
 fi
 
-DERIVED_DATA="${TESLACAM_DERIVED_DATA:-${XCODE_DERIVED_DATA_PATH:-/Users/bolyki/dev/library/derived-data}/Tescam}"
+if [[ -z "${TESLACAM_DERIVED_DATA:-}" && -z "${XCODE_DERIVED_DATA_PATH:-}" ]]; then
+  echo "XCODE_DERIVED_DATA_PATH is not set. Load the routed environment (source ~/dev/env.zsh) or point TESLACAM_BUILD_ENV at a build-env.sh that sets it." >&2
+  exit 1
+fi
+
+DERIVED_DATA="${TESLACAM_DERIVED_DATA:-$XCODE_DERIVED_DATA_PATH/Tescam}"
 APP_PATH="$DERIVED_DATA/Build/Products/Debug/Tescam.app"
 
 pkill -x Tescam || true

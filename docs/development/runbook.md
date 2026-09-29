@@ -47,7 +47,7 @@ Inspect the resulting fixture changes. Fixture parity, native tests and a succes
 
 ## Native app
 
-Use Xcode on macOS. Both native scripts source a build environment before invoking Xcode. Set `TESLACAM_BUILD_ENV` to a compatible environment script; they also recognise the maintainer's existing fallback configured in the scripts. A missing environment is a setup blocker, not a reason to bypass the scripts with ad hoc build commands.
+Use Xcode on macOS. Both native scripts source a build environment before invoking Xcode. Set `TESLACAM_BUILD_ENV` to a compatible environment script; they also recognise the maintainer's existing fallback configured in the scripts (`build-env.sh` under `BOLYKI_SOURCE_ROOT`, default `~/dev/source`). DerivedData goes under `XCODE_DERIVED_DATA_PATH` (or `TESLACAM_DERIVED_DATA`); the scripts stop when neither is set instead of falling back to a home path. Run them through Clean Development: `clean-development run --session session-only -- script/test_native.sh`. A missing environment is a setup blocker, not a reason to bypass the scripts with ad hoc build commands.
 
 ```sh
 script/test_native.sh
