@@ -1,6 +1,6 @@
 # Support
 
-For product help, use [Tescam's website](https://teslacam.eu/) or email [contact+teslacam@magrathean.uk](mailto:contact+teslacam@magrathean.uk), the support address published there. See the [privacy notice](https://teslacam.eu/privacy/) before sending diagnostic material.
+For product help, use [Tescam's website](https://magrathean.uk/solutions/tescam/) or email [contact+tescam@magrathean.uk](mailto:contact+tescam@magrathean.uk), the support address published there. See the [privacy notice](https://magrathean.uk/solutions/tescam/privacy/) before sending diagnostic material.
 
 ## Useful report details
 

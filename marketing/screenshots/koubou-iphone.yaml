@@ -22,7 +22,7 @@ screenshots:
         size: 78
         weight: bold
       - type: text
-        content: "Review all six TeslaCam cameras in sync."
+        content: "Review all six cameras in sync."
         color: "#C9D2EA"
         position: [50%, 16%]
         size: 38

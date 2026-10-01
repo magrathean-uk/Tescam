@@ -2224,13 +2224,13 @@ nonisolated private enum ExportOverlayDrawing {
         rows = [
           ("calendar", timestampText, true),
           ("speedometer", "\(telemetry.speedText(unit: options.speedUnit))   Gear \(telemetry.gear)", false),
-          ("pedal.brake", "AP \(telemetry.autopilot)   Brake \(telemetry.brakeApplied ? "On" : "Off")", false)
+          ("pedal.brake", "Assist \(telemetry.autopilot)   Brake \(telemetry.brakeApplied ? "On" : "Off")", false)
         ]
       case .detailed:
         rows = [
           ("calendar", timestampText, true),
           ("speedometer", "Speed \(telemetry.speedText(unit: options.speedUnit))    Pedal \(telemetry.acceleratorText)", false),
-          ("pedal.brake", "Brake \(telemetry.brakeApplied ? "On" : "Off")    Gear \(telemetry.gear)    AP \(telemetry.autopilot)", false),
+          ("pedal.brake", "Brake \(telemetry.brakeApplied ? "On" : "Off")    Gear \(telemetry.gear)    Assist \(telemetry.autopilot)", false),
           ("steeringwheel", "Steer \(telemetry.steeringText)    Heading \(telemetry.headingText)", false),
           ("location", "GPS \(telemetry.locationText)", false),
           ("arrow.triangle.turn.up.right.diamond", "Signal \(telemetry.signalText)    G \(telemetry.gForceText)", false)
@@ -2239,8 +2239,8 @@ nonisolated private enum ExportOverlayDrawing {
     } else {
       rows = [
         ("calendar", timestampText, true),
-        ("speedometer", "No Tesla telemetry", false),
-        ("location.slash", "Speed, pedal, GPS and AP unavailable for this clip", false)
+        ("speedometer", "No vehicle telemetry", false),
+        ("location.slash", "Speed, pedal, GPS and assist data unavailable for this clip", false)
       ]
     }
     for (index, row) in rows.enumerated() {

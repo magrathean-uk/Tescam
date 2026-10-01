@@ -30,7 +30,7 @@ enum PlatformFileAccess {
 
   #if os(macOS)
   static func chooseFolder(
-    title: String = "Select TeslaCam Files/Folders",
+    title: String = "Select Dashcam Files/Folders",
     directoryURL: URL?,
     completion: @escaping ([URL]) -> Void
   ) {

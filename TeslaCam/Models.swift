@@ -839,7 +839,7 @@ enum TelemetryEventKind: String, Codable, CaseIterable, Identifiable {
     case .leftBlinker: return "Left"
     case .rightBlinker: return "Right"
     case .steering: return "Steer"
-    case .autopilot: return "AP"
+    case .autopilot: return "Assist"
     case .gForce: return "G"
     }
   }
@@ -1004,9 +1004,9 @@ nonisolated struct TelemetryDisplayModel: Equatable, Hashable {
     }
     switch sei.autopilotState {
     case .none: autopilot = "Off"
-    case .selfDriving: autopilot = "FSD"
-    case .autosteer: autopilot = "Autosteer"
-    case .tacc: autopilot = "TACC"
+    case .selfDriving: autopilot = "Self-driving"
+    case .autosteer: autopilot = "Steering"
+    case .tacc: autopilot = "Cruise"
     }
     brakeApplied = sei.brakeApplied
     blinkerLeft = sei.blinkerLeft
@@ -1067,7 +1067,7 @@ nonisolated struct TelemetryDisplayModel: Equatable, Hashable {
   }
 
   func compactText(unit: TelemetrySpeedUnit) -> String {
-    "Speed: \(speedText(unit: unit))  Pedal: \(acceleratorText)  Steer: \(steeringText)  Gear: \(gear)  AP: \(autopilot)  Brake: \(brakeApplied ? "On" : "Off")"
+    "Speed: \(speedText(unit: unit))  Pedal: \(acceleratorText)  Steer: \(steeringText)  Gear: \(gear)  Assist: \(autopilot)  Brake: \(brakeApplied ? "On" : "Off")"
   }
 }
 

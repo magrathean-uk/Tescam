@@ -10,7 +10,7 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeName</key>
-			<string>TeslaCam Folder</string>
+			<string>Dashcam Folder</string>
 			<key>LSHandlerRank</key>
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>

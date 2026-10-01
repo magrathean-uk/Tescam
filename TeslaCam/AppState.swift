@@ -516,7 +516,7 @@ final class AppState: ObservableObject {
     let normalizedSources = normalizeSources(urls)
     guard !normalizedSources.isEmpty else {
       if surfaceErrors {
-        errorMessage = "Couldn't open the selected folder. Pick the TeslaCam folder again from Files."
+        errorMessage = "Couldn't open the selected folder. Pick the dashcam folder again from Files."
         showError = true
         debug("index failed: selected source was unreadable", category: "index")
       }

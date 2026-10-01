@@ -47,7 +47,7 @@ struct ContentView: View {
         case .failure(let error):
           let nsError = error as NSError
           guard nsError.code != NSUserCancelledError else { return }
-          state.errorMessage = "Couldn't open the selected folder. Pick the TeslaCam folder again from Files."
+          state.errorMessage = "Couldn't open the selected folder. Pick the dashcam folder again from Files."
           state.showError = true
         }
       }
@@ -952,12 +952,12 @@ private struct OnboardingScreen: View {
           )
 
         VStack(spacing: TeslaCamTheme.Spacing.m) {
-          Text("Drop Tesla folder.\nGet timeline.")
+          Text("Drop dashcam folder.\nGet timeline.")
             .font(TeslaCamTheme.Typography.panelTitle)
             .multilineTextAlignment(.center)
             .foregroundStyle(TeslaCamTheme.Colors.textPrimary)
 
-          Text("TeslaCam scans nested folders, keeps true clock time, shows real gaps, and exports one native timeline.")
+          Text("Tescam scans nested folders, keeps true clock time, shows real gaps, and exports one native timeline.")
             .font(TeslaCamTheme.Typography.bodySmall)
             .multilineTextAlignment(.center)
             .foregroundStyle(TeslaCamTheme.Colors.textSecondary)
@@ -999,12 +999,12 @@ private struct OnboardingScreen: View {
           )
 
         VStack(spacing: TeslaCamTheme.Spacing.m) {
-          Text("Drop Tesla folder.\nGet timeline.")
+          Text("Drop dashcam folder.\nGet timeline.")
             .font(TeslaCamTheme.Typography.heroTitle)
             .multilineTextAlignment(.center)
             .foregroundStyle(TeslaCamTheme.Colors.textPrimary)
 
-          Text("TeslaCam scans nested folders, keeps true clock time, shows real gaps, and exports one native timeline.")
+          Text("Tescam scans nested folders, keeps true clock time, shows real gaps, and exports one native timeline.")
             .font(TeslaCamTheme.Typography.panelSubtitle)
             .multilineTextAlignment(.center)
             .foregroundStyle(TeslaCamTheme.Colors.textSecondary)

@@ -47,7 +47,7 @@ nonisolated enum TelemetryProcessor {
       "Pedal: \(model.acceleratorText)",
       "Steer: \(model.steeringText)",
       "Gear: \(model.gear)",
-      "AP: \(model.autopilot)",
+      "Assist: \(model.autopilot)",
       "Brake: \(model.brakeApplied ? "On" : "Off")",
       "Signal: \(model.signalText)",
       "Heading: \(model.headingText)",

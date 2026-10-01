@@ -238,7 +238,7 @@ struct TeslaCamTests {
 
     #expect(text.contains("Speed: 30.0 mph"))
     #expect(text.contains("Gear: D"))
-    #expect(text.contains("AP: TACC"))
+    #expect(text.contains("Assist: Cruise"))
     #expect(text.contains("Brake: On"))
     #expect(text.contains("Signal: Left"))
     #expect(text.contains("Heading: 272 deg"))

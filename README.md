@@ -7,9 +7,9 @@
 <p align="center">A TeslaCam and Sentry Mode footage browser and exporter for macOS, iPhone and iPad, with a portable Python CLI.</p>
 
 <p align="center">
-  <a href="https://teslacam.eu/">Website</a> ·
+  <a href="https://magrathean.uk/solutions/tescam/">Website</a> ·
   <a href="docs/index.md">Documentation</a> ·
-  <a href="https://teslacam.eu/privacy/">Privacy</a>
+  <a href="https://magrathean.uk/solutions/tescam/privacy/">Privacy</a>
 </p>
 
 ## Overview
