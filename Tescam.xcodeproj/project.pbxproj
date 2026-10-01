@@ -1,0 +1,887 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0D99B7AF17EAC3FC2DE17FE4 /* MetalRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685432F3526330073314B /* MetalRenderer.swift */; };
+		0FBCA1102A1866E4782AE742 /* LICENSES.md in Resources */ = {isa = PBXBuildFile; fileRef = 50C685392F3526330073314B /* LICENSES.md */; };
+		16112D2E1E4A55F25A463C45 /* TelemetryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685472F3526330073314B /* TelemetryParser.swift */; };
+		195FACF22EF24C7709F0D524 /* Indexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685402F3526330073314B /* Indexer.swift */; };
+		2EB20178CD3CD202893526D6 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685452F3526330073314B /* Models.swift */; };
+		31E19FA2404A5A723BC406D1 /* TelemetryProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B832DA43FCA85C989EFF678 /* TelemetryProcessor.swift */; };
+		3511B676858F49141F09DA72 /* DomainContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE32C56909B9153D7E4AD3E /* DomainContract.swift */; };
+		43856EFDACD28E283764B079 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50C6855D2F3526330073314B /* Assets.xcassets */; };
+		4AC0833CC400B8B020F17BB1 /* PlatformFileAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9A79DBE9E309C323846661 /* PlatformFileAccess.swift */; };
+		4FC3EC1D1A403F7C27D9DAC2 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685482F3526330073314B /* Utils.swift */; };
+		A1B2C3D4E5F6000000000002 /* PortraitComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000001 /* PortraitComponents.swift */; };
+		50C6854A2F3526330073314B /* MetalRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685432F3526330073314B /* MetalRenderer.swift */; };
+		50C6854B2F3526330073314B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C6853E2F3526330073314B /* ContentView.swift */; };
+		50C6854C2F3526330073314B /* TelemetryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685472F3526330073314B /* TelemetryParser.swift */; };
+		50C6854D2F3526330073314B /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685412F3526330073314B /* Main.swift */; };
+		50C6854E2F3526330073314B /* MetalPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685422F3526330073314B /* MetalPlayerView.swift */; };
+		50C6854F2F3526330073314B /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685452F3526330073314B /* Models.swift */; };
+		50C685502F3526330073314B /* PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685462F3526330073314B /* PlaybackController.swift */; };
+		50C685512F3526330073314B /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C6853D2F3526330073314B /* AppState.swift */; };
+		50C685522F3526330073314B /* Indexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685402F3526330073314B /* Indexer.swift */; };
+		50C685532F3526330073314B /* MetalShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 50C685442F3526330073314B /* MetalShaders.metal */; };
+		50C685542F3526330073314B /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685482F3526330073314B /* Utils.swift */; };
+		A1B2C3D4E5F6000000000003 /* PortraitComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000001 /* PortraitComponents.swift */; };
+		50C685582F3526330073314B /* LICENSES.md in Resources */ = {isa = PBXBuildFile; fileRef = 50C685392F3526330073314B /* LICENSES.md */; };
+		50C6855A2F3526330073314B /* NativeExportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C6855C2F3526330073314B /* NativeExportController.swift */; };
+		50C6855E2F3526330073314B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50C6855D2F3526330073314B /* Assets.xcassets */; };
+		50F4EAD1A7AC5FC49F71BF31 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C6853D2F3526330073314B /* AppState.swift */; };
+		5471D882A47D8B38EC261269 /* SourceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3905691B5A214C7F12DC6 /* SourceStore.swift */; };
+		5E18ECCAC9BDFE1995BB9F3C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6752ADD69F7C76B881977D4 /* Foundation.framework */; };
+		7651D245D03D9627B0901116 /* NativeExportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C6855C2F3526330073314B /* NativeExportController.swift */; };
+		8878B92A5590887F535BD892 /* IPadMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FEA6CD4150968355138666 /* IPadMain.swift */; };
+		9D396087622135F7A72945A3 /* PlaybackController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685462F3526330073314B /* PlaybackController.swift */; };
+		A7D7A1002F52000100000002 /* MacWorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D7A1002F52000100000001 /* MacWorkspaceView.swift */; };
+		A7D7A1002F52000100000003 /* MacWorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D7A1002F52000100000001 /* MacWorkspaceView.swift */; };
+		B3749F963B09DDA60FA98763 /* SourceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3905691B5A214C7F12DC6 /* SourceStore.swift */; };
+		B4FFA09213F66C171AF20512 /* TelemetryProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B832DA43FCA85C989EFF678 /* TelemetryProcessor.swift */; };
+		B582B85BBFA5AFDD00630B73 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C6853E2F3526330073314B /* ContentView.swift */; };
+		C310E15FCC440A1D947222CD /* MetalPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685422F3526330073314B /* MetalPlayerView.swift */; };
+		C31C5F6B1CDA0C816258DD9A /* MetalPlayerView_iPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7761E775BC37CD7C35A556C /* MetalPlayerView_iPad.swift */; };
+		CDDBB87778F9005CECFA36F5 /* PlatformFileAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9A79DBE9E309C323846661 /* PlatformFileAccess.swift */; };
+		DF1527E9A5192CB26430404E /* MetalShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 50C685442F3526330073314B /* MetalShaders.metal */; };
+		E4DBEAA7CC625E472AC80EEC /* DomainContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CE32C56909B9153D7E4AD3E /* DomainContract.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		508F32962F35259E005B7A80 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 508F327E2F35259D005B7A80 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 508F32852F35259D005B7A80;
+			remoteInfo = Tescam;
+		};
+		508F32A02F35259E005B7A80 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 508F327E2F35259D005B7A80 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 508F32852F35259D005B7A80;
+			remoteInfo = Tescam;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3027438A524246CA2FBF0C46 /* Tescam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tescam.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3615C866A634FF23B9D53ACE /* Tescam_iPad.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = Tescam_iPad.entitlements; sourceTree = "<group>"; };
+		508F32862F35259D005B7A80 /* Tescam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tescam.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		508F32952F35259E005B7A80 /* TescamTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TescamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		508F329F2F35259E005B7A80 /* TescamUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TescamUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		50C685392F3526330073314B /* LICENSES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSES.md; sourceTree = "<group>"; };
+		50C6853D2F3526330073314B /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		50C6853E2F3526330073314B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		50C685402F3526330073314B /* Indexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Indexer.swift; sourceTree = "<group>"; };
+		50C685412F3526330073314B /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
+		50C685422F3526330073314B /* MetalPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalPlayerView.swift; sourceTree = "<group>"; };
+		50C685432F3526330073314B /* MetalRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRenderer.swift; sourceTree = "<group>"; };
+		50C685442F3526330073314B /* MetalShaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = MetalShaders.metal; sourceTree = "<group>"; };
+		50C685452F3526330073314B /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		50C685462F3526330073314B /* PlaybackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackController.swift; sourceTree = "<group>"; };
+		50C685472F3526330073314B /* TelemetryParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryParser.swift; sourceTree = "<group>"; };
+		50C685482F3526330073314B /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6000000000001 /* PortraitComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortraitComponents.swift; sourceTree = "<group>"; };
+		50C6855B2F3526330073314B /* Tescam.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tescam.entitlements; sourceTree = "<group>"; };
+		50C6855C2F3526330073314B /* NativeExportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeExportController.swift; sourceTree = "<group>"; };
+		50C6855D2F3526330073314B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		53FEA6CD4150968355138666 /* IPadMain.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IPadMain.swift; sourceTree = "<group>"; };
+		5B832DA43FCA85C989EFF678 /* TelemetryProcessor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TelemetryProcessor.swift; sourceTree = "<group>"; };
+		8CE32C56909B9153D7E4AD3E /* DomainContract.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DomainContract.swift; sourceTree = "<group>"; };
+		9B9A79DBE9E309C323846661 /* PlatformFileAccess.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlatformFileAccess.swift; sourceTree = "<group>"; };
+		A7D7A1002F52000100000001 /* MacWorkspaceView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MacWorkspaceView.swift; sourceTree = "<group>"; };
+		BFC3905691B5A214C7F12DC6 /* SourceStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SourceStore.swift; sourceTree = "<group>"; };
+		E7761E775BC37CD7C35A556C /* MetalPlayerView_iPad.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MetalPlayerView_iPad.swift; sourceTree = "<group>"; };
+		F6752ADD69F7C76B881977D4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		508F32982F35259E005B7A80 /* TescamTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			path = TescamTests;
+			sourceTree = "<group>";
+		};
+		508F32A22F35259E005B7A80 /* TescamUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			path = TescamUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		508F32832F35259D005B7A80 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		508F32922F35259E005B7A80 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		508F329C2F35259E005B7A80 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5F4581895736E49F4CF88D36 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5E18ECCAC9BDFE1995BB9F3C /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0E0B13DFC4DE7972437FCA54 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EBE5C67B2D234D602A1398B1 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		508F327D2F35259D005B7A80 = {
+			isa = PBXGroup;
+			children = (
+				50C685492F3526330073314B /* Tescam */,
+				508F32982F35259E005B7A80 /* TescamTests */,
+				508F32A22F35259E005B7A80 /* TescamUITests */,
+				508F32872F35259D005B7A80 /* Products */,
+				0E0B13DFC4DE7972437FCA54 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		508F32872F35259D005B7A80 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				508F32862F35259D005B7A80 /* Tescam.app */,
+				508F32952F35259E005B7A80 /* TescamTests.xctest */,
+				508F329F2F35259E005B7A80 /* TescamUITests.xctest */,
+				3027438A524246CA2FBF0C46 /* Tescam.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		50C6853C2F3526330073314B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				50C685392F3526330073314B /* LICENSES.md */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		50C685492F3526330073314B /* Tescam */ = {
+			isa = PBXGroup;
+			children = (
+				50C6855D2F3526330073314B /* Assets.xcassets */,
+				50C6853C2F3526330073314B /* Resources */,
+				50C6853D2F3526330073314B /* AppState.swift */,
+				50C6853E2F3526330073314B /* ContentView.swift */,
+				A7D7A1002F52000100000001 /* MacWorkspaceView.swift */,
+				50C685402F3526330073314B /* Indexer.swift */,
+				50C6855C2F3526330073314B /* NativeExportController.swift */,
+				50C685412F3526330073314B /* Main.swift */,
+				50C685422F3526330073314B /* MetalPlayerView.swift */,
+				50C685432F3526330073314B /* MetalRenderer.swift */,
+				50C685442F3526330073314B /* MetalShaders.metal */,
+				50C685452F3526330073314B /* Models.swift */,
+				50C685462F3526330073314B /* PlaybackController.swift */,
+				50C685472F3526330073314B /* TelemetryParser.swift */,
+				50C685482F3526330073314B /* Utils.swift */,
+				A1B2C3D4E5F6000000000001 /* PortraitComponents.swift */,
+				50C6855B2F3526330073314B /* Tescam.entitlements */,
+				9B9A79DBE9E309C323846661 /* PlatformFileAccess.swift */,
+				E7761E775BC37CD7C35A556C /* MetalPlayerView_iPad.swift */,
+				53FEA6CD4150968355138666 /* IPadMain.swift */,
+				3615C866A634FF23B9D53ACE /* Tescam_iPad.entitlements */,
+				5B832DA43FCA85C989EFF678 /* TelemetryProcessor.swift */,
+				BFC3905691B5A214C7F12DC6 /* SourceStore.swift */,
+				8CE32C56909B9153D7E4AD3E /* DomainContract.swift */,
+			);
+			path = Tescam;
+			sourceTree = "<group>";
+		};
+		EBE5C67B2D234D602A1398B1 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				F6752ADD69F7C76B881977D4 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		508F32852F35259D005B7A80 /* Tescam */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 508F32A92F35259E005B7A80 /* Build configuration list for PBXNativeTarget "Tescam" */;
+			buildPhases = (
+				508F32822F35259D005B7A80 /* Sources */,
+				508F32832F35259D005B7A80 /* Frameworks */,
+				508F32842F35259D005B7A80 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Tescam;
+			productName = Tescam;
+			productReference = 508F32862F35259D005B7A80 /* Tescam.app */;
+			productType = "com.apple.product-type.application";
+		};
+		508F32942F35259E005B7A80 /* TescamTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 508F32AC2F35259E005B7A80 /* Build configuration list for PBXNativeTarget "TescamTests" */;
+			buildPhases = (
+				508F32912F35259E005B7A80 /* Sources */,
+				508F32922F35259E005B7A80 /* Frameworks */,
+				508F32932F35259E005B7A80 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				508F32972F35259E005B7A80 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				508F32982F35259E005B7A80 /* TescamTests */,
+			);
+			name = TescamTests;
+			productName = TescamTests;
+			productReference = 508F32952F35259E005B7A80 /* TescamTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		508F329E2F35259E005B7A80 /* TescamUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 508F32AF2F35259E005B7A80 /* Build configuration list for PBXNativeTarget "TescamUITests" */;
+			buildPhases = (
+				508F329B2F35259E005B7A80 /* Sources */,
+				508F329C2F35259E005B7A80 /* Frameworks */,
+				508F329D2F35259E005B7A80 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				508F32A12F35259E005B7A80 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				508F32A22F35259E005B7A80 /* TescamUITests */,
+			);
+			name = TescamUITests;
+			productName = TescamUITests;
+			productReference = 508F329F2F35259E005B7A80 /* TescamUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		58E24B27F497D1031AA1F4F7 /* Tescam iPad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BFBB806D9E8289F44D1E492D /* Build configuration list for PBXNativeTarget "Tescam iPad" */;
+			buildPhases = (
+				36928859B66757AD0B293483 /* Sources */,
+				5F4581895736E49F4CF88D36 /* Frameworks */,
+				973DF0D3E8743F9B5C41A14A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Tescam iPad";
+			productName = Tescam;
+			productReference = 3027438A524246CA2FBF0C46 /* Tescam.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		508F327E2F35259D005B7A80 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2620;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					508F32852F35259D005B7A80 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					508F32942F35259E005B7A80 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 508F32852F35259D005B7A80;
+					};
+					508F329E2F35259E005B7A80 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 508F32852F35259D005B7A80;
+					};
+				};
+			};
+			buildConfigurationList = 508F32812F35259D005B7A80 /* Build configuration list for PBXProject "Tescam" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 508F327D2F35259D005B7A80;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 508F32872F35259D005B7A80 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				508F32852F35259D005B7A80 /* Tescam */,
+				508F32942F35259E005B7A80 /* TescamTests */,
+				508F329E2F35259E005B7A80 /* TescamUITests */,
+				58E24B27F497D1031AA1F4F7 /* Tescam iPad */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		508F32842F35259D005B7A80 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50C685582F3526330073314B /* LICENSES.md in Resources */,
+				50C6855E2F3526330073314B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		508F32932F35259E005B7A80 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		508F329D2F35259E005B7A80 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		973DF0D3E8743F9B5C41A14A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0FBCA1102A1866E4782AE742 /* LICENSES.md in Resources */,
+				43856EFDACD28E283764B079 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		36928859B66757AD0B293483 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50F4EAD1A7AC5FC49F71BF31 /* AppState.swift in Sources */,
+				B582B85BBFA5AFDD00630B73 /* ContentView.swift in Sources */,
+				A7D7A1002F52000100000003 /* MacWorkspaceView.swift in Sources */,
+				195FACF22EF24C7709F0D524 /* Indexer.swift in Sources */,
+				0D99B7AF17EAC3FC2DE17FE4 /* MetalRenderer.swift in Sources */,
+				DF1527E9A5192CB26430404E /* MetalShaders.metal in Sources */,
+				C310E15FCC440A1D947222CD /* MetalPlayerView.swift in Sources */,
+				C31C5F6B1CDA0C816258DD9A /* MetalPlayerView_iPad.swift in Sources */,
+				2EB20178CD3CD202893526D6 /* Models.swift in Sources */,
+				7651D245D03D9627B0901116 /* NativeExportController.swift in Sources */,
+				9D396087622135F7A72945A3 /* PlaybackController.swift in Sources */,
+				4AC0833CC400B8B020F17BB1 /* PlatformFileAccess.swift in Sources */,
+				16112D2E1E4A55F25A463C45 /* TelemetryParser.swift in Sources */,
+				4FC3EC1D1A403F7C27D9DAC2 /* Utils.swift in Sources */,
+				A1B2C3D4E5F6000000000002 /* PortraitComponents.swift in Sources */,
+				8878B92A5590887F535BD892 /* IPadMain.swift in Sources */,
+				31E19FA2404A5A723BC406D1 /* TelemetryProcessor.swift in Sources */,
+				B3749F963B09DDA60FA98763 /* SourceStore.swift in Sources */,
+				3511B676858F49141F09DA72 /* DomainContract.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		508F32822F35259D005B7A80 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				50C6854A2F3526330073314B /* MetalRenderer.swift in Sources */,
+				50C6854B2F3526330073314B /* ContentView.swift in Sources */,
+				A7D7A1002F52000100000002 /* MacWorkspaceView.swift in Sources */,
+				50C6854C2F3526330073314B /* TelemetryParser.swift in Sources */,
+				50C6854D2F3526330073314B /* Main.swift in Sources */,
+				50C6854E2F3526330073314B /* MetalPlayerView.swift in Sources */,
+				50C6854F2F3526330073314B /* Models.swift in Sources */,
+				50C685502F3526330073314B /* PlaybackController.swift in Sources */,
+				50C685512F3526330073314B /* AppState.swift in Sources */,
+				50C685522F3526330073314B /* Indexer.swift in Sources */,
+				50C685532F3526330073314B /* MetalShaders.metal in Sources */,
+				50C685542F3526330073314B /* Utils.swift in Sources */,
+				A1B2C3D4E5F6000000000003 /* PortraitComponents.swift in Sources */,
+				50C6855A2F3526330073314B /* NativeExportController.swift in Sources */,
+				CDDBB87778F9005CECFA36F5 /* PlatformFileAccess.swift in Sources */,
+				B4FFA09213F66C171AF20512 /* TelemetryProcessor.swift in Sources */,
+				5471D882A47D8B38EC261269 /* SourceStore.swift in Sources */,
+				E4DBEAA7CC625E472AC80EEC /* DomainContract.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		508F32912F35259E005B7A80 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		508F329B2F35259E005B7A80 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		508F32972F35259E005B7A80 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 508F32852F35259D005B7A80 /* Tescam */;
+			targetProxy = 508F32962F35259E005B7A80 /* PBXContainerItemProxy */;
+		};
+		508F32A12F35259E005B7A80 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 508F32852F35259D005B7A80 /* Tescam */;
+			targetProxy = 508F32A02F35259E005B7A80 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2A0143647DEFD0372DEAC353 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = Tescam/Tescam_iPad.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = NPSQV9WYS5;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Tescam/Tescam_iPad_Info.plist;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Tescam;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.magrathean.teslacam;
+				PRODUCT_MODULE_NAME = Tescam;
+				PRODUCT_NAME = Tescam;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		508F32A72F35259E005B7A80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = NPSQV9WYS5;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		508F32A82F35259E005B7A80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = NPSQV9WYS5;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		508F32AA2F35259E005B7A80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Tescam/Tescam.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = NPSQV9WYS5;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = "read-write";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
+				INFOPLIST_KEY_CFBundleDisplayName = Tescam;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright \U00a9 2026 MAGRATHEAN UK LTD";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.magrathean.teslacam;
+				PRODUCT_MODULE_NAME = Tescam;
+				PRODUCT_NAME = Tescam;
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		508F32AB2F35259E005B7A80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Tescam/Tescam.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = NPSQV9WYS5;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = "read-write";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
+				INFOPLIST_KEY_CFBundleDisplayName = Tescam;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright \U00a9 2026 MAGRATHEAN UK LTD";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.magrathean.teslacam;
+				PRODUCT_MODULE_NAME = Tescam;
+				PRODUCT_NAME = Tescam;
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		508F32AD2F35259E005B7A80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = NPSQV9WYS5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.magrathean.TescamTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tescam.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tescam";
+			};
+			name = Debug;
+		};
+		508F32AE2F35259E005B7A80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = NPSQV9WYS5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.magrathean.TescamTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Tescam.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Tescam";
+			};
+			name = Release;
+		};
+		508F32B02F35259E005B7A80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = NPSQV9WYS5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.magrathean.TescamUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Tescam;
+			};
+			name = Debug;
+		};
+		508F32B12F35259E005B7A80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEVELOPMENT_TEAM = NPSQV9WYS5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.magrathean.TescamUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Tescam;
+			};
+			name = Release;
+		};
+		74419CE3A25A1A34F5D83ACC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = Tescam/Tescam_iPad.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = NPSQV9WYS5;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Tescam/Tescam_iPad_Info.plist;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Tescam;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.magrathean.teslacam;
+				PRODUCT_MODULE_NAME = Tescam;
+				PRODUCT_NAME = Tescam;
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		508F32812F35259D005B7A80 /* Build configuration list for PBXProject "Tescam" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				508F32A72F35259E005B7A80 /* Debug */,
+				508F32A82F35259E005B7A80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		508F32A92F35259E005B7A80 /* Build configuration list for PBXNativeTarget "Tescam" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				508F32AA2F35259E005B7A80 /* Debug */,
+				508F32AB2F35259E005B7A80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		508F32AC2F35259E005B7A80 /* Build configuration list for PBXNativeTarget "TescamTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				508F32AD2F35259E005B7A80 /* Debug */,
+				508F32AE2F35259E005B7A80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		508F32AF2F35259E005B7A80 /* Build configuration list for PBXNativeTarget "TescamUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				508F32B02F35259E005B7A80 /* Debug */,
+				508F32B12F35259E005B7A80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BFBB806D9E8289F44D1E492D /* Build configuration list for PBXNativeTarget "Tescam iPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				74419CE3A25A1A34F5D83ACC /* Release */,
+				2A0143647DEFD0372DEAC353 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 508F327E2F35259D005B7A80 /* Project object */;
+}

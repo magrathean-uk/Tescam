@@ -4,11 +4,11 @@ Tescam contains a SwiftUI app for macOS, iPhone, and iPad, plus a dependency-lig
 
 ## Structure
 
-- `TeslaCam/` contains the shared native engine, platform UI, export path, playback, and resources.
-- `TeslaCamTests/` and `TeslaCamUITests/` cover native behavior.
-- `teslacam_cli/` and `tests/` contain the Python CLI and its tests.
+- `Tescam/` contains the shared native engine, platform UI, export path, playback, and resources.
+- `TescamTests/` and `TescamUITests/` cover native behavior.
+- `tescam_cli/` and `tests/` contain the Python CLI and its tests.
 - `fixtures/domain/cases/` and `docs/domain-contract.md` define behavior shared by Swift and Python.
-- `_legacy/` and `teslacam_legacy_macos.sh` are reference-only.
+- `_legacy/` and `tescam_legacy_macos.sh` are reference-only.
 
 ## Working rules
 
@@ -16,10 +16,10 @@ Tescam contains a SwiftUI app for macOS, iPhone, and iPad, plus a dependency-lig
 - For a shared-domain change, update the contract, fixtures, Swift behavior and tests, and Python behavior and tests together.
 - Keep CLI planning pure. Put rendering and human-facing output behind adapters.
 - Native export is the shipping app path. Do not treat the CLI as the app export implementation.
-- A mobile-only UI change uses the existing `AppState` API and does not edit the shared core. Register a new Swift source file in both `TeslaCam` and `TeslaCam iPad` targets in `TeslaCam.xcodeproj/project.pbxproj`.
+- A mobile-only UI change uses the existing `AppState` API and does not edit the shared core. Register a new Swift source file in both `Tescam` and `Tescam iPad` targets in `Tescam.xcodeproj/project.pbxproj`.
 - Preserve the manual codec picker and the opt-in telemetry engraving control.
 - Do not add Sentry, analytics, or external crash telemetry. Keep diagnostics local.
-- Do not edit vendor or runtime assets, generated output, or `TeslaCam/Resources/LICENSES.md` unless the task covers them.
+- Do not edit vendor or runtime assets, generated output, or `Tescam/Resources/LICENSES.md` unless the task covers them.
 - Keep release and App Store facts in `docs/development/`.
 - Legal files (`LICENSE`, `NOTICE`, `docs/legal/`, contributor terms, copyright and
   attribution strings) are owner-controlled: change them only on the owner's explicit
@@ -34,9 +34,9 @@ Tescam contains a SwiftUI app for macOS, iPhone, and iPad, plus a dependency-lig
 
 ```sh
 python3 -m pip install -e .
-./teslacam-cli
-python3 teslacam.py
-./teslacam.sh
+./tescam-cli
+python3 tescam.py
+./tescam.sh
 python3 -m unittest tests.test_domain_contract
 python3 -m unittest discover tests
 script/test_native.sh
@@ -45,7 +45,7 @@ python3 script/regen_fixtures.py
 git diff --check
 ```
 
-Native commands require `TESLACAM_BUILD_ENV` or the project-supported local build environment. If neither is available, report the setup blocker instead of improvising an `xcodebuild` invocation. There is no dedicated lint, formatter, or Python type-check configuration. Use the focused check for the changed boundary, then broaden verification when the change warrants it.
+Native commands require `TESCAM_BUILD_ENV` or the project-supported local build environment. If neither is available, report the setup blocker instead of improvising an `xcodebuild` invocation. There is no dedicated lint, formatter, or Python type-check configuration. Use the focused check for the changed boundary, then broaden verification when the change warrants it.
 
 <!-- clean-development-policy:v1 (canonical text: ~/dev/source/dev-bootstrap/snippets/clean-development-policy.md) -->
 ## Clean development (mandatory)

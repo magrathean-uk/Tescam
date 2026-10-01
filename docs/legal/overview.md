@@ -18,7 +18,7 @@ which let Magrathean ship them in that build.
 
 ## Your recordings
 
-Tescam processes video and audio recordings you supply from Tesla TeslaCam and Sentry Mode
+Tescam processes video and audio recordings you supply from Tesla dashcam and Sentry Mode
 storage. Those recordings can contain personal data, including images or audio of drivers,
 passengers, pedestrians or other people. You are responsible for lawfully collecting,
 retaining, exporting and sharing them, including compliance with the data protection,

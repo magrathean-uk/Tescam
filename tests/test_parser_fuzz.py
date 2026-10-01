@@ -23,7 +23,7 @@ import re
 import unittest
 from typing import Optional, Tuple
 
-from teslacam_cli.scanner import _FILENAME_RE, normalize_camera
+from tescam_cli.scanner import _FILENAME_RE, normalize_camera
 
 
 # Each row: (input_filename, matched, timestamp_or_None, camera_value_or_None)

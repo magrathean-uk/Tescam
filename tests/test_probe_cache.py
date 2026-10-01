@@ -3,7 +3,7 @@ from tempfile import TemporaryDirectory
 import os
 import unittest
 
-from teslacam_cli.probe_cache import RunProbeCache
+from tescam_cli.probe_cache import RunProbeCache
 
 
 class ProbeCacheTests(unittest.TestCase):

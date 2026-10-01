@@ -2,9 +2,9 @@ import unittest
 import json
 from pathlib import Path
 
-from teslacam_cli.domain_contract import layout_manifest
-from teslacam_cli.layouts import build_camera_layout_plan, build_layout, fill_missing_dimensions
-from teslacam_cli.models import Camera, Dimensions, LayoutKind
+from tescam_cli.domain_contract import layout_manifest
+from tescam_cli.layouts import build_camera_layout_plan, build_layout, fill_missing_dimensions
+from tescam_cli.models import Camera, Dimensions, LayoutKind
 
 
 FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures" / "domain" / "cases"

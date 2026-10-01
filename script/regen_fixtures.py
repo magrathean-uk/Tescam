@@ -42,20 +42,20 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Any, Dict, List
 
-from teslacam_cli.cli import (
+from tescam_cli.cli import (
     apply_output_conflict_policy,
     dataset_range,
     default_output_filename,
 )
-from teslacam_cli.composer import select_clip_sets
-from teslacam_cli.domain_contract import (
+from tescam_cli.composer import select_clip_sets
+from tescam_cli.domain_contract import (
     layout_manifest,
     scan_manifest,
     selected_sets_manifest,
 )
-from teslacam_cli.layouts import build_camera_layout_plan
-from teslacam_cli.models import DuplicatePolicy, OutputConflictPolicy
-from teslacam_cli.scanner import scan_source
+from tescam_cli.layouts import build_camera_layout_plan
+from tescam_cli.models import DuplicatePolicy, OutputConflictPolicy
+from tescam_cli.scanner import scan_source
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURE_DIR = REPO_ROOT / "fixtures" / "domain" / "cases"

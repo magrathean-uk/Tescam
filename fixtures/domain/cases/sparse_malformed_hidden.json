@@ -183,19 +183,19 @@
   },
   "expected_output": {
     "default_filename_by_mode": {
-      "lossless": "teslacam_lossless_2026-01-01_00-00-00_to_2026-01-01_00-02-00.mp4",
-      "quality": "teslacam_quality_2026-01-01_00-00-00_to_2026-01-01_00-02-00.mp4"
+      "lossless": "tescam_lossless_2026-01-01_00-00-00_to_2026-01-01_00-02-00.mp4",
+      "quality": "tescam_quality_2026-01-01_00-00-00_to_2026-01-01_00-02-00.mp4"
     },
     "error_with_conflict": {
       "exception_type": "RuntimeError",
       "message_contains": "Output file already exists",
       "raises": true
     },
-    "overwrite_with_conflict": "teslacam_lossless_2026-01-01_00-00-00_to_2026-01-01_00-02-00.mp4",
+    "overwrite_with_conflict": "tescam_lossless_2026-01-01_00-00-00_to_2026-01-01_00-02-00.mp4",
     "unique_resolution": [
-      "teslacam_lossless_2026-01-01_00-00-00_to_2026-01-01_00-02-00.mp4",
-      "teslacam_lossless_2026-01-01_00-00-00_to_2026-01-01_00-02-00-2.mp4",
-      "teslacam_lossless_2026-01-01_00-00-00_to_2026-01-01_00-02-00-3.mp4"
+      "tescam_lossless_2026-01-01_00-00-00_to_2026-01-01_00-02-00.mp4",
+      "tescam_lossless_2026-01-01_00-00-00_to_2026-01-01_00-02-00-2.mp4",
+      "tescam_lossless_2026-01-01_00-00-00_to_2026-01-01_00-02-00-3.mp4"
     ]
   },
   "expected_scan": {
@@ -441,7 +441,7 @@
       "path": "SavedClips/2026-01-01_00-01-00-unknown_camera.mp4"
     },
     {
-      "path": "SavedClips/not-a-teslacam-file.mp4"
+      "path": "SavedClips/not-a-tescam-file.mp4"
     },
     {
       "path": "SavedClips/2026-01-01_00-02-00-front.txt"

@@ -10,14 +10,14 @@ from tempfile import TemporaryDirectory
 import unittest
 
 
-REAL_FOOTAGE_ENV = "TESLACAM_REAL_FOOTAGE_SOURCE"
-REAL_FOOTAGE_RENDER_ENV = "TESLACAM_REAL_FOOTAGE_RENDER"
+REAL_FOOTAGE_ENV = "TESCAM_REAL_FOOTAGE_SOURCE"
+REAL_FOOTAGE_RENDER_ENV = "TESCAM_REAL_FOOTAGE_RENDER"
 
 
 def _real_footage_render_opted_in() -> bool:
     """The render test is heavier than the planner test (~3 s wall +
     ~10 MB output for a 2-second window). Require an explicit opt-in
-    via ``TESLACAM_REAL_FOOTAGE_RENDER`` so routine
+    via ``TESCAM_REAL_FOOTAGE_RENDER`` so routine
     ``unittest discover`` runs are not slowed even when the source
     folder happens to be present.
     """
@@ -29,9 +29,9 @@ def _real_footage_source() -> Path | None:
     """Return the configured real-footage source folder, or ``None``.
 
     Two ways to opt in:
-    - ``TESLACAM_REAL_FOOTAGE_SOURCE=/abs/path`` (preferred, works on
+    - ``TESCAM_REAL_FOOTAGE_SOURCE=/abs/path`` (preferred, works on
       any machine and in CI if a runner happens to have a sample).
-    - ``~/Downloads/Teslacam`` exists (local convenience for the
+    - ``~/Downloads/Tescam`` exists (local convenience for the
       project owner — same path used in
       ``docs/improvement/real-footage-baseline-2026-05-09.md``).
 
@@ -44,7 +44,7 @@ def _real_footage_source() -> Path | None:
         if candidate.is_dir():
             return candidate
         return None
-    fallback = Path.home() / "Downloads" / "Teslacam"
+    fallback = Path.home() / "Downloads" / "Tescam"
     if fallback.is_dir():
         return fallback
     return None
@@ -84,7 +84,7 @@ class IntegrationTests(unittest.TestCase):
             subprocess.run(
                 [
                     sys.executable,
-                    str(repo_root / "teslacam.py"),
+                    str(repo_root / "tescam.py"),
                     str(source),
                     "--dry-run-json",
                     str(manifest_path),
@@ -100,7 +100,7 @@ class IntegrationTests(unittest.TestCase):
 
             self.assertTrue(manifest_path.exists())
             payload = json.loads(manifest_path.read_text(encoding="utf-8"))
-            self.assertEqual(payload["type"], "teslacam.dry-run")
+            self.assertEqual(payload["type"], "tescam.dry-run")
             self.assertEqual(payload["scan"]["clip_set_count"], 1)
             self.assertEqual(payload["selection"]["clip_set_count"], 1)
 
@@ -135,7 +135,7 @@ class IntegrationTests(unittest.TestCase):
             subprocess.run(
                 [
                     sys.executable,
-                    str(repo_root / "teslacam.py"),
+                    str(repo_root / "tescam.py"),
                     str(source),
                     "--output",
                     str(output),
@@ -207,7 +207,7 @@ class IntegrationTests(unittest.TestCase):
             subprocess.run(
                 [
                     sys.executable,
-                    str(repo_root / "teslacam.py"),
+                    str(repo_root / "tescam.py"),
                     str(source),
                     "--output",
                     str(output),
@@ -248,7 +248,7 @@ class IntegrationTests(unittest.TestCase):
             self.assertEqual(fields[2], "180")
 
 
-@unittest.skipUnless(_real_footage_source() is not None, f"real-footage source not configured (set {REAL_FOOTAGE_ENV} or place a folder at ~/Downloads/Teslacam)")
+@unittest.skipUnless(_real_footage_source() is not None, f"real-footage source not configured (set {REAL_FOOTAGE_ENV} or place a folder at ~/Downloads/Tescam)")
 class RealFootageIntegrationTests(unittest.TestCase):
     """Opt-in tests that run against real Tesla recording data.
 
@@ -273,7 +273,7 @@ class RealFootageIntegrationTests(unittest.TestCase):
             subprocess.run(
                 [
                     sys.executable,
-                    str(repo_root / "teslacam.py"),
+                    str(repo_root / "tescam.py"),
                     str(source),
                     "--dry-run-json",
                     str(manifest_path),
@@ -284,7 +284,7 @@ class RealFootageIntegrationTests(unittest.TestCase):
             payload = json.loads(manifest_path.read_text(encoding="utf-8"))
 
         # Manifest envelope.
-        self.assertEqual(payload.get("type"), "teslacam.dry-run")
+        self.assertEqual(payload.get("type"), "tescam.dry-run")
         self.assertEqual(payload.get("schema_version"), 1)
 
         # Scan should find at least one clip set in real footage.
@@ -316,7 +316,7 @@ class RealFootageIntegrationTests(unittest.TestCase):
         self.assertGreater(canvas.get("width", 0), 0)
         self.assertGreater(canvas.get("height", 0), 0)
 
-        # Probed FPS must be a sensible TeslaCam-ish value (the contract
+        # Probed FPS must be a sensible Tescam-ish value (the contract
         # has historically seen ~24 and ~36 from different firmware).
         # 1 < fps < 120 is the conservative envelope.
         fps = payload.get("fps")
@@ -331,7 +331,7 @@ class RealFootageIntegrationTests(unittest.TestCase):
 )
 class RealFootageRenderIntegrationTests(unittest.TestCase):
     """Opt-in real-footage render. Skipped by default — both
-    `_real_footage_source()` and `TESLACAM_REAL_FOOTAGE_RENDER=1`
+    `_real_footage_source()` and `TESCAM_REAL_FOOTAGE_RENDER=1`
     must hold for it to fire. CI never has either; local
     developers turn it on when validating the end-to-end ffmpeg
     pipeline against real bytes (e.g. before shipping a release
@@ -352,7 +352,7 @@ class RealFootageRenderIntegrationTests(unittest.TestCase):
             subprocess.run(
                 [
                     sys.executable,
-                    str(repo_root / "teslacam.py"),
+                    str(repo_root / "tescam.py"),
                     str(source),
                     "--start",
                     "2026-04-08 11:30:35",

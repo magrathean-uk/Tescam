@@ -24,21 +24,21 @@ from pathlib import Path
 from typing import Iterable
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-SHIPPING_ROOT = REPO_ROOT / "teslacam_cli"
-SWIFT_SHIPPING_ROOT = REPO_ROOT / "TeslaCam"
-XCODE_PROJECT_FILE = REPO_ROOT / "TeslaCam.xcodeproj" / "project.pbxproj"
-IPAD_INFO_PLIST = SWIFT_SHIPPING_ROOT / "TeslaCam_iPad_Info.plist"
+SHIPPING_ROOT = REPO_ROOT / "tescam_cli"
+SWIFT_SHIPPING_ROOT = REPO_ROOT / "Tescam"
+XCODE_PROJECT_FILE = REPO_ROOT / "Tescam.xcodeproj" / "project.pbxproj"
+IPAD_INFO_PLIST = SWIFT_SHIPPING_ROOT / "Tescam_iPad_Info.plist"
 
 
 def _shipping_python_files() -> Iterable[Path]:
-    """Every .py file under teslacam_cli/, recursively."""
+    """Every .py file under tescam_cli/, recursively."""
     yield from sorted(SHIPPING_ROOT.rglob("*.py"))
 
 
 def _shipping_swift_files() -> Iterable[Path]:
-    """Every .swift file under TeslaCam/ (excluding the iPad
+    """Every .swift file under Tescam/ (excluding the iPad
     target's resources and any nested generated content). Plain
-    rglob is fine — TeslaCam/ does not nest derived data; the
+    rglob is fine — Tescam/ does not nest derived data; the
     cache isolation work parks build state under .cache/.
     """
     yield from sorted(SWIFT_SHIPPING_ROOT.rglob("*.swift"))
@@ -86,7 +86,7 @@ class ForbiddenPatternTests(unittest.TestCase):
 
     def test_shell_true_is_never_used_in_subprocess_calls(self):
         # Justification: every subprocess invocation in
-        # teslacam_cli/process_tools.py builds an argv list and passes
+        # tescam_cli/process_tools.py builds an argv list and passes
         # it to subprocess.Popen WITHOUT shell=True. Reintroducing
         # shell=True would let user-controlled paths reach shell
         # metacharacters (sacred rule G3).
@@ -105,7 +105,7 @@ class ForbiddenPatternTests(unittest.TestCase):
     def test_dynamic_eval_and_exec_are_never_used(self):
         # Justification: the CLI never needs to evaluate user-supplied
         # code; eval / exec on any string risks remote code execution
-        # if the input ever flows from a TeslaCam-derived path or env
+        # if the input ever flows from a Tescam-derived path or env
         # var. Limit to the literal call form `eval(` / `exec(` so
         # words like "evaluate" and "execute" in comments are fine.
         eval_pattern = re.compile(r"(?<![A-Za-z_])eval\(")
@@ -142,7 +142,7 @@ class ForbiddenPatternTests(unittest.TestCase):
 
 class SwiftForbiddenPatternTests(unittest.TestCase):
     """Patterns that must never appear in shipping Swift source under
-    ``TeslaCam/``.
+    ``Tescam/``.
 
     Each rule matches a sacred-rule reason. If a pattern legitimately
     needs to come back, update the rule in the same commit and explain
@@ -178,7 +178,7 @@ class SwiftForbiddenPatternTests(unittest.TestCase):
 
     def test_legacy_is_never_referenced_in_shipping_swift(self):
         # Justification: sacred rule 5 — `_legacy/` and
-        # `teslacam_legacy_macos.sh` are reference only. Anything in
+        # `tescam_legacy_macos.sh` are reference only. Anything in
         # shipping code that imports or path-references `_legacy/`
         # is a contract violation per H6 audit
         # (docs/improvement/hygiene-audit-2026-05-09.md).
@@ -209,10 +209,10 @@ class SwiftForbiddenPatternTests(unittest.TestCase):
 
     def test_ios_target_registers_folder_documents(self):
         # Justification: Files handoff and SwiftUI import both need the
-        # iOS app registered for folder documents, otherwise a TeslaCam
+        # iOS app registered for folder documents, otherwise a Tescam
         # folder in Downloads can open to a no-op app launch.
         text = XCODE_PROJECT_FILE.read_text(encoding="utf-8")
-        self.assertIn("INFOPLIST_FILE = TeslaCam/TeslaCam_iPad_Info.plist;", text)
+        self.assertIn("INFOPLIST_FILE = Tescam/Tescam_iPad_Info.plist;", text)
         with IPAD_INFO_PLIST.open("rb") as fh:
             plist = plistlib.load(fh)
         document_types = plist.get("CFBundleDocumentTypes", [])
@@ -230,7 +230,7 @@ class SwiftForbiddenPatternTests(unittest.TestCase):
         # Justification: the iPad dashboard uses the footage grid as
         # the app identity. A static top title wastes vertical space.
         source = (SWIFT_SHIPPING_ROOT / "ContentView.swift").read_text(encoding="utf-8")
-        self.assertNotIn("TeslaCam CCTV", source)
+        self.assertNotIn("Tescam CCTV", source)
 
     def test_content_view_routes_to_separate_platform_views(self):
         # Justification: macOS and iOS share the engine, not the view tree.
@@ -271,7 +271,7 @@ class SwiftForbiddenPatternTests(unittest.TestCase):
         # bleeds edge-to-edge.
         source = (SWIFT_SHIPPING_ROOT / "ContentView.swift").read_text(encoding="utf-8")
         ios_content = _swift_block(source, "private struct IOSContentView")
-        self.assertIn(".background(TeslaCamSceneBackground())", ios_content)
+        self.assertIn(".background(TescamSceneBackground())", ios_content)
         # The workspace gets the already-inset `proxy.size` and never ignores the
         # safe area itself — only the scene background bleeds behind it.
         self.assertNotIn(".ignoresSafeArea", ios_content)
@@ -290,7 +290,7 @@ class SwiftForbiddenPatternTests(unittest.TestCase):
         # The portrait workspace pins the export CTA above the home indicator.
         self.assertIn(".safeAreaInset(edge: .bottom", source)
         # Portrait orientation is declared at the OS level.
-        plist = (SWIFT_SHIPPING_ROOT / "TeslaCam_iPad_Info.plist").read_text(encoding="utf-8")
+        plist = (SWIFT_SHIPPING_ROOT / "Tescam_iPad_Info.plist").read_text(encoding="utf-8")
         self.assertIn("UIInterfaceOrientationPortrait", plist)
 
     def test_ipad_timeline_track_has_enough_vertical_room(self):
@@ -423,7 +423,7 @@ class SwiftForbiddenPatternTests(unittest.TestCase):
         # but owns its native layout instead of reusing the mac dock.
         content = (SWIFT_SHIPPING_ROOT / "ContentView.swift").read_text(encoding="utf-8")
         utils = (SWIFT_SHIPPING_ROOT / "Utils.swift").read_text(encoding="utf-8")
-        self.assertIn("preferredTeslaCamColorScheme()", content)
+        self.assertIn("preferredTescamColorScheme()", content)
         self.assertIn("IOSWorkspace", content)
         self.assertIn("PreviewPanelCard", content)
         self.assertIn("DemoVideoWallPlaceholder", content)
@@ -563,7 +563,7 @@ class SwiftForbiddenPatternTests(unittest.TestCase):
         # Justification: iOS follows the user's system appearance. macOS keeps
         # its intentionally dark review workspace.
         source = (SWIFT_SHIPPING_ROOT / "Utils.swift").read_text(encoding="utf-8")
-        helper = _swift_block(source, "func preferredTeslaCamColorScheme()")
+        helper = _swift_block(source, "func preferredTescamColorScheme()")
         self.assertIn("#if os(macOS)", helper)
         self.assertIn("environment(\\.colorScheme, .dark)", helper)
         self.assertIn("#else", helper)
@@ -571,17 +571,17 @@ class SwiftForbiddenPatternTests(unittest.TestCase):
     def test_app_store_capture_defines_five_stable_scenes(self):
         # Justification: the ASC artwork must be repeatable from real sample-mode
         # UI on every platform rather than assembled from stale ad-hoc captures.
-        source = (REPO_ROOT / "TeslaCamUITests" / "TeslaCamUITests.swift").read_text(encoding="utf-8")
+        source = (REPO_ROOT / "TescamUITests" / "TescamUITests.swift").read_text(encoding="utf-8")
         self.assertIn("testAppStoreScreenshots", source)
         for scene in ("01-overview", "02-playback", "03-cameras", "04-timeline", "05-export"):
             self.assertIn(scene, source)
-        self.assertIn("TESLACAM_SCREENSHOT_DIR", source)
+        self.assertIn("TESCAM_SCREENSHOT_DIR", source)
         self.assertIn("app.windows.firstMatch.screenshot()", source)
         mac_source = (SWIFT_SHIPPING_ROOT / "Main.swift").read_text(encoding="utf-8")
         self.assertIn("width: 1440, height: 900", mac_source)
         content_source = (SWIFT_SHIPPING_ROOT / "ContentView.swift").read_text(encoding="utf-8")
-        self.assertIn('TeslaCamPageHeader(title: "Tescam"', content_source)
-        self.assertIn("TESLACAM_SCREENSHOT_SCENE", content_source)
+        self.assertIn('TescamPageHeader(title: "Tescam"', content_source)
+        self.assertIn("TESCAM_SCREENSHOT_SCENE", content_source)
         self.assertIn('.id("screenshot-export")', content_source)
         self.assertIn("proxy.scrollTo", content_source)
 
@@ -597,12 +597,12 @@ class TestSurfaceTests(unittest.TestCase):
     def test_shipping_root_exists_and_has_python_files(self):
         self.assertTrue(SHIPPING_ROOT.is_dir(), f"{SHIPPING_ROOT} must be a directory")
         files = list(_shipping_python_files())
-        self.assertGreaterEqual(len(files), 5, "expected at least a handful of .py files under teslacam_cli/")
+        self.assertGreaterEqual(len(files), 5, "expected at least a handful of .py files under tescam_cli/")
 
     def test_swift_shipping_root_exists_and_has_swift_files(self):
         self.assertTrue(SWIFT_SHIPPING_ROOT.is_dir(), f"{SWIFT_SHIPPING_ROOT} must be a directory")
         files = list(_shipping_swift_files())
-        self.assertGreaterEqual(len(files), 5, "expected at least a handful of .swift files under TeslaCam/")
+        self.assertGreaterEqual(len(files), 5, "expected at least a handful of .swift files under Tescam/")
 
     def test_grep_helper_actually_finds_real_lines(self):
         # If `_grep_lines` quietly returns [] for everything, the

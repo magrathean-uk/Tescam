@@ -12,10 +12,10 @@
 #   script/ui_sim.sh [screenshot.png]
 #
 # Env overrides:
-#   TESLACAM_SIM        simulator device name (default: "iPad Pro 11-inch (M5)")
-#   TESLACAM_FOOTAGE    real TeslaCam dump to slice from (default: ~/Downloads/Teslacam)
-#   TESLACAM_SAMPLE_EVENTS  number of SentryClips event folders to copy (default: 2)
-#   TESLACAM_SCREENSHOT_SCENE  optional stable scene: 01-overview, 02-playback,
+#   TESCAM_SIM        simulator device name (default: "iPad Pro 11-inch (M5)")
+#   TESCAM_FOOTAGE    real dashcam dump to slice from (default: ~/Downloads/Tescam)
+#   TESCAM_SAMPLE_EVENTS  number of SentryClips event folders to copy (default: 2)
+#   TESCAM_SCREENSHOT_SCENE  optional stable scene: 01-overview, 02-playback,
 #                              03-cameras, 04-timeline, or 05-export
 
 set -euo pipefail
@@ -23,18 +23,18 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-SIM="${TESLACAM_SIM:-iPad Pro 11-inch (M5)}"
-FOOTAGE="${TESLACAM_FOOTAGE:-$HOME/Downloads/Teslacam}"
-SAMPLE_EVENTS="${TESLACAM_SAMPLE_EVENTS:-2}"
-SCREENSHOT_SCENE="${TESLACAM_SCREENSHOT_SCENE:-}"
-SHOT="${1:-/tmp/teslacam_sim.png}"
+SIM="${TESCAM_SIM:-iPad Pro 11-inch (M5)}"
+FOOTAGE="${TESCAM_FOOTAGE:-$HOME/Downloads/Tescam}"
+SAMPLE_EVENTS="${TESCAM_SAMPLE_EVENTS:-2}"
+SCREENSHOT_SCENE="${TESCAM_SCREENSHOT_SCENE:-}"
+SHOT="${1:-/tmp/tescam_sim.png}"
 BID="com.magrathean.teslacam"
-SCHEME="TeslaCam iPad"
+SCHEME="Tescam iPad"
 
 # Build env (derived-data path etc.) — same resolution as the native lane.
 resolve_build_env() {
-  if [[ -n "${TESLACAM_BUILD_ENV:-}" && -f "${TESLACAM_BUILD_ENV}" ]]; then
-    printf '%s\n' "$TESLACAM_BUILD_ENV"; return 0
+  if [[ -n "${TESCAM_BUILD_ENV:-}" && -f "${TESCAM_BUILD_ENV}" ]]; then
+    printf '%s\n' "$TESCAM_BUILD_ENV"; return 0
   fi
   if [[ -f "$ROOT/.cache/build-env.sh" ]]; then printf '%s\n' "$ROOT/.cache/build-env.sh"; return 0; fi
   local default_env="${BOLYKI_SOURCE_ROOT:-$HOME/dev/source}/build-env.sh"
@@ -53,7 +53,7 @@ xcrun simctl boot "$SIM" >/dev/null 2>&1 || true
 xcrun simctl bootstatus "$SIM" -b >/dev/null 2>&1 || true
 
 echo "==> Building iPad target"
-xcodebuild -project TeslaCam.xcodeproj -scheme "$SCHEME" -configuration Debug \
+xcodebuild -project Tescam.xcodeproj -scheme "$SCHEME" -configuration Debug \
   -derivedDataPath "$DERIVED" \
   -destination "platform=iOS Simulator,name=$SIM" \
   CODE_SIGNING_ALLOWED=NO build >/dev/null
@@ -68,7 +68,7 @@ xcrun simctl terminate "$SIM" "$BID" >/dev/null 2>&1 || true
 xcrun simctl launch "$SIM" "$BID" >/dev/null 2>&1 || true
 
 CONTAINER="$(xcrun simctl get_app_container "$SIM" "$BID" data)"
-DEST="$CONTAINER/Documents/TeslaCamSample"
+DEST="$CONTAINER/Documents/TescamSample"
 
 echo "==> Slicing $SAMPLE_EVENTS event(s) from $FOOTAGE into the container"
 rm -rf "$DEST"; mkdir -p "$DEST/SentryClips"
@@ -82,17 +82,17 @@ fi
 CLIP_COUNT="$(find "$DEST" -name '*.mp4' | wc -l | tr -d ' ')"
 echo "    clips: $CLIP_COUNT  event.json: $(find "$DEST" -name 'event.json' | wc -l | tr -d ' ')"
 
-UI_TEST_MODE="${TESLACAM_UI_TEST_MODE:-}"
+UI_TEST_MODE="${TESCAM_UI_TEST_MODE:-}"
 if [[ "$CLIP_COUNT" == "0" && -z "$UI_TEST_MODE" ]]; then
   UI_TEST_MODE="sample"
   echo "    using the deterministic sample timeline because no local footage was found"
 fi
 
-echo "==> Relaunching with TESLACAM_DEBUG_SOURCE=$DEST"
+echo "==> Relaunching with TESCAM_DEBUG_SOURCE=$DEST"
 xcrun simctl terminate "$SIM" "$BID" >/dev/null 2>&1 || true
-SIMCTL_CHILD_TESLACAM_DEBUG_SOURCE="$DEST" \
-SIMCTL_CHILD_TESLACAM_UI_TEST_MODE="$UI_TEST_MODE" \
-SIMCTL_CHILD_TESLACAM_SCREENSHOT_SCENE="$SCREENSHOT_SCENE" \
+SIMCTL_CHILD_TESCAM_DEBUG_SOURCE="$DEST" \
+SIMCTL_CHILD_TESCAM_UI_TEST_MODE="$UI_TEST_MODE" \
+SIMCTL_CHILD_TESCAM_SCREENSHOT_SCENE="$SCREENSHOT_SCENE" \
   xcrun simctl launch "$SIM" "$BID" >/dev/null
 sleep 6
 

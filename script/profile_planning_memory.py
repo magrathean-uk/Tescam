@@ -35,16 +35,16 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import Tuple
 
-from teslacam_cli.composer import select_clip_sets
-from teslacam_cli.domain_contract import (
+from tescam_cli.composer import select_clip_sets
+from tescam_cli.domain_contract import (
     dimensions_manifest,
     layout_manifest,
     scan_manifest,
     selected_sets_manifest,
 )
-from teslacam_cli.layouts import build_camera_layout_plan, fill_missing_dimensions
-from teslacam_cli.models import Camera, Dimensions, DuplicatePolicy, LayoutKind
-from teslacam_cli.scanner import scan_source
+from tescam_cli.layouts import build_camera_layout_plan, fill_missing_dimensions
+from tescam_cli.models import Camera, Dimensions, DuplicatePolicy, LayoutKind
+from tescam_cli.scanner import scan_source
 
 DATASET_SIZES = (10, 100, 1_000, 10_000)
 STUB_FFPROBE = Path("/usr/bin/ffprobe")

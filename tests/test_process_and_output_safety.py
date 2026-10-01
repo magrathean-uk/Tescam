@@ -3,9 +3,9 @@ from tempfile import TemporaryDirectory
 import sys
 import unittest
 
-from teslacam_cli.concat_safety import UnsafeConcatPath, ffconcat_path, validate_ffconcat_path
-from teslacam_cli.process_tools import LimitedProcessTimeout, run_limited_process
-from teslacam_cli.safe_output import atomic_output_target
+from tescam_cli.concat_safety import UnsafeConcatPath, ffconcat_path, validate_ffconcat_path
+from tescam_cli.process_tools import LimitedProcessTimeout, run_limited_process
+from tescam_cli.safe_output import atomic_output_target
 
 
 class ProcessAndOutputSafetyTests(unittest.TestCase):

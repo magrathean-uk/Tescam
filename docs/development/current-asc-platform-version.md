@@ -7,7 +7,7 @@ environment-specific.
 
 ## Release summary
 
-Tescam 1.0 is the first App Store release. It provides local TeslaCam and Sentry Mode
+Tescam 1.0 is the first App Store release. It provides local multi-camera dashcam
 review, synchronized multi-camera playback, timeline range selection, camera selection,
 telemetry-aware workflows, and native evidence export on iPhone, iPad, and Mac. Store assets
 are under `marketing/screenshots/asc_out/`: five iPhone screenshots, five iPad screenshots,

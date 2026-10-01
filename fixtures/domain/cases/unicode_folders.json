@@ -164,19 +164,19 @@
   },
   "expected_output": {
     "default_filename_by_mode": {
-      "lossless": "teslacam_lossless_2026-04-01_08-30-00_to_2026-04-01_08-32-00.mp4",
-      "quality": "teslacam_quality_2026-04-01_08-30-00_to_2026-04-01_08-32-00.mp4"
+      "lossless": "tescam_lossless_2026-04-01_08-30-00_to_2026-04-01_08-32-00.mp4",
+      "quality": "tescam_quality_2026-04-01_08-30-00_to_2026-04-01_08-32-00.mp4"
     },
     "error_with_conflict": {
       "exception_type": "RuntimeError",
       "message_contains": "Output file already exists",
       "raises": true
     },
-    "overwrite_with_conflict": "teslacam_lossless_2026-04-01_08-30-00_to_2026-04-01_08-32-00.mp4",
+    "overwrite_with_conflict": "tescam_lossless_2026-04-01_08-30-00_to_2026-04-01_08-32-00.mp4",
     "unique_resolution": [
-      "teslacam_lossless_2026-04-01_08-30-00_to_2026-04-01_08-32-00.mp4",
-      "teslacam_lossless_2026-04-01_08-30-00_to_2026-04-01_08-32-00-2.mp4",
-      "teslacam_lossless_2026-04-01_08-30-00_to_2026-04-01_08-32-00-3.mp4"
+      "tescam_lossless_2026-04-01_08-30-00_to_2026-04-01_08-32-00.mp4",
+      "tescam_lossless_2026-04-01_08-30-00_to_2026-04-01_08-32-00-2.mp4",
+      "tescam_lossless_2026-04-01_08-30-00_to_2026-04-01_08-32-00-3.mp4"
     ]
   },
   "expected_scan": {

@@ -10,12 +10,12 @@ Use Python 3.9 or newer. The package declares no runtime Python dependencies. In
 python3 -m pip install -e .
 ```
 
-The repository entry point is `./teslacam-cli`; `python3 teslacam.py` and `./teslacam.sh` call the same module. The installed command is `teslacam-cli`.
+The repository entry point is `./tescam-cli`; `python3 tescam.py` and `./tescam.sh` call the same module. The installed command is `tescam-cli`.
 
 Rendering needs `ffmpeg` and `ffprobe` on `PATH`, or explicit `--ffmpeg` and `--ffprobe` paths. HEVC modes need an FFmpeg build with `libx265`.
 
 ```sh
-./teslacam-cli /path/to/TeslaCam --dry-run-json manifest.json
+./tescam-cli /path/to/Tescam --dry-run-json manifest.json
 ```
 
 This scans and writes a plan without rendering. The CLI defaults to `evidence-hevc`. Native Original passthrough, camera-track cuts and telemetry engraving remain app features.
@@ -47,28 +47,28 @@ Inspect the resulting fixture changes. Fixture parity, native tests and a succes
 
 ## Native app
 
-Use Xcode on macOS. Both native scripts source a build environment before invoking Xcode. Set `TESLACAM_BUILD_ENV` to a compatible environment script; they also recognise the maintainer's existing fallback configured in the scripts (`build-env.sh` under `BOLYKI_SOURCE_ROOT`, default `~/dev/source`). DerivedData goes under `XCODE_DERIVED_DATA_PATH` (or `TESLACAM_DERIVED_DATA`); the scripts stop when neither is set instead of falling back to a home path. Run them through Clean Development: `clean-development run --session session-only -- script/test_native.sh`. A missing environment is a setup blocker, not a reason to bypass the scripts with ad hoc build commands.
+Use Xcode on macOS. Both native scripts source a build environment before invoking Xcode. Set `TESCAM_BUILD_ENV` to a compatible environment script; they also recognise the maintainer's existing fallback configured in the scripts (`build-env.sh` under `BOLYKI_SOURCE_ROOT`, default `~/dev/source`). DerivedData goes under `XCODE_DERIVED_DATA_PATH` (or `TESCAM_DERIVED_DATA`); the scripts stop when neither is set instead of falling back to a home path. Run them through Clean Development: `clean-development run --session session-only -- script/test_native.sh`. A missing environment is a setup blocker, not a reason to bypass the scripts with ad hoc build commands.
 
 ```sh
 script/test_native.sh
 script/build_and_run.sh
 ```
 
-The test script builds for testing, runs `TeslaCamTests`, then runs `TeslaCamUITests`. The run script stops an existing Tescam process, builds the macOS app and launches it. `.codex/environments/environment.toml` uses that run script.
+The test script builds for testing, runs `TescamTests`, then runs `TescamUITests`. The run script stops an existing Tescam process, builds the macOS app and launches it. `.codex/environments/environment.toml` uses that run script.
 
-The project contains `TeslaCam` and `TeslaCam iPad` schemes. The local scripts above target macOS. For mobile UI boundaries and source registration, see [the iOS/iPadOS guide](../architecture/ios-ipados-app.md).
+The project contains `Tescam` and `Tescam iPad` schemes. The local scripts above target macOS. For mobile UI boundaries and source registration, see [the iOS/iPadOS guide](../architecture/ios-ipados-app.md).
 
 Native export is the app's shipping export path. Keep export plans, preflight, preview layouts and camera controls aligned. The 4-camera grid has two columns and two rows; the 6-camera grid has three columns and two rows. Missing cameras use black placeholders.
 
 ## Debugging and acceptance
 
-Debug builds accept `TESLACAM_DEBUG_SOURCE` for a local source folder. `TESLACAM_UI_TEST_MODE=blank` exercises onboarding; `TESLACAM_UI_TEST_MODE=sample` supplies the sample timeline. Keep diagnostics local and use the app's Show Log action after a failed or cancelled export.
+Debug builds accept `TESCAM_DEBUG_SOURCE` for a local source folder. `TESCAM_UI_TEST_MODE=blank` exercises onboarding; `TESCAM_UI_TEST_MODE=sample` supplies the sample timeline. Keep diagnostics local and use the app's Show Log action after a failed or cancelled export.
 
 For playback, layout or export changes, verify the affected flow with representative footage: source selection, gaps and duplicates, camera selection, range selection, export, cancellation and output conflicts. Mobile UI changes also need checks in portrait and landscape with safe areas intact. Keep the manual codec picker and Engrave telemetry control.
 
 ## Existing CI
 
-The Python workflow runs the full unittest suite on Python 3.10 and 3.12 after installing FFmpeg and the package. The native workflow builds on `macos-26` with signing disabled and runs `TeslaCamTests`. It does not run the local UI test lane.
+The Python workflow runs the full unittest suite on Python 3.10 and 3.12 after installing FFmpeg and the package. The native workflow builds on `macos-26` with signing disabled and runs `TescamTests`. It does not run the local UI test lane.
 
 These descriptions refer to [.github/workflows/python-tests.yml](../../.github/workflows/python-tests.yml) and [.github/workflows/native-tests.yml](../../.github/workflows/native-tests.yml). Do not treat a workflow description as evidence of a current green run.
 

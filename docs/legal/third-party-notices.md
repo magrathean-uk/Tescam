@@ -9,7 +9,7 @@ own licences, as [`NOTICE`](../../NOTICE) states.
 
 ## FFmpeg and FFprobe (GPL)
 
-`TeslaCam/Resources/ffmpeg_bin/ffmpeg` and `ffprobe` are FFmpeg 7.1 binaries: a third-party
+`Tescam/Resources/ffmpeg_bin/ffmpeg` and `ffprobe` are FFmpeg 7.1 binaries: a third-party
 static build for Apple silicon, tracked in this repository. Their build configuration
 includes `--enable-gpl`, `--enable-libx264` and `--enable-libx265`, so they are licensed under
 the GNU General Public License, version 2 or later, which is compatible with Tescam's
@@ -26,7 +26,7 @@ exact binaries, including the other libraries in their configuration, write to
 
 ## Reference acknowledgements
 
-The app's own [acknowledgements file](../../TeslaCam/Resources/LICENSES.md), bundled with
+The app's own [acknowledgements file](../../Tescam/Resources/LICENSES.md), bundled with
 the app, states Tescam's GPL-3.0-only licence and where its source is, and credits two
 MIT-licensed reference projects that the native Swift/Metal implementation drew ideas from,
 without vendoring their code:
@@ -40,7 +40,7 @@ without vendoring their code:
 
 The Xcode project declares no external Swift package or CocoaPods dependencies; the native
 app uses only Apple frameworks (including AVFoundation and Metal). The Python package
-(`teslacam-cli`) declares no runtime dependencies; its build requirements are
+(`tescam-cli`) declares no runtime dependencies; its build requirements are
 `setuptools>=82.0.1` and `wheel>=0.48.0`. Both are MIT-licensed build tools and are not
 distributed with the package.
 

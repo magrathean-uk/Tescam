@@ -5,19 +5,19 @@ macOS app, with a native touch UI, correct Dynamic Island / safe-area handling, 
 the Teslatlas visual language: no changes to the shared engine.
 
 Read first:
-- `TeslaCam/ContentView.swift`: the whole cross-platform view tree.
-- `TeslaCam/PortraitComponents.swift`: iOS-only Teslatlas-flavoured building blocks.
-- `TeslaCam/Utils.swift`: `TeslaCamTheme` design tokens + `TeslaCamSceneBackground`.
-- `TeslaCam/IPadMain.swift`: the iOS `@main` scene.
-- `TeslaCam/Main.swift`: the macOS AppKit entry (unchanged).
-- `TeslaCam/TeslaCam_iPad_Info.plist` + `TeslaCam.xcodeproj/project.pbxproj`: orientation.
+- `Tescam/ContentView.swift`: the whole cross-platform view tree.
+- `Tescam/PortraitComponents.swift`: iOS-only Teslatlas-flavoured building blocks.
+- `Tescam/Utils.swift`: `TescamTheme` design tokens + `TescamSceneBackground`.
+- `Tescam/IPadMain.swift`: the iOS `@main` scene.
+- `Tescam/Main.swift`: the macOS AppKit entry (unchanged).
+- `Tescam/Tescam_iPad_Info.plist` + `Tescam.xcodeproj/project.pbxproj`: orientation.
 
 ## Shape
 
 Two app targets, two entry points, one shared core:
 
 - **macOS**: `Main.swift` (`NSApplication` + `AppDelegate`) → `ContentView` → `MacContentView`.
-- **iOS / iPadOS**: `IPadMain.swift` (`@main struct TeslaCamIPadApp: App`) → `ContentView` → `IOSContentView`.
+- **iOS / iPadOS**: `IPadMain.swift` (`@main struct TescamIPadApp: App`) → `ContentView` → `IOSContentView`.
 - Both share `AppState` and the engine (`Indexer`, `PlaybackController`, `NativeExportController`,
   `MetalRenderer`, `TelemetryProcessor`, `Models`). The iOS UI binds to the existing `AppState`
   surface only: it adds **no** core API.
@@ -44,7 +44,7 @@ Export button off-screen and left dead space.
 
 ## Safe area / Dynamic Island
 
-- `IOSContentView` is `GeometryReader { … }.background(TeslaCamSceneBackground())` with **no**
+- `IOSContentView` is `GeometryReader { … }.background(TescamSceneBackground())` with **no**
   `ignoresSafeArea` on the reader. `proxy.size` is therefore already the usable, island-free size;
   hand it straight to the workspace. The scene background bleeds under the Island via its **own**
   `ignoresSafeArea`.
@@ -61,12 +61,12 @@ Export button off-screen and left dead space.
 
 ## Design system
 
-- `TeslaCamTheme` (Utils.swift) keeps TeslaCam's dark OLED identity and adds Teslatlas-parity tokens:
+- `TescamTheme` (Utils.swift) keeps Tescam's dark OLED identity and adds Teslatlas-parity tokens:
   accent nudged to `rgb(0.24,0.54,0.93)`, rounded metric type, 48pt CTA height, 560pt content column,
   a progress spectrum, and iOS corner radii (14/12/10).
 - `PortraitComponents.swift` (iOS-only) ports the Teslatlas building blocks onto those tokens:
-  `TeslaCamPageHeader`, `TeslaCamPillPicker`, `TeslaCamSectionCard`, `TeslaCamCTAButtonStyle`, and a
-  Reduce-Motion-aware `teslaCamReveal` entrance. It is registered in `project.pbxproj` for **both**
+  `TescamPageHeader`, `TescamPillPicker`, `TescamSectionCard`, `TescamCTAButtonStyle`, and a
+  Reduce-Motion-aware `tescamReveal` entrance. It is registered in `project.pbxproj` for **both**
   app targets: the project references sources explicitly, so a new `.swift` file will not compile
   until it is wired the way `Utils.swift` is.
 
@@ -84,7 +84,7 @@ The demo placeholder (no footage) mirrors this: `columns = count > 4 ? 3 : 2`.
 
 - Manual export controls are preserved on iOS: the codec picker binds `state.exportPreset`
   (`setExportPreset`), and the **Engrave telemetry** switch binds `exportOverlayOptions.telemetryHUD`
-  (default off). `TeslaCam/NativeExportController.swift` is the current export implementation and
+  (default off). `Tescam/NativeExportController.swift` is the current export implementation and
   `docs/architecture/domain-contract.md` owns the shared preset contract.
 - **Export HUD flip fix:** the engraved telemetry HUD text rendered upside-down only on iOS.
   `ExportOverlayDrawing.drawText` had an iOS-only branch that flipped the CoreText coordinate system
@@ -94,7 +94,7 @@ The demo placeholder (no footage) mirrors this: `columns = count > 4 ? 3 : 2`.
 
 ## Orientation
 
-Portrait is unlocked in `TeslaCam_iPad_Info.plist` (`UISupportedInterfaceOrientations` +
+Portrait is unlocked in `Tescam_iPad_Info.plist` (`UISupportedInterfaceOrientations` +
 `~ipad`) **and** the `INFOPLIST_KEY_UISupportedInterfaceOrientations` in both pbxproj build
 configs. They must agree.
 
@@ -102,7 +102,7 @@ configs. They must agree.
 
 - No core edits: the iOS UI binds only to existing `AppState` API.
 - Keep the manual codec picker and the engrave-telemetry toggle; don't revert to an automatic-only design.
-- Register new Swift files in `project.pbxproj` for both `TeslaCam` (mac) and `TeslaCam iPad` targets.
+- Register new Swift files in `project.pbxproj` for both `Tescam` (mac) and `Tescam iPad` targets.
 - `tests/test_codebase_invariants.py` pins the iOS layout facts (single adaptive `IOSWorkspace`,
   split-column wide layout, portrait-first orientation, 2×2 preview, safe-area discipline, upright
   HUD). Update those invariants in the same change when the layout legitimately changes.

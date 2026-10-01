@@ -2,8 +2,8 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
-from teslacam_cli.models import Camera, DuplicatePolicy
-from teslacam_cli.scanner import normalize_camera, scan_clips, scan_source
+from tescam_cli.models import Camera, DuplicatePolicy
+from tescam_cli.scanner import normalize_camera, scan_clips, scan_source
 
 
 class ScannerTests(unittest.TestCase):

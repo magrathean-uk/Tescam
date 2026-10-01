@@ -1,32 +1,32 @@
 #!/usr/bin/env ruby
-# Adds the "TeslaCam iPad" target to the Xcode project.
+# Adds the "Tescam iPad" target to the Xcode project.
 # Shares most sources with macOS but swaps Main.swift for IPadMain.swift.
 
 require 'xcodeproj'
 
-project_path = File.join(__dir__, '..', 'TeslaCam.xcodeproj')
+project_path = File.join(__dir__, '..', 'Tescam.xcodeproj')
 project = Xcodeproj::Project.open(project_path)
 
 # Check if target already exists
-if project.targets.any? { |t| t.name == 'TeslaCam iPad' }
-  puts "Target 'TeslaCam iPad' already exists. Skipping."
+if project.targets.any? { |t| t.name == 'Tescam iPad' }
+  puts "Target 'Tescam iPad' already exists. Skipping."
   exit 0
 end
 
-mac_target = project.targets.find { |t| t.name == 'TeslaCam' }
-abort("Cannot find macOS TeslaCam target") unless mac_target
+mac_target = project.targets.find { |t| t.name == 'Tescam' }
+abort("Cannot find macOS Tescam target") unless mac_target
 
 # Create the iPad target
 ipad_target = project.new_target(
   :application,
-  'TeslaCam iPad',
+  'Tescam iPad',
   :ios,
   '18.0'
 )
 
 # Find source group
-teslacam_group = project.main_group.find_subpath('TeslaCam', false)
-abort("Cannot find TeslaCam group") unless teslacam_group
+tescam_group = project.main_group.find_subpath('Tescam', false)
+abort("Cannot find Tescam group") unless tescam_group
 
 # Files to share between both targets (everything except Main.swift and Exporter.swift)
 shared_file_names = %w[
@@ -49,11 +49,11 @@ shared_file_names = %w[
 ipad_only_files = %w[IPadMain.swift]
 
 # Add new file references if not already present
-new_files = %w[PlatformFileAccess.swift MetalPlayerView_iPad.swift IPadMain.swift TeslaCam_iPad.entitlements]
+new_files = %w[PlatformFileAccess.swift MetalPlayerView_iPad.swift IPadMain.swift Tescam_iPad.entitlements]
 new_files.each do |fname|
-  unless teslacam_group.files.any? { |f| f.display_name == fname }
-    file_path = File.join('TeslaCam', fname)
-    ref = teslacam_group.new_reference(fname)
+  unless tescam_group.files.any? { |f| f.display_name == fname }
+    file_path = File.join('Tescam', fname)
+    ref = tescam_group.new_reference(fname)
     puts "Added file reference: #{fname}"
   end
 end
@@ -61,7 +61,7 @@ end
 # Add source files to iPad target
 all_ipad_sources = shared_file_names + ipad_only_files
 all_ipad_sources.each do |fname|
-  ref = teslacam_group.files.find { |f| f.display_name == fname }
+  ref = tescam_group.files.find { |f| f.display_name == fname }
   if ref
     if fname.end_with?('.metal')
       ipad_target.source_build_phase.add_file_reference(ref)
@@ -75,7 +75,7 @@ all_ipad_sources.each do |fname|
 end
 
 # Add resources
-resources_group = teslacam_group.find_subpath('Resources', false)
+resources_group = tescam_group.find_subpath('Resources', false)
 if resources_group
   resources_group.files.each do |res|
     ipad_target.resources_build_phase.add_file_reference(res)
@@ -84,7 +84,7 @@ if resources_group
 end
 
 # Add Assets.xcassets
-assets_ref = teslacam_group.files.find { |f| f.display_name == 'Assets.xcassets' }
+assets_ref = tescam_group.files.find { |f| f.display_name == 'Assets.xcassets' }
 if assets_ref
   ipad_target.resources_build_phase.add_file_reference(assets_ref)
   puts "Added to iPad Resources: Assets.xcassets"
@@ -95,14 +95,14 @@ ipad_target.build_configurations.each do |config|
   config.build_settings['SDKROOT'] = 'iphoneos'
   config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '18.0'
   config.build_settings['TARGETED_DEVICE_FAMILY'] = '2' # iPad only
-  config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = 'com.magrathean.TeslaCam.iPad'
+  config.build_settings['PRODUCT_BUNDLE_IDENTIFIER'] = 'com.magrathean.Tescam.iPad'
   config.build_settings['PRODUCT_NAME'] = '$(TARGET_NAME)'
   config.build_settings['MARKETING_VERSION'] = '1.0'
   config.build_settings['CURRENT_PROJECT_VERSION'] = '1'
   config.build_settings['GENERATE_INFOPLIST_FILE'] = 'YES'
   config.build_settings['CODE_SIGN_STYLE'] = 'Automatic'
   config.build_settings['DEVELOPMENT_TEAM'] = '3T84D5XQXL'
-  config.build_settings['CODE_SIGN_ENTITLEMENTS'] = 'TeslaCam/TeslaCam_iPad.entitlements'
+  config.build_settings['CODE_SIGN_ENTITLEMENTS'] = 'Tescam/Tescam_iPad.entitlements'
   config.build_settings['ASSETCATALOG_COMPILER_APPICON_NAME'] = 'AppIcon'
   config.build_settings['ENABLE_PREVIEWS'] = 'YES'
   config.build_settings['SWIFT_VERSION'] = '5.0'
@@ -129,7 +129,7 @@ end
 
 # Also add new files to macOS target's source build phase
 %w[PlatformFileAccess.swift].each do |fname|
-  ref = teslacam_group.files.find { |f| f.display_name == fname }
+  ref = tescam_group.files.find { |f| f.display_name == fname }
   if ref && !mac_target.source_build_phase.files.any? { |bf| bf.file_ref == ref }
     mac_target.source_build_phase.add_file_reference(ref)
     puts "Added to macOS Sources: #{fname}"
@@ -137,4 +137,4 @@ end
 end
 
 project.save
-puts "\nDone. 'TeslaCam iPad' target added successfully."
+puts "\nDone. 'Tescam iPad' target added successfully."

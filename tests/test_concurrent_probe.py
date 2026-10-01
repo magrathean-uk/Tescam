@@ -15,14 +15,14 @@ from datetime import datetime
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from teslacam_cli.composer import (
+from tescam_cli.composer import (
     _PROBE_MAX_WORKERS_DEFAULT,
     _concurrent_probe,
     collect_clip_readability,
     probe_dimensions_for_selection,
     select_clip_sets,
 )
-from teslacam_cli.models import Camera, ClipSet, Dimensions, SelectedSet
+from tescam_cli.models import Camera, ClipSet, Dimensions, SelectedSet
 
 
 _STUB_FFPROBE = Path("/usr/bin/ffprobe")
@@ -214,23 +214,23 @@ class SelectClipSetsConcurrentDurationProbeTests(unittest.TestCase):
 
 class EnvOverrideTests(unittest.TestCase):
     def test_env_var_caps_worker_count(self):
-        from teslacam_cli.composer import _probe_max_workers
+        from tescam_cli.composer import _probe_max_workers
 
-        original = os.environ.get("TESLACAM_PROBE_JOBS")
+        original = os.environ.get("TESCAM_PROBE_JOBS")
         try:
-            os.environ["TESLACAM_PROBE_JOBS"] = "1"
+            os.environ["TESCAM_PROBE_JOBS"] = "1"
             self.assertEqual(_probe_max_workers(), 1)
-            os.environ["TESLACAM_PROBE_JOBS"] = "16"
+            os.environ["TESCAM_PROBE_JOBS"] = "16"
             self.assertEqual(_probe_max_workers(), 16)
-            os.environ["TESLACAM_PROBE_JOBS"] = "garbage"
+            os.environ["TESCAM_PROBE_JOBS"] = "garbage"
             self.assertEqual(_probe_max_workers(), _PROBE_MAX_WORKERS_DEFAULT)
-            os.environ["TESLACAM_PROBE_JOBS"] = "0"
+            os.environ["TESCAM_PROBE_JOBS"] = "0"
             self.assertEqual(_probe_max_workers(), _PROBE_MAX_WORKERS_DEFAULT)
         finally:
             if original is None:
-                os.environ.pop("TESLACAM_PROBE_JOBS", None)
+                os.environ.pop("TESCAM_PROBE_JOBS", None)
             else:
-                os.environ["TESLACAM_PROBE_JOBS"] = original
+                os.environ["TESCAM_PROBE_JOBS"] = original
 
 
 if __name__ == "__main__":

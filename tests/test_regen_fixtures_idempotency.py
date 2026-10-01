@@ -28,7 +28,7 @@ def _load_regen_module():
     """Load ``script/regen_fixtures.py`` as a module despite the
     ``script/`` directory not being a Python package.
     """
-    spec = importlib.util.spec_from_file_location("teslacam_regen_fixtures", REGEN_PATH)
+    spec = importlib.util.spec_from_file_location("tescam_regen_fixtures", REGEN_PATH)
     if spec is None or spec.loader is None:
         raise RuntimeError(f"Could not spec {REGEN_PATH}")
     module = importlib.util.module_from_spec(spec)

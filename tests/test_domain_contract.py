@@ -5,22 +5,22 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
-from teslacam_cli.cli import (
+from tescam_cli.cli import (
     apply_output_conflict_policy,
     dataset_range,
     default_output_filename,
     unique_output_path,
 )
-from teslacam_cli.composer import select_clip_sets
-from teslacam_cli.domain_contract import (
+from tescam_cli.composer import select_clip_sets
+from tescam_cli.domain_contract import (
     dry_run_manifest,
     manifest_json,
     scan_manifest,
     selected_sets_manifest,
 )
-from teslacam_cli.layouts import build_camera_layout_plan, build_layout, fill_missing_dimensions
-from teslacam_cli.models import Camera, Dimensions, DuplicatePolicy, LayoutKind, OutputConflictPolicy, SelectedSet
-from teslacam_cli.scanner import scan_source
+from tescam_cli.layouts import build_camera_layout_plan, build_layout, fill_missing_dimensions
+from tescam_cli.models import Camera, Dimensions, DuplicatePolicy, LayoutKind, OutputConflictPolicy, SelectedSet
+from tescam_cli.scanner import scan_source
 
 FIXTURE_DIR = Path(__file__).resolve().parent.parent / "fixtures" / "domain" / "cases"
 
@@ -70,7 +70,7 @@ class DomainFixtureParityTests(unittest.TestCase):
                             self.assertEqual(manifest, case["expected_scan"][policy.value])
 
     def test_shared_layout_fixtures_round_trip_through_scan_then_layout_for_all_profiles(self):
-        from teslacam_cli.domain_contract import layout_manifest
+        from tescam_cli.domain_contract import layout_manifest
         cases = sorted(FIXTURE_DIR.glob("*.json"))
         self.assertGreaterEqual(len(cases), 4)
         for fixture_path in cases:
@@ -222,20 +222,20 @@ class DomainFixtureParityTests(unittest.TestCase):
         end = datetime(2026, 1, 1, 0, 5, 30)
         self.assertEqual(
             default_output_filename("lossless", start, end),
-            "teslacam_lossless_2026-01-01_00-00-00_to_2026-01-01_00-05-30.mp4",
+            "tescam_lossless_2026-01-01_00-00-00_to_2026-01-01_00-05-30.mp4",
         )
         self.assertEqual(
             default_output_filename("fast", start, end),
-            "teslacam_fast_2026-01-01_00-00-00_to_2026-01-01_00-05-30.mp4",
+            "tescam_fast_2026-01-01_00-00-00_to_2026-01-01_00-05-30.mp4",
         )
 
     def test_unique_output_path_appends_dash_counter(self):
         with TemporaryDirectory() as temp_dir:
-            base = Path(temp_dir) / "teslacam_lossless_a_to_b.mp4"
+            base = Path(temp_dir) / "tescam_lossless_a_to_b.mp4"
             base.write_bytes(b"")
-            self.assertEqual(unique_output_path(base).name, "teslacam_lossless_a_to_b-2.mp4")
-            (base.parent / "teslacam_lossless_a_to_b-2.mp4").write_bytes(b"")
-            self.assertEqual(unique_output_path(base).name, "teslacam_lossless_a_to_b-3.mp4")
+            self.assertEqual(unique_output_path(base).name, "tescam_lossless_a_to_b-2.mp4")
+            (base.parent / "tescam_lossless_a_to_b-2.mp4").write_bytes(b"")
+            self.assertEqual(unique_output_path(base).name, "tescam_lossless_a_to_b-3.mp4")
 
     def test_dry_run_manifest_is_machine_readable_and_contains_export_contract(self):
         with TemporaryDirectory() as temp_dir:
@@ -281,7 +281,7 @@ class DomainFixtureParityTests(unittest.TestCase):
 
         payload = json.loads(manifest_json(manifest))
         self.assertEqual(payload["schema_version"], 1)
-        self.assertEqual(payload["type"], "teslacam.dry-run")
+        self.assertEqual(payload["type"], "tescam.dry-run")
         self.assertEqual(payload["duplicate_policy"], "merge-by-time")
         self.assertEqual(payload["output_conflict"], "unique")
         self.assertEqual(payload["telemetry"]["sei_inspection"], "not_performed")

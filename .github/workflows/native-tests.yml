@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   unittest:
-    name: TeslaCamTests
+    name: TescamTests
     runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
@@ -25,8 +25,8 @@ jobs:
       - name: Build for testing
         run: |
           xcodebuild \
-            -project TeslaCam.xcodeproj \
-            -scheme TeslaCam \
+            -project Tescam.xcodeproj \
+            -scheme Tescam \
             -configuration Debug \
             -derivedDataPath build \
             -destination 'platform=macOS' \
@@ -38,17 +38,17 @@ jobs:
             DEVELOPMENT_TEAM="" \
             build-for-testing
 
-      - name: Run TeslaCamTests
+      - name: Run TescamTests
         run: |
           xcodebuild \
-            -project TeslaCam.xcodeproj \
-            -scheme TeslaCam \
+            -project Tescam.xcodeproj \
+            -scheme Tescam \
             -configuration Debug \
             -derivedDataPath build \
             -destination 'platform=macOS' \
             -parallel-testing-enabled NO \
             -maximum-parallel-testing-workers 1 \
-            -only-testing:TeslaCamTests \
+            -only-testing:TescamTests \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \

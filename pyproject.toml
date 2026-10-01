@@ -3,9 +3,9 @@ requires = ["setuptools>=82.0.1", "wheel>=0.48.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "teslacam-cli"
+name = "tescam-cli"
 version = "0.1.0"
-description = "Cross-platform interactive CLI for composing TeslaCam multi-camera footage"
+description = "Cross-platform interactive CLI for composing multi-camera dashcam footage"
 readme = "README.md"
 requires-python = ">=3.9"
 license = "GPL-3.0-only"
@@ -31,10 +31,10 @@ classifiers = [
 ]
 
 [project.scripts]
-teslacam-cli = "teslacam_cli.cli:main"
+tescam-cli = "tescam_cli.cli:main"
 
 [tool.setuptools]
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["teslacam_cli*"]
+include = ["tescam_cli*"]

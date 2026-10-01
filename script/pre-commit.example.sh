@@ -14,7 +14,7 @@
 #
 # Skip on a one-off basis with `git commit --no-verify`.
 #
-# Native macOS tests (xcodebuild + TeslaCamTests) are deliberately NOT
+# Native macOS tests (xcodebuild + TescamTests) are deliberately NOT
 # run by this hook — they take too long for a per-commit gate. Run them
 # locally with `script/test_native.sh` before pushing.
 
@@ -40,12 +40,12 @@ PYTHON_BIN="$(command -v python3 || command -v python || true)"
 if [[ -z "$PYTHON_BIN" ]]; then
   echo "[pre-commit] python3 not on PATH; skipping unittest run."
 else
-  if ! "$PYTHON_BIN" -m unittest discover tests > /tmp/teslacam-pre-commit.log 2>&1; then
-    echo "[pre-commit] FAIL — Python tests failed. Tail of /tmp/teslacam-pre-commit.log:" >&2
-    tail -20 /tmp/teslacam-pre-commit.log >&2
+  if ! "$PYTHON_BIN" -m unittest discover tests > /tmp/tescam-pre-commit.log 2>&1; then
+    echo "[pre-commit] FAIL — Python tests failed. Tail of /tmp/tescam-pre-commit.log:" >&2
+    tail -20 /tmp/tescam-pre-commit.log >&2
     exit 1
   fi
-  tail -3 /tmp/teslacam-pre-commit.log
+  tail -3 /tmp/tescam-pre-commit.log
 fi
 
 echo "[pre-commit] git diff --check (whitespace)..."
@@ -54,14 +54,14 @@ if ! git diff --cached --check; then
   exit 1
 fi
 
-# Cache-leak tripwire: any TeslaCam-* derived-data folder newer than the
+# Cache-leak tripwire: any Tescam-* derived-data folder newer than the
 # repo's .cache root means an xcodebuild call escaped -derivedDataPath.
 if [[ -d "$REPO_ROOT/.cache" ]]; then
   if find "$HOME/Library/Developer/Xcode/DerivedData" \
-       -maxdepth 2 -name 'TeslaCam-*' \
+       -maxdepth 2 -name 'Tescam-*' \
        -newer "$REPO_ROOT/.cache" \
        -print -quit 2>/dev/null | grep -q .; then
-    echo "[pre-commit] FAIL — cache leak: TeslaCam-* in user DerivedData newer than .cache/." >&2
+    echo "[pre-commit] FAIL — cache leak: Tescam-* in user DerivedData newer than .cache/." >&2
     echo "             An xcodebuild invocation bypassed -derivedDataPath." >&2
     exit 1
   fi

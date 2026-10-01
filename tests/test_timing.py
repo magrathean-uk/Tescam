@@ -3,9 +3,9 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
-from teslacam_cli.cli import dataset_range
-from teslacam_cli.composer import select_clip_sets
-from teslacam_cli.models import Camera, ClipSet
+from tescam_cli.cli import dataset_range
+from tescam_cli.composer import select_clip_sets
+from tescam_cli.models import Camera, ClipSet
 
 
 class DurationProbe:

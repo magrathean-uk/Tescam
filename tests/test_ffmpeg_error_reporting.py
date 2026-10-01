@@ -1,7 +1,7 @@
 import sys
 import unittest
 
-from teslacam_cli.ffmpeg_tools import (
+from tescam_cli.ffmpeg_tools import (
     FFMPEG_ERROR_STDERR_TAIL_LINES,
     FfmpegRuntimeError,
     extract_filter_complex,

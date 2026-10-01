@@ -10,7 +10,7 @@ Include the affected version or commit, platform, reproduction steps, impact, an
 
 This policy covers the native macOS, iPhone, and iPad app, the Python CLI, and repository-maintained build and release support. Relevant findings include unauthorized access to selected files, exposure of recordings or parsed telemetry, unsafe handling of malformed media or telemetry, unintended disclosure through logs or exports, and an unexpected external communication or telemetry path.
 
-The app processes user-selected TeslaCam recordings. On macOS it uses security-scoped bookmarks to restore selected folders. The privacy manifest declares no tracking and no collected data types. It declares use of UserDefaults, file timestamps, disk space, and boot-time APIs. iPad exports are written to app temporary storage before a user chooses a share destination.
+The app processes user-selected dashcam recordings. On macOS it uses security-scoped bookmarks to restore selected folders. The privacy manifest declares no tracking and no collected data types. It declares use of UserDefaults, file timestamps, disk space, and boot-time APIs. iPad exports are written to app temporary storage before a user chooses a share destination.
 
 Telemetry may include location and vehicle data. Telemetry engraving is off by default, and exports or shares can still disclose data that the user elects to include.
 

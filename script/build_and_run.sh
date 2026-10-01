@@ -6,12 +6,12 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 resolve_build_env() {
-  if [[ -n "${TESLACAM_BUILD_ENV:-}" ]]; then
-    if [[ -f "$TESLACAM_BUILD_ENV" ]]; then
-      printf '%s\n' "$TESLACAM_BUILD_ENV"
+  if [[ -n "${TESCAM_BUILD_ENV:-}" ]]; then
+    if [[ -f "$TESCAM_BUILD_ENV" ]]; then
+      printf '%s\n' "$TESCAM_BUILD_ENV"
       return 0
     fi
-    echo "TESLACAM_BUILD_ENV is set but does not exist: $TESLACAM_BUILD_ENV" >&2
+    echo "TESCAM_BUILD_ENV is set but does not exist: $TESCAM_BUILD_ENV" >&2
     return 1
   fi
 
@@ -23,7 +23,7 @@ resolve_build_env() {
 
   cat >&2 <<EOM
 Missing build environment script.
-Set TESLACAM_BUILD_ENV to a valid build-env.sh, or create $default_env.
+Set TESCAM_BUILD_ENV to a valid build-env.sh, or create $default_env.
 EOM
   return 1
 }
@@ -37,19 +37,19 @@ if ! command -v xcodebuild >/dev/null 2>&1; then
   exit 1
 fi
 
-if [[ -z "${TESLACAM_DERIVED_DATA:-}" && -z "${XCODE_DERIVED_DATA_PATH:-}" ]]; then
-  echo "XCODE_DERIVED_DATA_PATH is not set. Load the routed environment (source ~/dev/env.zsh) or point TESLACAM_BUILD_ENV at a build-env.sh that sets it." >&2
+if [[ -z "${TESCAM_DERIVED_DATA:-}" && -z "${XCODE_DERIVED_DATA_PATH:-}" ]]; then
+  echo "XCODE_DERIVED_DATA_PATH is not set. Load the routed environment (source ~/dev/env.zsh) or point TESCAM_BUILD_ENV at a build-env.sh that sets it." >&2
   exit 1
 fi
 
-DERIVED_DATA="${TESLACAM_DERIVED_DATA:-$XCODE_DERIVED_DATA_PATH/Tescam}"
+DERIVED_DATA="${TESCAM_DERIVED_DATA:-$XCODE_DERIVED_DATA_PATH/Tescam}"
 APP_PATH="$DERIVED_DATA/Build/Products/Debug/Tescam.app"
 
 pkill -x Tescam || true
 
 xcodebuild \
-  -project TeslaCam.xcodeproj \
-  -scheme TeslaCam \
+  -project Tescam.xcodeproj \
+  -scheme Tescam \
   -configuration Debug \
   -derivedDataPath "$DERIVED_DATA" \
   build

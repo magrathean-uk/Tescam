@@ -59,7 +59,7 @@ Native export presets are intent labels over native codecs: Original passthrough
 Default CLI output names use:
 
 ```text
-teslacam_MODE_START_to_END.mp4
+tescam_MODE_START_to_END.mp4
 ```
 
 where `START` and `END` are contract timestamps. A directory output argument receives the default filename. A non-`.mp4` CLI output path is normalized to `.mp4`.
@@ -131,7 +131,7 @@ The matching parity tests are:
 - `test_shared_selection_fixtures_round_trip_through_select_clip_sets_for_all_duplicate_policies`
 - `test_shared_output_fixtures_match_apply_output_conflict_policy_for_all_policies`
 
-Native parity in `TeslaCamTests/TeslaCamTests.swift` covers these surfaces:
+Native parity in `TescamTests/TescamTests.swift` covers these surfaces:
 
 - `sharedDomainFixturesMatchNativeScanManifestsForAllDuplicatePolicies`
 - `sharedLayoutFixturesMatchNativeLayoutPlan`

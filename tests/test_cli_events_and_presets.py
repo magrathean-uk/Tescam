@@ -6,9 +6,9 @@ from datetime import datetime
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from teslacam_cli.cli import resolve_event_window
-from teslacam_cli.events import scan_events
-from teslacam_cli.ffmpeg_tools import ToolResolutionError, choose_encoder
+from tescam_cli.cli import resolve_event_window
+from tescam_cli.events import scan_events
+from tescam_cli.ffmpeg_tools import ToolResolutionError, choose_encoder
 
 
 def _write_event(folder: Path, payload: dict) -> None:
@@ -89,7 +89,7 @@ class DeliveryPresetTests(unittest.TestCase):
     """
 
     def _choose(self, mode: str, encoders_text: str):
-        import teslacam_cli.ffmpeg_tools as ft
+        import tescam_cli.ffmpeg_tools as ft
 
         original = ft._encoders_text
         ft._encoders_text = lambda *_a, **_k: encoders_text

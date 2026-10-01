@@ -3,8 +3,8 @@ from tempfile import TemporaryDirectory
 import os
 import unittest
 
-from teslacam_cli.models import Camera, DuplicatePolicy
-from teslacam_cli.scanner import normalize_camera, scan_source
+from tescam_cli.models import Camera, DuplicatePolicy
+from tescam_cli.scanner import normalize_camera, scan_source
 
 
 class ScannerSecurityTests(unittest.TestCase):

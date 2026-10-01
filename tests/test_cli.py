@@ -6,7 +6,7 @@ from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
 
-from teslacam_cli.cli import (
+from tescam_cli.cli import (
     RunOptions,
     RunPlanBuilder,
     apply_output_conflict_policy,
@@ -15,8 +15,8 @@ from teslacam_cli.cli import (
     resolve_output_path,
     unique_output_path,
 )
-from teslacam_cli.composer import RenderConcatStarted, RenderPartStarted, RenderStarted, compose
-from teslacam_cli.models import (
+from tescam_cli.composer import RenderConcatStarted, RenderPartStarted, RenderStarted, compose
+from tescam_cli.models import (
     Camera,
     CellSpec,
     ClipSet,
@@ -117,7 +117,7 @@ class CliPathTests(unittest.TestCase):
             )
 
         self.assertEqual(resolved.parent, destination.resolve())
-        self.assertTrue(resolved.name.startswith("teslacam_lossless_"))
+        self.assertTrue(resolved.name.startswith("tescam_lossless_"))
         self.assertEqual(resolved.suffix, ".mp4")
 
     def test_default_output_path_does_not_create_output_directory(self):
@@ -197,8 +197,8 @@ class CliPathTests(unittest.TestCase):
                 (source / f"2026-01-01_00-00-00-{camera}.mp4").write_bytes(b"x")
             workdir = root / "work"
 
-            with patch("teslacam_cli.cli.resolve_tools", return_value=(Path("/fake/ffmpeg"), Path("/fake/ffprobe"))):
-                with patch("teslacam_cli.cli.MediaProbe", return_value=FakeMediaProbe()):
+            with patch("tescam_cli.cli.resolve_tools", return_value=(Path("/fake/ffmpeg"), Path("/fake/ffprobe"))):
+                with patch("tescam_cli.cli.MediaProbe", return_value=FakeMediaProbe()):
                     result = main(
                         [
                             str(source),

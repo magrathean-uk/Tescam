@@ -9,7 +9,7 @@ See LICENSE for the full licence text.
 
 This repository includes third-party material:
 
-FFmpeg and FFprobe 7.1 (TeslaCam/Resources/ffmpeg_bin/) — GNU General Public License,
+FFmpeg and FFprobe 7.1 (Tescam/Resources/ffmpeg_bin/) — GNU General Public License,
 version 2 or later. A third-party static build for Apple silicon, configured with
 --enable-gpl, --enable-libx264 and --enable-libx265 among other libraries; `ffmpeg -version`
 prints the full configuration. The command-line tool uses them when no other FFmpeg is
@@ -18,7 +18,7 @@ https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz. For the complete corresponding so
 these binaries, write to contact@magrathean.uk. See docs/legal/third-party-notices.md.
 
 Sentry-Six and tesla-sentry-viewer-frontend — MIT — reference projects credited in
-TeslaCam/Resources/LICENSES.md; their code is not included.
+Tescam/Resources/LICENSES.md; their code is not included.
 
 "Tescam" and the Tescam icon are trade marks of MAGRATHEAN UK LTD. The licence does not
 grant rights to them; see docs/legal/trademarks.md.

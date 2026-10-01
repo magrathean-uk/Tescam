@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/magrathean-uk/magrathean-uk/main/assets/icons/teslacam.png" width="96" height="96" alt="">
+  <img src="Tescam/Assets.xcassets/AppIcon.appiconset/icon_256.png" width="96" height="96" alt="">
 </p>
 
 <h1 align="center">Tescam</h1>
 
-<p align="center">A TeslaCam and Sentry Mode footage browser and exporter for macOS, iPhone and iPad, with a portable Python CLI.</p>
+<p align="center">A multi-camera dashcam footage browser and exporter for macOS, iPhone and iPad, with a portable Python CLI.</p>
 
 <p align="center">
   <a href="https://magrathean.uk/solutions/tescam/">Website</a> ·
@@ -15,7 +15,7 @@
 ## Overview
 
 Tescam is maintained by Magrathean. The native SwiftUI app and the Python CLI both read
-TeslaCam clip trees, resolve camera names and duplicate clips, and plan a selected time
+dashcam clip trees, resolve camera names and duplicate clips, and plan a selected time
 range for export. The app is the shipping macOS, iPhone and iPad export path and adds
 synchronized playback; the CLI is a portable, dependency-light ffmpeg workflow for macOS,
 Linux and Windows. The App Store release is under review; the CLI ships from this
@@ -33,9 +33,9 @@ The current Xcode targets use native export and do not include FFmpeg in their r
 
 ## Repository map
 
-- `TeslaCam/`: native app source and resources for macOS and iOS/iPadOS.
-- `TeslaCamTests/` and `TeslaCamUITests/`: native test targets.
-- `teslacam_cli/`: Python CLI package.
+- `Tescam/`: native app source and resources for macOS and iOS/iPadOS.
+- `TescamTests/` and `TescamUITests/`: native test targets.
+- `tescam_cli/`: Python CLI package.
 - `tests/`: Python unit and integration tests.
 - `fixtures/domain/cases/`: shared Swift and Python domain fixtures.
 - `script/test_native.sh`: native build and test lane.
@@ -55,30 +55,30 @@ For the native app, use Xcode on macOS. The current project targets macOS 26 and
 Run the CLI from the repository root:
 
 ```sh
-./teslacam-cli
+./tescam-cli
 ```
 
 The compatibility adapters invoke the same Python module:
 
 ```sh
-python3 teslacam.py
-./teslacam.sh
+python3 tescam.py
+./tescam.sh
 ```
 
-The package declares no runtime Python dependencies. An editable install into an active virtual environment is optional if you want the `teslacam-cli` entry point on `PATH`:
+The package declares no runtime Python dependencies. An editable install into an active virtual environment is optional if you want the `tescam-cli` entry point on `PATH`:
 
 ```sh
 python3 -m pip install -e .
-teslacam-cli /path/to/TeslaCam --dry-run-json manifest.json
+tescam-cli /path/to/Tescam --dry-run-json manifest.json
 ```
 
 Useful non-interactive examples:
 
 ```sh
-teslacam-cli /path/to/TeslaCam --start 2026-01-01_12-00-00 --end 2026-01-01_12-05-00 -o export.mp4
-teslacam-cli /path/to/TeslaCam --profile sixcam --mode review -o review.mp4
-teslacam-cli /path/to/TeslaCam --list-events
-teslacam-cli /path/to/TeslaCam --event 1 --pre 30 --post 30 -o event.mp4
+tescam-cli /path/to/Tescam --start 2026-01-01_12-00-00 --end 2026-01-01_12-05-00 -o export.mp4
+tescam-cli /path/to/Tescam --profile sixcam --mode review -o review.mp4
+tescam-cli /path/to/Tescam --list-events
+tescam-cli /path/to/Tescam --event 1 --pre 30 --post 30 -o event.mp4
 ```
 
 `--profile` accepts `auto`, `legacy4`, or `sixcam`. `--duplicate-policy` accepts `merge-by-time`, `prefer-newest`, or `keep-all`. `--output-conflict` accepts `unique`, `overwrite`, or `error`. `--dry-run` prints the resolved plan without rendering; `--dry-run-json PATH` writes its schema version 1 manifest to a file, or to standard output when `PATH` is `-`.
@@ -94,9 +94,9 @@ script/test_native.sh
 script/build_and_run.sh
 ```
 
-The native test script resolves `TESLACAM_BUILD_ENV` when set, otherwise uses the local fallback configured in the script (`build-env.sh` under `BOLYKI_SOURCE_ROOT`, default `~/dev/source`). An explicit missing override stops the script. If no compatible build environment is available, or it does not route `XCODE_DERIVED_DATA_PATH`, it stops before invoking `xcodebuild`. The test lane runs the macOS app build, `TeslaCamTests`, and `TeslaCamUITests`.
+The native test script resolves `TESCAM_BUILD_ENV` when set, otherwise uses the local fallback configured in the script (`build-env.sh` under `BOLYKI_SOURCE_ROOT`, default `~/dev/source`). An explicit missing override stops the script. If no compatible build environment is available, or it does not route `XCODE_DERIVED_DATA_PATH`, it stops before invoking `xcodebuild`. The test lane runs the macOS app build, `TescamTests`, and `TescamUITests`.
 
-The `TeslaCam` and `TeslaCam iPad` schemes are the maintained app schemes. Keep new Swift files registered for both app targets when they are shared. The iOS/iPadOS UI must continue to bind through the existing `AppState` surface.
+The `Tescam` and `Tescam iPad` schemes are the maintained app schemes. Keep new Swift files registered for both app targets when they are shared. The iOS/iPadOS UI must continue to bind through the existing `AppState` surface.
 
 ## Verification
 
