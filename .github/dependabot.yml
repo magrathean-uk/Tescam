@@ -1,0 +1,54 @@
+# Managed by Claude Code on 2026-10-03.
+# Weekly, Friday 19:00 Europe/London. Minor and patch grouped; majors arrive as individual PRs.
+# 7-day cooldown on new releases (version updates only; security updates are not delayed).
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directories:
+      - "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "19:00"
+      timezone: "Europe/London"
+    open-pull-requests-limit: 100
+    cooldown:
+      default-days: 7
+    labels:
+      - "dependencies"
+    assignees:
+      - "magrathean-uk"
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  - package-ecosystem: "github-actions"
+    directories:
+      - "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "19:00"
+      timezone: "Europe/London"
+    open-pull-requests-limit: 100
+    cooldown:
+      default-days: 7
+    labels:
+      - "dependencies"
+    assignees:
+      - "magrathean-uk"
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
