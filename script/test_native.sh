@@ -38,7 +38,7 @@ if ! command -v xcodebuild >/dev/null 2>&1; then
 fi
 
 if [[ -z "${TESCAM_DERIVED_DATA:-}" && -z "${XCODE_DERIVED_DATA_PATH:-}" ]]; then
-  echo "XCODE_DERIVED_DATA_PATH is not set. Load the routed environment (source ~/dev/env.zsh) or point TESCAM_BUILD_ENV at a build-env.sh that sets it." >&2
+  echo "XCODE_DERIVED_DATA_PATH is not set. Load the routed environment (source ~/dev/machine/env.zsh) or point TESCAM_BUILD_ENV at a build-env.sh that sets it." >&2
   exit 1
 fi
 
