@@ -1,9 +1,8 @@
 {
-  "$schema": "https://raw.githubusercontent.com/magrathean-uk/clean-development/main/schemas/project-config.schema.json",
-  "schemaVersion": 1,
+  "$schema": "https://raw.githubusercontent.com/magrathean-uk/bolyki-dev/main/clean-development/schemas/project-config.schema.json",
+  "schemaVersion": 2,
   "enabled": true,
-  "tools": {
-    "pip": true,
-    "pip3": true
-  }
+  "heavy": false,
+  "buildDirs": [],
+  "depDirs": []
 }
