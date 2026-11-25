@@ -27,6 +27,7 @@ from this repository's source.
 - macOS review workspace plus an adaptive iPhone and iPad interface.
 - Tesla legacy four-camera and HW4 six-camera layouts. Automatic selection uses the available camera names; missing cameras remain visible as black placeholders.
 - Timeline playback, trim range selection, duplicate resolution, codec selection, and native export. The app can engrave timestamp, speed, Autopilot, pedal/brake, steering, heading, and route overlays when telemetry is available.
+- Optional evidence files with each export: a manifest with SHA-256 hashes of the output and source clips, a telemetry CSV, and a GPX track ([details](docs/architecture/evidence-files.md)).
 - Python CLI modes for evidence HEVC, lossless HEVC, review, and share output, plus event listing, event-centered export, dry runs, JSON manifests, output conflict policies, and explicit ffmpeg/ffprobe paths.
 
 The current Xcode targets use native export and do not include FFmpeg in their resource build phases. Native Original passthrough and telemetry engraving are app features. The CLI does not inspect SEI telemetry metadata and does not apply native camera-track cuts.

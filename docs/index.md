@@ -13,6 +13,8 @@ Tescam's documentation, beyond the [README](../README.md).
   and telemetry behaviour shared by the native app and the CLI.
 - [iOS and iPadOS app](architecture/ios-ipados-app.md): entry points, adaptive layout, safe
   areas and export controls.
+- [Evidence files](architecture/evidence-files.md): the optional manifest, telemetry CSV and GPX
+  written next to an export.
 
 ## Development
 

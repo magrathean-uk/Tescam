@@ -582,6 +582,16 @@ private struct IOSWorkspace: View {
         .accessibilityIdentifier("engrave-telemetry-toggle")
         .accessibilityHint("Burns the telemetry HUD into the exported video. Off keeps a lossless, faster muxed copy.")
 
+        Toggle(isOn: $state.evidenceFilesEnabled) {
+          Text("Evidence files")
+            .font(TescamTheme.Typography.bodySmall)
+            .foregroundStyle(TescamTheme.Colors.textSecondary)
+        }
+        .toggleStyle(.switch)
+        .tint(TescamTheme.Colors.accent)
+        .accessibilityIdentifier("evidence-files-toggle")
+        .accessibilityHint("Also saves a manifest with SHA-256 hashes, a telemetry CSV and a GPX track next to the video.")
+
         HStack(spacing: TescamTheme.Spacing.tightGap) {
           RoundedRectangle(cornerRadius: 2, style: .continuous)
             .fill(TescamTheme.Colors.accent)
@@ -1446,6 +1456,17 @@ private struct TimelineExportCard: View {
         .fixedSize()
         .accessibilityIdentifier("engrave-telemetry-toggle")
         .accessibilityHint("Burns the telemetry HUD into the exported video.")
+
+        Toggle(isOn: $state.evidenceFilesEnabled) {
+          Text("Evidence files")
+            .font(TescamTheme.Typography.label)
+            .foregroundStyle(TescamTheme.Colors.textSecondary)
+        }
+        .toggleStyle(.switch)
+        .tint(TescamTheme.Colors.accent)
+        .fixedSize()
+        .accessibilityIdentifier("evidence-files-toggle")
+        .accessibilityHint("Also saves a manifest with SHA-256 hashes, a telemetry CSV and a GPX track next to the video.")
 
         Spacer(minLength: 0)
 

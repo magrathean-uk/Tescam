@@ -218,7 +218,9 @@ struct ExportStore {
     selectedRangeText: String,
     partialClipCount: Int,
     cameraTrack: CameraTrack = .empty,
-    isPreviewSample: Bool = false
+    isPreviewSample: Bool = false,
+    evidenceFiles: Bool = false,
+    evidenceSourceRoots: [URL] = []
   ) -> ExportRequest? {
     guard !sets.isEmpty else { return nil }
     let useExpandedGrid: Bool
@@ -256,7 +258,9 @@ struct ExportStore {
       selectedRangeText: selectedRangeText,
       partialClipCount: partialClipCount,
       cameraTrack: cameraTrack,
-      isPreviewSample: isPreviewSample
+      isPreviewSample: isPreviewSample,
+      evidenceFiles: evidenceFiles,
+      evidenceSourceRoots: evidenceSourceRoots
     )
   }
 
@@ -380,6 +384,12 @@ final class AppState: ObservableObject {
     includeReport: false,
     includeScreenshot: false
   )
+  /// Opt-in evidence files (manifest with SHA-256 hashes, telemetry CSV, GPX)
+  /// written next to each export. Persisted; off by default.
+  @Published var evidenceFilesEnabled: Bool = UserDefaults.standard.bool(forKey: AppState.evidenceFilesDefaultsKey) {
+    didSet { UserDefaults.standard.set(evidenceFilesEnabled, forKey: Self.evidenceFilesDefaultsKey) }
+  }
+  static let evidenceFilesDefaultsKey = "tescam.exportEvidenceFiles"
   @Published var isDuplicateResolverPresented: Bool = false
   @Published var duplicateResolverMessage: String = ""
   @Published var showDuplicateResolverForConflicts: Bool = false
@@ -877,13 +887,7 @@ final class AppState: ObservableObject {
   }
 
   func revealLastExport() {
-    #if os(macOS)
     exporter.revealOutput(for: exporter.exportHistory.first)
-    #else
-    if let url = exporter.exportHistory.first?.outputURL {
-      PlatformFileAccess.shareFile(url)
-    }
-    #endif
   }
 
   func dismissExportStatus() {
@@ -1556,7 +1560,9 @@ final class AppState: ObservableObject {
       selectedRangeText: rangeText,
       partialClipCount: partialSelectedSetCount,
       cameraTrack: cameraTrack,
-      isPreviewSample: previewOnly
+      isPreviewSample: previewOnly,
+      evidenceFiles: evidenceFilesEnabled && !previewOnly,
+      evidenceSourceRoots: sourceURLs.isEmpty ? (rootURL.map { [$0] } ?? []) : sourceURLs
     )
   }
 
