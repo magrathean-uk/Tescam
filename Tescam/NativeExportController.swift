@@ -55,6 +55,8 @@ struct ExportPlan {
   let partialClipCount: Int
   let cameraTrack: CameraTrack
   let isPreviewSample: Bool
+  let evidenceFiles: Bool
+  let evidenceSourceRoots: [URL]
   fileprivate let layout: TimelineFrameLayout
 
   var totalParts: Int { sets.count }
@@ -110,6 +112,8 @@ struct ExportPlan {
     self.partialClipCount = request.partialClipCount
     self.cameraTrack = request.cameraTrack
     self.isPreviewSample = request.isPreviewSample
+    self.evidenceFiles = request.evidenceFiles
+    self.evidenceSourceRoots = request.evidenceSourceRoots
     self.layout = layout
   }
 }
@@ -504,12 +508,13 @@ final class NativeExportController: ObservableObject {
   }
 
   func revealOutput(for snapshot: ExportJobSnapshot? = nil) {
-    let url = (snapshot ?? currentJob)?.outputURL
-    guard let url else { return }
+    guard let job = snapshot ?? currentJob else { return }
+    let urls = [job.outputURL] + job.evidenceFileURLs
     #if os(macOS)
-    NSWorkspace.shared.activateFileViewerSelecting([url])
+    NSWorkspace.shared.activateFileViewerSelecting(urls)
     #else
-    PlatformFileAccess.shareFile(url)
+    // The share sheet carries the evidence files with the video.
+    PlatformFileAccess.shareFiles(urls)
     #endif
   }
 
@@ -568,9 +573,7 @@ final class NativeExportController: ObservableObject {
           throw ExportError.cancelled
         }
         try? fm.removeItem(at: tempRoot)
-        runOnMain {
-          self.finishCompleted(request: request, outputURL: plan.outputURL, renderDuration: plan.renderDuration)
-        }
+        completeExport(plan: plan, request: request, renderDuration: plan.renderDuration)
         return
       }
 
@@ -708,14 +711,82 @@ final class NativeExportController: ObservableObject {
       }
       try? fm.removeItem(at: tempRoot)
 
+      completeExport(plan: plan, request: request, renderDuration: renderDuration)
+    }
+  }
+
+  /// Runs on the export thread once the video is final: writes the optional
+  /// evidence files, then finishes the job. The video is kept whatever happens
+  /// to the evidence files.
+  private func completeExport(plan: ExportPlan, request: ExportRequest, renderDuration: Double) {
+    guard plan.evidenceFiles, !plan.isPreviewSample else {
       runOnMain {
         self.finishCompleted(request: request, outputURL: plan.outputURL, renderDuration: renderDuration)
+      }
+      return
+    }
+    runOnMain {
+      self.updateSession {
+        $0.phase = .finishing
+        $0.phaseLabel = "Writing evidence files"
+        $0.progress = 0.98
+      }
+    }
+    var lastReported = 0.0
+    do {
+      let urls = try EvidenceExporter.write(
+        plan.evidenceInput,
+        shouldCancel: { self.cancelRequested },
+        progress: { fraction in
+          guard fraction - lastReported >= 0.01 || fraction >= 1 else { return }
+          lastReported = fraction
+          self.runOnMain {
+            self.updateSession { $0.progress = 0.98 + 0.019 * min(1, fraction) }
+          }
+        }
+      )
+      appendLog("Evidence files: \(urls.map(\.lastPathComponent).joined(separator: ", "))\n")
+      runOnMain {
+        self.finishCompleted(
+          request: request,
+          outputURL: plan.outputURL,
+          renderDuration: renderDuration,
+          evidenceFiles: urls
+        )
+      }
+    } catch EvidenceError.cancelled {
+      runOnMain {
+        self.finishCancelled(request: request, outputURL: plan.outputURL, keptPartial: true)
+      }
+    } catch {
+      let message = "Video saved, but evidence files failed. \(error.localizedDescription)"
+      appendLog("\(message)\n")
+      appendStructuredLogEvent("evidence_failed", fields: ["message": error.localizedDescription])
+      runOnMain {
+        self.finishCompleted(
+          request: request,
+          outputURL: plan.outputURL,
+          renderDuration: renderDuration,
+          evidenceError: message
+        )
       }
     }
   }
 
-  private func finishCompleted(request: ExportRequest, outputURL: URL, renderDuration: Double) {
+  private func finishCompleted(
+    request: ExportRequest,
+    outputURL: URL,
+    renderDuration: Double,
+    evidenceFiles: [URL] = [],
+    evidenceError: String? = nil
+  ) {
     updateSession {
+      if let evidenceError {
+        // The video is complete; surface the evidence failure in the job detail.
+        $0.failureCategory = .outputWrite
+        $0.failureReason = evidenceError
+      }
+      $0.evidenceFileURLs = evidenceFiles
       $0.phase = .completed
       $0.phaseLabel = "Export complete"
       $0.progress = 1.0
@@ -729,6 +800,7 @@ final class NativeExportController: ObservableObject {
       $0.canRetry = true
       $0.isIndeterminate = false
     }
+    if let evidenceError { lastError = evidenceError }
     appendLog("\nDone: \(outputURL.path)\n")
     appendStructuredLogEvent("export_completed", fields: ["output": outputURL.path])
     debug("completed \(outputURL.lastPathComponent)", category: "export")

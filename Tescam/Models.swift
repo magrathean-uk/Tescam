@@ -606,6 +606,10 @@ struct ExportRequest: Identifiable {
   let partialClipCount: Int
   let cameraTrack: CameraTrack
   let isPreviewSample: Bool
+  /// Write the manifest, telemetry CSV and GPX next to the video.
+  let evidenceFiles: Bool
+  /// Folders the user chose; source clip paths in the manifest are relative to them.
+  let evidenceSourceRoots: [URL]
 
   init(
     sets: [ClipSet],
@@ -622,7 +626,9 @@ struct ExportRequest: Identifiable {
     selectedRangeText: String,
     partialClipCount: Int,
     cameraTrack: CameraTrack = .empty,
-    isPreviewSample: Bool = false
+    isPreviewSample: Bool = false,
+    evidenceFiles: Bool = false,
+    evidenceSourceRoots: [URL] = []
   ) {
     self.sets = sets
     self.outputURL = outputURL
@@ -639,6 +645,8 @@ struct ExportRequest: Identifiable {
     self.partialClipCount = partialClipCount
     self.cameraTrack = cameraTrack.normalized
     self.isPreviewSample = isPreviewSample
+    self.evidenceFiles = evidenceFiles
+    self.evidenceSourceRoots = evidenceSourceRoots
   }
 
   var totalParts: Int {
@@ -1492,6 +1500,8 @@ struct ExportJobSnapshot: Identifiable {
   var canRevealWorkingFiles: Bool
   var canRetry: Bool
   var isCancelled: Bool
+  /// Evidence files written next to `outputURL`, if the option was on.
+  var evidenceFileURLs: [URL] = []
 
   var elapsedTime: TimeInterval {
     (finishedAt ?? Date()).timeIntervalSince(startedAt)
@@ -1535,6 +1545,7 @@ struct MutableExportSession {
   var canRevealWorkingFiles: Bool
   var canRetry: Bool
   var isCancelled: Bool
+  var evidenceFileURLs: [URL] = []
 
   func snapshot(fileManager: FileManager) -> ExportJobSnapshot {
     ExportJobSnapshot(
@@ -1559,7 +1570,8 @@ struct MutableExportSession {
       canRevealOutput: canRevealOutput && fileManager.fileExists(atPath: outputURL.path),
       canRevealWorkingFiles: canRevealWorkingFiles && tempRootURL != nil,
       canRetry: canRetry,
-      isCancelled: isCancelled
+      isCancelled: isCancelled,
+      evidenceFileURLs: evidenceFileURLs.filter { fileManager.fileExists(atPath: $0.path) }
     )
   }
 }

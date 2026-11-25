@@ -17,6 +17,8 @@
 		43856EFDACD28E283764B079 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50C6855D2F3526330073314B /* Assets.xcassets */; };
 		4AC0833CC400B8B020F17BB1 /* PlatformFileAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9A79DBE9E309C323846661 /* PlatformFileAccess.swift */; };
 		4FC3EC1D1A403F7C27D9DAC2 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685482F3526330073314B /* Utils.swift */; };
+		5E1D00012F4A00000000E002 /* EvidenceFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D00012F4A00000000E001 /* EvidenceFiles.swift */; };
+		5E1D00012F4A00000000E003 /* EvidenceFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D00012F4A00000000E001 /* EvidenceFiles.swift */; };
 		A1B2C3D4E5F6000000000002 /* PortraitComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000001 /* PortraitComponents.swift */; };
 		50C6854A2F3526330073314B /* MetalRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C685432F3526330073314B /* MetalRenderer.swift */; };
 		50C6854B2F3526330073314B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C6853E2F3526330073314B /* ContentView.swift */; };
@@ -85,6 +87,7 @@
 		50C685452F3526330073314B /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		50C685462F3526330073314B /* PlaybackController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackController.swift; sourceTree = "<group>"; };
 		50C685472F3526330073314B /* TelemetryParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryParser.swift; sourceTree = "<group>"; };
+		5E1D00012F4A00000000E001 /* EvidenceFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvidenceFiles.swift; sourceTree = "<group>"; };
 		50C685482F3526330073314B /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F6000000000001 /* PortraitComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortraitComponents.swift; sourceTree = "<group>"; };
 		50C6855B2F3526330073314B /* Tescam.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Tescam.entitlements; sourceTree = "<group>"; };
@@ -206,6 +209,7 @@
 				50C685462F3526330073314B /* PlaybackController.swift */,
 				50C685472F3526330073314B /* TelemetryParser.swift */,
 				50C685482F3526330073314B /* Utils.swift */,
+				5E1D00012F4A00000000E001 /* EvidenceFiles.swift */,
 				A1B2C3D4E5F6000000000001 /* PortraitComponents.swift */,
 				50C6855B2F3526330073314B /* Tescam.entitlements */,
 				9B9A79DBE9E309C323846661 /* PlatformFileAccess.swift */,
@@ -405,6 +409,7 @@
 				4AC0833CC400B8B020F17BB1 /* PlatformFileAccess.swift in Sources */,
 				16112D2E1E4A55F25A463C45 /* TelemetryParser.swift in Sources */,
 				4FC3EC1D1A403F7C27D9DAC2 /* Utils.swift in Sources */,
+				5E1D00012F4A00000000E002 /* EvidenceFiles.swift in Sources */,
 				A1B2C3D4E5F6000000000002 /* PortraitComponents.swift in Sources */,
 				8878B92A5590887F535BD892 /* IPadMain.swift in Sources */,
 				31E19FA2404A5A723BC406D1 /* TelemetryProcessor.swift in Sources */,
@@ -429,6 +434,7 @@
 				50C685522F3526330073314B /* Indexer.swift in Sources */,
 				50C685532F3526330073314B /* MetalShaders.metal in Sources */,
 				50C685542F3526330073314B /* Utils.swift in Sources */,
+				5E1D00012F4A00000000E003 /* EvidenceFiles.swift in Sources */,
 				A1B2C3D4E5F6000000000003 /* PortraitComponents.swift in Sources */,
 				50C6855A2F3526330073314B /* NativeExportController.swift in Sources */,
 				CDDBB87778F9005CECFA36F5 /* PlatformFileAccess.swift in Sources */,

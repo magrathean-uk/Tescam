@@ -103,7 +103,11 @@ enum PlatformFileAccess {
   #else
   /// On iPad, "reveal" is not available. Use share sheet instead.
   static func shareFile(_ url: URL, from viewController: UIViewController? = nil) {
-    let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+    shareFiles([url], from: viewController)
+  }
+
+  static func shareFiles(_ urls: [URL], from viewController: UIViewController? = nil) {
+    let activityVC = UIActivityViewController(activityItems: urls, applicationActivities: nil)
     guard let presenter = viewController ?? topViewController() else { return }
     activityVC.popoverPresentationController?.sourceView = presenter.view
     activityVC.popoverPresentationController?.sourceRect = CGRect(

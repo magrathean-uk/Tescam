@@ -2520,7 +2520,7 @@ private func snapshotHasVisibleContent(_ bitmap: NSBitmapImageRep) -> Bool {
 }
 #endif
 
-private struct TemporaryDirectory {
+struct TemporaryDirectory {
   let url: URL
 
   static func make() throws -> TemporaryDirectory {
@@ -2640,7 +2640,7 @@ private func firstFrameLumaByCamera(
   })
 }
 
-private func makeVideo(at url: URL, duration: Double, size: CGSize, fill: UInt8? = nil) async throws {
+func makeVideo(at url: URL, duration: Double, size: CGSize, fill: UInt8? = nil) async throws {
   try await Task.detached(priority: .userInitiated) {
     try makeVideoImpl(at: url, duration: duration, size: size, fill: fill)
   }.value
@@ -2720,7 +2720,7 @@ private func makeVideoImpl(at url: URL, duration: Double, size: CGSize, fill: UI
   }
 }
 
-private func makeMp4WithTeslaSei(metadata: SeiMetadata) -> Data {
+func makeMp4WithTeslaSei(metadata: SeiMetadata) -> Data {
   let nal = makeTeslaSeiNal(metadata: metadata)
   var mdatPayload = Data()
   appendUInt32BE(UInt32(nal.count), to: &mdatPayload)
@@ -2794,7 +2794,7 @@ private func appendUInt32BE(_ value: UInt32, to data: inout Data) {
   data.append(UInt8(value & 0xFF))
 }
 
-private func teslaTimestampDate(_ timestamp: String) -> Date? {
+func teslaTimestampDate(_ timestamp: String) -> Date? {
   let formatter = DateFormatter()
   formatter.locale = Locale(identifier: "en_US_POSIX")
   formatter.timeZone = TimeZone.current
@@ -2895,7 +2895,7 @@ private func repositoryRootForTests() -> URL {
 }
 
 @MainActor
-private func waitForTerminalExport(
+func waitForTerminalExport(
   _ controller: NativeExportController,
   timeout: TimeInterval = 30
 ) async -> Bool {
