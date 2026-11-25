@@ -1,93 +1,62 @@
 # Tescam — Current App Store Connect Release
 
-This is the maintained handoff for the live App Store Connect 1.0 train. Read
-the identifiers back from ASC before any future mutation because version,
-build, localization, screenshot-set, and review-submission IDs are
-environment-specific.
+This is the maintained handoff for the 1.0.1 train (1.0 is live, `READY_FOR_SALE`, build 7). Read
+the identifiers back from ASC before any future mutation because version, build,
+localization, screenshot-set, and review-submission IDs are environment-specific.
 
 ## Release summary
 
-Tescam 1.0 is the first App Store release. It provides local multi-camera dashcam
-review, synchronized multi-camera playback, timeline range selection, camera selection,
-telemetry-aware workflows, and native evidence export on iPhone, iPad, and Mac. Store assets
-are under `marketing/screenshots/asc_out/`: five iPhone screenshots, five iPad screenshots,
-and four distinct Mac screenshots (a fifth Mac capture duplicated another and was not
-uploaded). The upload and review manifests are `marketing/screenshots/asc_out/asc_upload.json`
-and `asc_review.json`.
+Tescam 1.0.1 is a maintenance release: updated website, support and privacy links, the frozen
+FFmpeg binaries removed from the repository, and no change in app behaviour. Shipped directly to
+App Store Connect with no TestFlight (G, 25 Nov 2026). Store assets carry forward from 1.0 and are
+under `marketing/screenshots/asc_out/` (five iPhone, five iPad, four Mac screenshots).
 
 ## Live release records
 
-- App: `Tescam`
-- App Store app ID: `6787877132`
+- App: `Tescam`; App Store app ID `6787877132`
 - Bundle ID, both platforms: `com.magrathean.teslacam`
-- Version: `1.0`
-- Build: `7`
+- Version `1.0.1`, build `8`, archived from the commit tagged `v1.0.1`
 - Copyright: `2026 MAGRATHEAN UK LTD`
-- Release mode: manual; build 7 resubmitted on both platforms on 1 October 2026
+- Release mode: `AFTER_APPROVAL` (automatic)
+- Export compliance: `usesNonExemptEncryption = false` on both builds
+- Submitted 25 Nov 2026 19:40 GMT; both versions `WAITING_FOR_REVIEW`
 
-### iOS and iPadOS
+| | iOS and iPadOS | macOS |
+| --- | --- | --- |
+| Version ID | `9bf33eac-9941-4bd6-944b-ea9701e09cc3` | `2ffb985d-5e23-43e4-98ed-93f979e19ac7` |
+| Build ID (state `VALID`) | `0f6fa10d-ce57-4f88-88a9-6d4cfab5de8f` | `c8f3f561-6da6-4c51-96bf-a3f552839c7f` |
+| Localization ID (`en-GB`) | `d0bd3183-3255-4c37-baac-c383f88586a7` | `ef2458ff-ae45-4f4a-a3c6-c91121a317bd` |
+| Review detail ID | `a2c6b82a-56d0-45e9-b693-7c0580b6fd67` | `94905552-6855-4bda-a08d-ca3e3d4855e2` |
+| Review submission ID | `33ecd619-d6e5-4a83-bf7d-9654643bf231` | `13fef9bc-6c13-42b5-aff0-9cc9df83db8e` |
 
-- Version ID: `1c9b09c1-b884-44f1-a59c-4478cfec2fac`
-- Version localization ID (`en-GB`): `0366f1e5-30f8-40ee-aff0-b30adb73c320`
-- Build ID: `2020ba75-a2e3-4e7f-8326-44da86df8754`
-- Processing state: `VALID`
-- Review detail ID: `3d6e2284-a5b7-423f-9446-a54c10b257d0`
-- Review submission ID: `c1ebf203-c395-49d4-8176-23a51101297f`
-- Resolution Center thread: `159347d8-7928-3fd1-8c75-524661924e32`
-
-### macOS
-
-- Version ID: `e2e1a2f1-2fb5-4774-a05a-c982d511769d`
-- Version localization ID (`en-GB`): `74075979-ed03-4bd6-a50f-8e0209bf2980`
-- Build ID: `76ee58c0-b679-4ac3-b55a-3455dc148307`
-- Processing state: `VALID`
-- Review submission ID: `be6e0fd2-844b-4627-9457-2c5dcce9882f`
-- Resolution Center thread: `5e6b24f0-e1fa-3d1f-bb66-0a1d332a0d4b`
-- Review detail ID: `c98e7890-eb7a-4995-b39f-41d92d2f0bdc`
+1.0 records (for reference): iOS version `9bf33eac-9941-4bd6-944b-ea9701e09cc3`, build 7
+`2020ba75-a2e3-4e7f-8326-44da86df8754`; macOS version `2ffb985d-5e23-43e4-98ed-93f979e19ac7`,
+build 7 `76ee58c0-b679-4ac3-b55a-3455dc148307`. Two empty `READY_FOR_REVIEW` draft submissions
+(`42e15b24-2f04-48b5-a77d-d181be283188` iOS, `d08baf0d-9dd2-481a-bedd-a64eeacc322a` macOS) predate
+1.0.1 and were left alone.
 
 ### Shared App Info
 
 - App Info localization ID (`en-GB`): `5fbbaa15-3dca-4bdb-8f7b-11d9f2e4ef17`
-- Name: `Tescam`
-- Subtitle: `Local dashcam video editor`
-- Age-rating declaration: `socialMedia = false` and
-  `socialMediaAgeRestricted = false`; all other stored answers remain the
-  existing no-objectionable-content values
+- Name `Tescam`; subtitle `Local dashcam video editor`
+- Age-rating declaration unchanged from 1.0
 
-## Review response and submission
+## Signing and upload
 
-Build 6 was rejected on both platforms over Tesla branding. On macOS, Guideline
-4.1(c) cited the subtitle. On iOS, 4.1(a) and then 5.2.1 cited the metadata and
-the app's content. Build 7 removes third-party brand and feature names from
-user-visible app text: onboarding, folder picker, telemetry and export overlays,
-and document type name. Telemetry assist states now read Off, Self-driving,
-Steering and Cruise. Build 7 also removes them from all store metadata and
-screenshots on both platforms. Store copy, keywords and screenshots must not
-name a vehicle maker or its features. Compatibility can be explained only in
-the private App Review notes.
-
-Build 7 is signed with team `NPSQV9WYS5` using the Apple Distribution
-certificate `U86DTAL3L2`, the Mac Installer certificate `HK9WGD3A83`, and the
-`Tescam 20261001 IOS_APP_STORE` and `Tescam 20261001 MAC_APP_STORE` profiles,
-all created on 1 October 2026. Signing material stays outside the repository.
-Both build 7 records declare `usesNonExemptEncryption = false`.
+Team `NPSQV9WYS5`, automatic signing with the ASC API key (`-allowProvisioningUpdates`), Apple
+Distribution and Mac Installer identities already on the Mac. Archive with `-jobs 4`, export with
+`method app-store-connect`, upload with `xcrun altool --upload-app`. Run the macOS archive and
+export under `umask 022`: with `umask 077` the pkg holds root-only files and ASC rejects it
+(error 90255). Signing material and the API key stay outside the repository.
 
 ## Live URLs
 
 - Marketing: `https://magrathean.uk/solutions/tescam/`
-- Support: `https://magrathean.uk/solutions/tescam/`
-- Privacy policy: `https://magrathean.uk/solutions/tescam/privacy/`
+- Support: `https://magrathean.uk/solutions/tescam/` (no `/support/` page exists; it returns 404)
+- Privacy policy: `https://magrathean.uk/solutions/tescam/privacy/` (shared App Info localization)
 - Terms: `https://magrathean.uk/solutions/tescam/terms/`
 - Review contact: `contact+tescam@magrathean.uk`
-- EULA: Apple standard EULA; no custom ASC EULA is configured
-
-The marketing and support URLs are stored on both platform localizations. The
-privacy-policy URL is stored on the shared App Info localization. ASC has no
-separate terms-URL field when the standard Apple EULA is used.
-
-The matching website is live from Magrathean `main` at commit `d68e6440`, with
-iPhone, iPad, and Mac routes and platform-specific screenshot assets. Cloudflare
-deployment run `35693409557` completed successfully.
+- What's New: `Updated website and support links, plus maintenance improvements.`
 
 ## Store copy
 
@@ -160,13 +129,13 @@ its decoded pixels duplicated another Mac screenshot.
 
 ```sh
 APP_ID=6787877132
-VERSION=1.0
+VERSION=1.0.1
 
-/opt/homebrew/bin/asc builds list --app "$APP_ID" --version "$VERSION" --build-number 6 --processing-state all
-/opt/homebrew/bin/asc versions view --version-id 1c9b09c1-b884-44f1-a59c-4478cfec2fac --include-build --include-submission
-/opt/homebrew/bin/asc versions view --version-id e2e1a2f1-2fb5-4774-a05a-c982d511769d --include-build --include-submission
-/opt/homebrew/bin/asc localizations list --version 1c9b09c1-b884-44f1-a59c-4478cfec2fac --include appScreenshotSets
-/opt/homebrew/bin/asc localizations list --version e2e1a2f1-2fb5-4774-a05a-c982d511769d --include appScreenshotSets
+/opt/homebrew/bin/asc builds list --app "$APP_ID" --version "$VERSION" --build-number 8 --processing-state all
+/opt/homebrew/bin/asc versions view --version-id 9bf33eac-9941-4bd6-944b-ea9701e09cc3 --include-build --include-submission
+/opt/homebrew/bin/asc versions view --version-id 2ffb985d-5e23-43e4-98ed-93f979e19ac7 --include-build --include-submission
+/opt/homebrew/bin/asc localizations list --version 9bf33eac-9941-4bd6-944b-ea9701e09cc3 --include appScreenshotSets
+/opt/homebrew/bin/asc localizations list --version 2ffb985d-5e23-43e4-98ed-93f979e19ac7 --include appScreenshotSets
 /opt/homebrew/bin/asc review submissions-list --app "$APP_ID"
 ```
 

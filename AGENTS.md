@@ -18,10 +18,9 @@ Purpose: multi-camera dashcam footage browser and exporter for macOS, iPhone and
 - Mobile UI uses the `AppState` API. The Xcode project has `Tescam` and `Tescam iPad` targets; source membership is in `Tescam.xcodeproj/project.pbxproj`.
 - `_legacy/` and `tescam_legacy_macos.sh` are historical reference only.
 - Resource licences are in `Tescam/Resources/LICENSES.md`; release and App Store records are in `docs/development/`.
-- URL migration to `https://magrathean.uk/solutions/<slug>/` and `contact+<slug>@magrathean.uk`: `NEXT-RELEASE-URLS.md`.
 
 ## Versions
-- App: `MARKETING_VERSION` 1.0, build (`CURRENT_PROJECT_VERSION`) 7 in the Xcode project; this is the App Store version. Existing tag `v1` is a lightweight marker (commit 0d1a7b8).
+- App: `MARKETING_VERSION` 1.0.1, build (`CURRENT_PROJECT_VERSION`) 8 in the Xcode project; this is the App Store version (1.0 shipped as build 7). Existing tag `v1` is a lightweight marker (commit 0d1a7b8); the lead tags the 1.0.1 shipping commit `v1.0.1`.
 - CLI: `pyproject.toml` version 0.1.0 is a separate number for the Python package. Do not align the two.
 - No GitHub Releases. Release tags are annotated `vX.Y.Z` on the shipping commit; only `vX.Y.Z` tags are pushed (public repo).
 
