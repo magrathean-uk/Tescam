@@ -2,13 +2,14 @@ import Foundation
 import CryptoKit
 
 // Evidence files written next to an export: a manifest with SHA-256 hashes, a
-// telemetry CSV and a GPX track. Everything here is pure (Data in, Data out) or
-// a streaming file helper, so it can be tested without running an export.
+// telemetry CSV and a GPX track. Formatting is pure; the CSV and GPX are streamed
+// row by row to temp files that only move into place once the whole set is done.
 
 nonisolated enum EvidenceError: LocalizedError, Equatable {
   case cancelled
   case unreadable(file: String, detail: String)
   case writeFailed(file: String, detail: String)
+  case sourceChanged(file: String)
 
   var errorDescription: String? {
     switch self {
@@ -18,6 +19,8 @@ nonisolated enum EvidenceError: LocalizedError, Equatable {
       return "Could not read \(file) to hash it: \(detail)"
     case .writeFailed(let file, let detail):
       return "Could not write evidence file \(file): \(detail)"
+    case .sourceChanged(let file):
+      return "Source clip \(file) changed while the export was running, so evidence files would not match the video."
     }
   }
 }
@@ -71,7 +74,7 @@ nonisolated enum FileHasher {
     return FileFingerprint(sha256: hex(hasher.finalize()), byteCount: total)
   }
 
-  private static func hex(_ digest: SHA256.Digest) -> String {
+  static func hex(_ digest: SHA256.Digest) -> String {
     let digits = Array("0123456789abcdef")
     var out = ""
     out.reserveCapacity(64)
@@ -83,10 +86,14 @@ nonisolated enum FileHasher {
   }
 }
 
+
 // MARK: - Telemetry samples
 
 nonisolated struct EvidenceTelemetrySample: Equatable {
   var date: Date
+  /// True when the parser had no per-sample time and spaced the samples at a
+  /// nominal frame interval, so `date` is an estimate.
+  var timeEstimated = false
   var speedKmh: Double?
   var autopilotState: String
   var acceleratorPercent: Double?
@@ -98,9 +105,10 @@ nonisolated struct EvidenceTelemetrySample: Equatable {
 
   var hasPosition: Bool { latitude != nil && longitude != nil }
 
-  init(sei: SeiMetadata, date: Date) {
+  init(sei: SeiMetadata, date: Date, timeEstimated: Bool = false) {
     func finite(_ value: Double) -> Double? { value.isFinite ? value : nil }
     self.date = date
+    self.timeEstimated = timeEstimated
     speedKmh = finite(Double(sei.vehicleSpeedMps) * 3.6)
     switch sei.autopilotState {
     case .none: autopilotState = "none"
@@ -123,6 +131,8 @@ nonisolated struct EvidenceTelemetrySample: Equatable {
 /// Locale-free formatting helpers shared by the writers. Numbers are rendered
 /// from integers so the decimal separator is always ".".
 nonisolated enum EvidenceFormat {
+  static let utc = TimeZone(secondsFromGMT: 0)!
+
   static func fixed(_ value: Double?, decimals: Int) -> String {
     guard let value, value.isFinite else { return "" }
     var scale: Double = 1
@@ -139,13 +149,106 @@ nonisolated enum EvidenceFormat {
     return (value < 0 && units != 0) ? "-" + text : text
   }
 
-  static func iso8601(_ date: Date, fractional: Bool) -> String {
+  static func formatter(timeZone: TimeZone, fractional: Bool) -> ISO8601DateFormatter {
     let formatter = ISO8601DateFormatter()
-    formatter.timeZone = TimeZone(identifier: "UTC")
+    formatter.timeZone = timeZone
     formatter.formatOptions = fractional
       ? [.withInternetDateTime, .withFractionalSeconds]
       : [.withInternetDateTime]
-    return formatter.string(from: date)
+    return formatter
+  }
+
+  /// UTC (`...Z`) unless a time zone is given, which renders its offset (`...+01:00`).
+  static func iso8601(_ date: Date, fractional: Bool, timeZone: TimeZone = utc) -> String {
+    formatter(timeZone: timeZone, fractional: fractional).string(from: date)
+  }
+
+  static func offsetText(for timeZone: TimeZone, at date: Date) -> String {
+    let seconds = timeZone.secondsFromGMT(for: date)
+    let minutes = abs(seconds) / 60
+    return (seconds < 0 ? "-" : "+") + String(format: "%02d:%02d", minutes / 60, minutes % 60)
+  }
+}
+
+// MARK: - Streamed output files
+
+/// A file written in pieces to a hidden temp name next to its final name, hashing
+/// as it goes. Nothing replaces the final name until `promote()`, so a failed or
+/// cancelled run never touches an earlier run's files.
+nonisolated final class EvidenceStreamFile {
+  static let flushThreshold = 1 << 16
+
+  let finalURL: URL
+  let tempURL: URL
+  private var handle: FileHandle?
+  private var buffer = Data()
+  private var hasher = SHA256()
+  private(set) var byteCount: Int64 = 0
+  private(set) var sha256 = ""
+
+  init(finalURL: URL) throws {
+    self.finalURL = finalURL
+    tempURL = finalURL.deletingLastPathComponent()
+      .appendingPathComponent(".\(finalURL.lastPathComponent).\(UUID().uuidString).tmp")
+    guard FileManager.default.createFile(atPath: tempURL.path, contents: nil) else {
+      throw EvidenceError.writeFailed(file: finalURL.lastPathComponent, detail: "could not create a temporary file")
+    }
+    do {
+      handle = try FileHandle(forWritingTo: tempURL)
+    } catch {
+      try? FileManager.default.removeItem(at: tempURL)
+      throw EvidenceError.writeFailed(file: finalURL.lastPathComponent, detail: error.localizedDescription)
+    }
+  }
+
+  func append(_ text: String) throws {
+    buffer.append(contentsOf: text.utf8)
+    if buffer.count >= Self.flushThreshold { try flush() }
+  }
+
+  func append(_ data: Data) throws {
+    buffer.append(data)
+    if buffer.count >= Self.flushThreshold { try flush() }
+  }
+
+  private func flush() throws {
+    guard !buffer.isEmpty, let handle else { return }
+    do {
+      try handle.write(contentsOf: buffer)
+    } catch {
+      throw EvidenceError.writeFailed(file: finalURL.lastPathComponent, detail: error.localizedDescription)
+    }
+    hasher.update(data: buffer)
+    byteCount += Int64(buffer.count)
+    buffer.removeAll(keepingCapacity: true)
+  }
+
+  /// Flushes and closes; returns the name, size and SHA-256 of what was written.
+  func finish() throws -> EvidenceFileRecord {
+    try flush()
+    try? handle?.close()
+    handle = nil
+    sha256 = FileHasher.hex(hasher.finalize())
+    return EvidenceFileRecord(name: finalURL.lastPathComponent, byteCount: byteCount, sha256: sha256)
+  }
+
+  func promote() throws {
+    let fm = FileManager.default
+    do {
+      if fm.fileExists(atPath: finalURL.path) {
+        _ = try fm.replaceItemAt(finalURL, withItemAt: tempURL)
+      } else {
+        try fm.moveItem(at: tempURL, to: finalURL)
+      }
+    } catch {
+      throw EvidenceError.writeFailed(file: finalURL.lastPathComponent, detail: error.localizedDescription)
+    }
+  }
+
+  func discard() {
+    try? handle?.close()
+    handle = nil
+    try? FileManager.default.removeItem(at: tempURL)
   }
 }
 
@@ -162,6 +265,10 @@ nonisolated enum EvidenceCSV {
 }
 
 nonisolated enum TelemetryCSVWriter {
+  /// `timestamp_utc` is derived from the clip file name (local wall-clock time in
+  /// the assumed zone recorded in the manifest); `timestamp_local` shows the same
+  /// instant with that zone's offset. `time_estimated` is 1 when the parser had
+  /// no real per-sample time.
   static let header = [
     "timestamp_utc",
     "speed_kmh",
@@ -171,18 +278,24 @@ nonisolated enum TelemetryCSVWriter {
     "steering_angle_deg",
     "heading_deg",
     "latitude",
-    "longitude"
+    "longitude",
+    "timestamp_local",
+    "time_estimated"
   ]
 
-  static func data(samples: [EvidenceTelemetrySample]) -> Data {
-    var out = header.map(EvidenceCSV.escape).joined(separator: ",") + "\r\n"
-    out.reserveCapacity(out.count + samples.count * 96)
-    let formatter = ISO8601DateFormatter()
-    formatter.timeZone = TimeZone(identifier: "UTC")
-    formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-    for sample in samples {
+  static var headerLine: String { header.map(EvidenceCSV.escape).joined(separator: ",") + "\r\n" }
+
+  struct RowFormatter {
+    private let utc = EvidenceFormat.formatter(timeZone: EvidenceFormat.utc, fractional: true)
+    private let local: ISO8601DateFormatter
+
+    init(timeZone: TimeZone) {
+      local = EvidenceFormat.formatter(timeZone: timeZone, fractional: true)
+    }
+
+    func row(_ sample: EvidenceTelemetrySample) -> String {
       let cells = [
-        formatter.string(from: sample.date),
+        utc.string(from: sample.date),
         EvidenceFormat.fixed(sample.speedKmh, decimals: 2),
         sample.autopilotState,
         EvidenceFormat.fixed(sample.acceleratorPercent, decimals: 1),
@@ -190,10 +303,18 @@ nonisolated enum TelemetryCSVWriter {
         EvidenceFormat.fixed(sample.steeringAngleDeg, decimals: 1),
         EvidenceFormat.fixed(sample.headingDeg, decimals: 1),
         EvidenceFormat.fixed(sample.latitude, decimals: 7),
-        EvidenceFormat.fixed(sample.longitude, decimals: 7)
+        EvidenceFormat.fixed(sample.longitude, decimals: 7),
+        local.string(from: sample.date),
+        sample.timeEstimated ? "1" : "0"
       ]
-      out += cells.map(EvidenceCSV.escape).joined(separator: ",") + "\r\n"
+      return cells.map(EvidenceCSV.escape).joined(separator: ",") + "\r\n"
     }
+  }
+
+  static func data(samples: [EvidenceTelemetrySample], timeZone: TimeZone = .current) -> Data {
+    let formatter = RowFormatter(timeZone: timeZone)
+    var out = headerLine
+    for sample in samples { out += formatter.row(sample) }
     return Data(out.utf8)
   }
 }
@@ -201,7 +322,9 @@ nonisolated enum TelemetryCSVWriter {
 // MARK: - GPX
 
 nonisolated enum GPXWriter {
-  static let garminNamespace = "http://www.garmin.com/xmlschemas/TrackPointExtension/v1"
+  static let garminNamespace = "http://www.garmin.com/xmlschemas/TrackPointExtension/v2"
+  static let garminSchema = "http://www.garmin.com/xmlschemas/TrackPointExtensionv2.xsd"
+  static let footer = "    </trkseg>\n  </trk>\n</gpx>\n"
 
   static func escape(_ text: String) -> String {
     var out = ""
@@ -218,42 +341,61 @@ nonisolated enum GPXWriter {
     return out
   }
 
-  /// GPX 1.1 track, one point per sample that has a usable position. GPX 1.1 has
-  /// no speed element, so speed (m/s) and heading go in the Garmin
-  /// TrackPointExtension v1 (`gpxtpx:speed`, `gpxtpx:course`), the extension most
-  /// GPX readers understand. Returns nil when no sample has a position.
-  static func data(samples: [EvidenceTelemetrySample], name: String) -> Data? {
-    let points = samples.filter(\.hasPosition)
-    guard let first = points.first else { return nil }
+  static func latitudeText(_ value: Double) -> String {
+    EvidenceFormat.fixed(min(max(value, -90), 90), decimals: 7)
+  }
+
+  /// GPX longitude is [-180, 180): 180 is written as -180, the same meridian.
+  static func longitudeText(_ value: Double) -> String {
+    let text = EvidenceFormat.fixed(min(max(value, -180), 180), decimals: 7)
+    return text == "180.0000000" ? "-180.0000000" : text
+  }
+
+  /// GPX 1.1 has no speed element, so speed (m/s) and heading go in the Garmin
+  /// TrackPointExtension v2 (`gpxtpx:speed`, `gpxtpx:course`); those elements
+  /// first appear in v2.
+  static func header(name: String, firstDate: Date) -> String {
     var out = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
     out += "<gpx version=\"1.1\" creator=\"Tescam\""
     out += " xmlns=\"http://www.topografix.com/GPX/1/1\""
     out += " xmlns:gpxtpx=\"\(garminNamespace)\""
     out += " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
     out += " xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd"
-    out += " \(garminNamespace) http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd\">\n"
+    out += " \(garminNamespace) \(garminSchema)\">\n"
     out += "  <metadata>\n    <name>\(escape(name))</name>\n"
-    out += "    <time>\(EvidenceFormat.iso8601(first.date, fractional: true))</time>\n  </metadata>\n"
+    out += "    <time>\(EvidenceFormat.iso8601(firstDate, fractional: true))</time>\n  </metadata>\n"
     out += "  <trk>\n    <name>\(escape(name))</name>\n    <trkseg>\n"
-    for point in points {
-      guard let latitude = point.latitude, let longitude = point.longitude else { continue }
-      out += "      <trkpt lat=\"\(EvidenceFormat.fixed(latitude, decimals: 7))\" lon=\"\(EvidenceFormat.fixed(longitude, decimals: 7))\">\n"
-      out += "        <time>\(EvidenceFormat.iso8601(point.date, fractional: true))</time>\n"
-      var extensionLines = ""
-      if let speed = point.speedKmh {
-        extensionLines += "            <gpxtpx:speed>\(EvidenceFormat.fixed(speed / 3.6, decimals: 2))</gpxtpx:speed>\n"
-      }
-      if let heading = point.headingDeg {
-        let course = heading.truncatingRemainder(dividingBy: 360)
-        extensionLines += "            <gpxtpx:course>\(EvidenceFormat.fixed(course < 0 ? course + 360 : course, decimals: 1))</gpxtpx:course>\n"
-      }
-      if !extensionLines.isEmpty {
-        out += "        <extensions>\n          <gpxtpx:TrackPointExtension>\n\(extensionLines)          </gpxtpx:TrackPointExtension>\n        </extensions>\n"
-      }
-      out += "      </trkpt>\n"
+    return out
+  }
+
+  /// One `trkpt`, or nil when the sample has no usable position.
+  static func point(_ sample: EvidenceTelemetrySample, formatter: ISO8601DateFormatter? = nil) -> String? {
+    guard let latitude = sample.latitude, let longitude = sample.longitude else { return nil }
+    let time = formatter?.string(from: sample.date) ?? EvidenceFormat.iso8601(sample.date, fractional: true)
+    var out = "      <trkpt lat=\"\(latitudeText(latitude))\" lon=\"\(longitudeText(longitude))\">\n"
+    out += "        <time>\(time)</time>\n"
+    var extensionLines = ""
+    if let speed = sample.speedKmh {
+      extensionLines += "            <gpxtpx:speed>\(EvidenceFormat.fixed(speed / 3.6, decimals: 2))</gpxtpx:speed>\n"
     }
-    out += "    </trkseg>\n  </trk>\n</gpx>\n"
-    return Data(out.utf8)
+    if let heading = sample.headingDeg {
+      let course = heading.truncatingRemainder(dividingBy: 360)
+      extensionLines += "            <gpxtpx:course>\(EvidenceFormat.fixed(course < 0 ? course + 360 : course, decimals: 1))</gpxtpx:course>\n"
+    }
+    if !extensionLines.isEmpty {
+      out += "        <extensions>\n          <gpxtpx:TrackPointExtension>\n\(extensionLines)          </gpxtpx:TrackPointExtension>\n        </extensions>\n"
+    }
+    out += "      </trkpt>\n"
+    return out
+  }
+
+  /// Whole-file convenience for small inputs; the export streams `header`,
+  /// `point` and `footer` instead. Nil when no sample has a position.
+  static func data(samples: [EvidenceTelemetrySample], name: String) -> Data? {
+    guard let first = samples.first(where: \.hasPosition) else { return nil }
+    var out = header(name: name, firstDate: first.date)
+    for sample in samples { if let point = point(sample) { out += point } }
+    return Data((out + footer).utf8)
   }
 }
 
@@ -296,6 +438,13 @@ nonisolated struct EvidenceManifestInput {
   var sources: [EvidenceSourceRecord]
   var output: EvidenceFileRecord
   var companions: [(kind: String, file: EvidenceFileRecord)]
+  /// Clips the telemetry was read from (may be outside the exported cameras).
+  var telemetrySources: [EvidenceSourceRecord] = []
+  var telemetrySampleCount = 0
+  var telemetryEstimatedCount = 0
+  /// Dashcam file names carry local wall-clock time; this is the zone assumed to
+  /// turn them into UTC.
+  var timeZone = TimeZone.current
 }
 
 nonisolated enum EvidenceManifest {
@@ -308,17 +457,20 @@ nonisolated enum EvidenceManifest {
     func file(_ record: EvidenceFileRecord) -> [String: Any] {
       ["name": record.name, "bytes": record.byteCount, "sha256": record.sha256]
     }
-    let sources = input.sources
-      .sorted { ($0.path, $0.camera) < ($1.path, $1.camera) }
-      .map { source -> [String: Any] in
-        [
-          "path": source.path,
-          "camera": source.camera,
-          "clip_start_utc": EvidenceFormat.iso8601(source.clipStart, fractional: true),
-          "bytes": source.byteCount,
-          "sha256": source.sha256
-        ]
-      }
+    func clips(_ records: [EvidenceSourceRecord]) -> [[String: Any]] {
+      records
+        .sorted { ($0.path, $0.camera) < ($1.path, $1.camera) }
+        .map { source -> [String: Any] in
+          [
+            "path": source.path,
+            "camera": source.camera,
+            "clip_start_utc": EvidenceFormat.iso8601(source.clipStart, fractional: true),
+            "clip_start_local": EvidenceFormat.iso8601(source.clipStart, fractional: true, timeZone: input.timeZone),
+            "bytes": source.byteCount,
+            "sha256": source.sha256
+          ]
+        }
+    }
     let companions = input.companions
       .sorted { $0.file.name < $1.file.name }
       .map { entry -> [String: Any] in
@@ -326,14 +478,31 @@ nonisolated enum EvidenceManifest {
         item["kind"] = entry.kind
         return item
       }
+    let timing: String
+    if input.telemetrySampleCount == 0 {
+      timing = "none"
+    } else if input.telemetryEstimatedCount == 0 {
+      timing = "exact"
+    } else if input.telemetryEstimatedCount == input.telemetrySampleCount {
+      timing = "estimated"
+    } else {
+      timing = "mixed"
+    }
     let overlays = input.overlays
     let root: [String: Any] = [
       "manifest_version": formatVersion,
       "app": ["name": input.appName, "version": input.appVersion, "build": input.appBuild],
       "exported_at": EvidenceFormat.iso8601(input.exportedAt, fractional: false),
+      "time_basis": [
+        "assumed_time_zone": input.timeZone.identifier,
+        "utc_offset_at_range_start": EvidenceFormat.offsetText(for: input.timeZone, at: input.rangeStart),
+        "source": "Clip file names hold local wall-clock time. UTC values are derived from the assumed time zone, not recorded by the camera."
+      ],
       "range": [
         "start_utc": EvidenceFormat.iso8601(input.rangeStart, fractional: true),
         "end_utc": EvidenceFormat.iso8601(input.rangeEnd, fractional: true),
+        "start_local": EvidenceFormat.iso8601(input.rangeStart, fractional: true, timeZone: input.timeZone),
+        "end_local": EvidenceFormat.iso8601(input.rangeEnd, fractional: true, timeZone: input.timeZone),
         "duration_seconds": ms(input.rangeEnd.timeIntervalSince(input.rangeStart)),
         "trim_start_seconds": ms(input.trimStartSeconds),
         "trim_end_seconds": ms(input.trimEndSeconds),
@@ -356,7 +525,13 @@ nonisolated enum EvidenceManifest {
           "screenshot": overlays.includeScreenshot
         ]
       ] as [String: Any],
-      "source_clips": sources,
+      "source_clips": clips(input.sources),
+      "telemetry": [
+        "samples": input.telemetrySampleCount,
+        "estimated_time_samples": input.telemetryEstimatedCount,
+        "timing": timing,
+        "source_clips": clips(input.telemetrySources)
+      ] as [String: Any],
       "output": file(input.output),
       "companion_files": companions
     ]
@@ -374,6 +549,7 @@ nonisolated enum EvidenceManifest {
 nonisolated struct EvidenceExportInput {
   var outputURL: URL
   var sets: [ClipSet]
+  /// Cameras enabled for the export; their clips are the candidates for hashing.
   var cameras: [Camera]
   var sourceRoots: [URL]
   var trimStartDate: Date
@@ -393,6 +569,7 @@ nonisolated struct EvidenceExportInput {
   /// False when privacy masking is on: the manifest is still written, but no
   /// telemetry or GPS leaves the app.
   var includeTelemetryFiles: Bool
+  var timeZone = TimeZone.current
 }
 
 extension ExportPlan {
@@ -407,7 +584,7 @@ extension ExportPlan {
     return EvidenceExportInput(
       outputURL: outputURL,
       sets: sets,
-      cameras: cameraOrder.filter { enabledCameras.contains($0) },
+      cameras: enabledCameras.sorted { $0.rawValue < $1.rawValue },
       sourceRoots: evidenceSourceRoots,
       trimStartDate: trimStartDate,
       trimEndDate: trimEndDate,
@@ -425,6 +602,45 @@ extension ExportPlan {
       overlays: overlayOptions,
       includeTelemetryFiles: !overlayOptions.privacyMask
     )
+  }
+}
+
+/// A source clip as it was before the export started: content hash plus the size
+/// and modification date used to notice a swap afterwards.
+nonisolated struct EvidenceHashedSource {
+  var url: URL
+  var fingerprint: FileFingerprint
+  var size: Int64
+  var modified: Date?
+}
+
+nonisolated struct EvidencePreparedSources {
+  var sources: [String: EvidenceHashedSource] = [:]
+}
+
+/// Records the clips and tracks the export really read or inserted (renderer
+/// requests, muxer insertions), so the manifest lists what is in the video.
+nonisolated final class EvidenceSourceUsage: @unchecked Sendable {
+  struct Entry {
+    var url: URL
+    var camera: Camera
+    var clipStart: Date
+  }
+
+  private let lock = NSLock()
+  private var recorded: [String: Entry] = [:]
+
+  func record(url: URL, camera: Camera, clipStart: Date) {
+    lock.lock()
+    defer { lock.unlock() }
+    let key = camera.rawValue + "|" + url.path
+    if recorded[key] == nil { recorded[key] = Entry(url: url, camera: camera, clipStart: clipStart) }
+  }
+
+  var entries: [Entry] {
+    lock.lock()
+    defer { lock.unlock() }
+    return recorded.values.sorted { ($0.url.path, $0.camera.rawValue) < ($1.url.path, $1.camera.rawValue) }
   }
 }
 
@@ -448,8 +664,10 @@ nonisolated enum EvidenceExporter {
   static func csvURL(for output: URL) -> URL { companion(output, "telemetry.csv") }
   static func gpxURL(for output: URL) -> URL { companion(output, "gpx") }
 
+  /// Keeps the full video file name (`clip.mov.manifest.json`) so `clip.mov` and
+  /// `clip.mp4` never share companions.
   private static func companion(_ output: URL, _ suffix: String) -> URL {
-    output.deletingPathExtension().appendingPathExtension(suffix)
+    output.deletingLastPathComponent().appendingPathComponent(output.lastPathComponent + "." + suffix)
   }
 
   /// Path of `file` relative to the longest matching source root; the bare file
@@ -469,115 +687,197 @@ nonisolated enum EvidenceExporter {
     return best ?? file.lastPathComponent
   }
 
-  /// Telemetry for the exported range, in time order. Clips whose telemetry
-  /// cannot be read contribute nothing.
-  static func telemetrySamples(
-    sets: [ClipSet],
-    from start: Date,
-    to end: Date,
-    shouldCancel: () -> Bool = { false }
-  ) throws -> [EvidenceTelemetrySample] {
-    var out: [EvidenceTelemetrySample] = []
-    for set in sets {
-      if shouldCancel() { throw EvidenceError.cancelled }
-      guard set.date.addingTimeInterval(set.duration) >= start, set.date <= end else { continue }
-      guard let url = set.file(for: .front) ?? set.file(for: .back)
-        ?? set.files.values.sorted(by: { $0.path < $1.path }).first,
-        let timeline = try? TelemetryParser.parseTimeline(url: url) else { continue }
-      for frame in timeline.frames {
-        let date = set.date.addingTimeInterval(frame.timestampMs / 1000)
-        if date < start || date > end { continue }
-        out.append(EvidenceTelemetrySample(sei: frame.sei, date: date))
-      }
-    }
-    out.sort { $0.date < $1.date }
-    return out
+  /// The clip a set's telemetry is read from: front, else back, else the first
+  /// file by path. It need not be one of the exported cameras.
+  static func telemetrySourceURL(for set: ClipSet) -> URL? {
+    set.file(for: .front) ?? set.file(for: .back) ?? set.files.values.sorted { $0.path < $1.path }.first
   }
 
-  /// Hashes sources and output, then writes the CSV, GPX and manifest next to the
-  /// video. Returns the files written. On any failure the files written by this
-  /// call are removed again (the video is never touched) and the error names the
-  /// file at fault. `progress` receives 0...1.
+  private static func stamp(_ url: URL) -> (size: Int64, modified: Date?) {
+    let attributes = try? FileManager.default.attributesOfItem(atPath: url.path)
+    return (
+      (attributes?[.size] as? NSNumber)?.int64Value ?? -1,
+      attributes?[.modificationDate] as? Date
+    )
+  }
+
+  private static func hashSource(
+    _ url: URL,
+    onBytes: (Int) -> Void,
+    shouldCancel: () -> Bool
+  ) throws -> EvidenceHashedSource {
+    let before = stamp(url)
+    let fingerprint = try FileHasher.fingerprint(of: url, onBytes: onBytes, shouldCancel: shouldCancel)
+    return EvidenceHashedSource(url: url, fingerprint: fingerprint, size: before.size, modified: before.modified)
+  }
+
+  /// Run before rendering starts: hashes every candidate source clip once (enabled
+  /// cameras, plus the clips telemetry is read from) and records its size and
+  /// modification date. `progress` receives 0...1.
+  static func prepare(
+    _ input: EvidenceExportInput,
+    shouldCancel: () -> Bool = { false },
+    progress: (Double) -> Void = { _ in }
+  ) throws -> EvidencePreparedSources {
+    var urls: [URL] = []
+    var seen = Set<String>()
+    for set in input.sets {
+      var candidates = input.cameras.compactMap { set.file(for: $0) }
+      if input.includeTelemetryFiles, let url = telemetrySourceURL(for: set) { candidates.append(url) }
+      for url in candidates where seen.insert(url.path).inserted { urls.append(url) }
+    }
+    let totalBytes = max(1, urls.reduce(Int64(0)) { $0 + max(0, stamp($1).size) })
+    var doneBytes: Int64 = 0
+    var prepared = EvidencePreparedSources()
+    for url in urls {
+      prepared.sources[url.path] = try hashSource(url, onBytes: { count in
+        doneBytes += Int64(count)
+        progress(min(1, Double(doneBytes) / Double(totalBytes)))
+      }, shouldCancel: shouldCancel)
+    }
+    progress(1)
+    return prepared
+  }
+
+  private struct TelemetryStream {
+    var csv: EvidenceStreamFile?
+    var gpx: EvidenceStreamFile?
+    var sourceURLs: [URL] = []
+    var sampleCount = 0
+    var estimatedCount = 0
+  }
+
+  /// Reads telemetry set by set and writes each sample straight to the CSV and
+  /// GPX temp files, so no more than one clip's samples are in memory.
+  private static func streamTelemetry(
+    _ input: EvidenceExportInput,
+    shouldCancel: () -> Bool
+  ) throws -> TelemetryStream {
+    var result = TelemetryStream()
+    guard input.includeTelemetryFiles else { return result }
+    let rows = TelemetryCSVWriter.RowFormatter(timeZone: input.timeZone)
+    let gpxTime = EvidenceFormat.formatter(timeZone: EvidenceFormat.utc, fractional: true)
+    let gpxName = input.outputURL.deletingPathExtension().lastPathComponent
+    do {
+      for set in input.sets.sorted(by: { $0.date < $1.date }) {
+        if shouldCancel() { throw EvidenceError.cancelled }
+        guard set.date.addingTimeInterval(set.duration) >= input.trimStartDate,
+              set.date <= input.trimEndDate,
+              let url = telemetrySourceURL(for: set),
+              let timeline = try? TelemetryParser.parseTimeline(url: url) else { continue }
+        var contributed = false
+        for frame in timeline.frames {
+          let date = set.date.addingTimeInterval(frame.timestampMs / 1000)
+          if date < input.trimStartDate || date > input.trimEndDate { continue }
+          let sample = EvidenceTelemetrySample(sei: frame.sei, date: date, timeEstimated: frame.isTimeEstimated)
+          if result.csv == nil {
+            let file = try EvidenceStreamFile(finalURL: csvURL(for: input.outputURL))
+            result.csv = file
+            try file.append(TelemetryCSVWriter.headerLine)
+          }
+          try result.csv?.append(rows.row(sample))
+          if let point = GPXWriter.point(sample, formatter: gpxTime) {
+            if result.gpx == nil {
+              let file = try EvidenceStreamFile(finalURL: gpxURL(for: input.outputURL))
+              result.gpx = file
+              try file.append(GPXWriter.header(name: gpxName, firstDate: sample.date))
+            }
+            try result.gpx?.append(point)
+          }
+          result.sampleCount += 1
+          if sample.timeEstimated { result.estimatedCount += 1 }
+          contributed = true
+        }
+        if contributed { result.sourceURLs.append(url) }
+      }
+      try result.gpx?.append(GPXWriter.footer)
+    } catch {
+      result.csv?.discard()
+      result.gpx?.discard()
+      throw error
+    }
+    return result
+  }
+
+  /// Writes the CSV, GPX and manifest next to the video and returns the files.
+  /// Everything is written to temp names first and moved into place only after
+  /// the sources have been re-checked and cancellation tested, so a failed or
+  /// cancelled run leaves earlier files alone. The video is never touched; the
+  /// error names the file at fault. `progress` receives 0...1.
   static func write(
     _ input: EvidenceExportInput,
+    prepared: EvidencePreparedSources,
+    usage: EvidenceSourceUsage,
     exportedAt: Date = Date(),
     appInfo: AppInfo = .current,
     shouldCancel: () -> Bool = { false },
     progress: (Double) -> Void = { _ in }
   ) throws -> [URL] {
     let fm = FileManager.default
-    var seen = Set<String>()
-    var sourceFiles: [(url: URL, camera: Camera, clipStart: Date)] = []
-    for set in input.sets {
-      for camera in input.cameras {
-        guard let url = set.file(for: camera), seen.insert(url.path).inserted else { continue }
-        sourceFiles.append((url, camera, set.date))
-      }
-    }
-
-    func size(_ url: URL) -> Int64 {
-      Int64((try? fm.attributesOfItem(atPath: url.path)[.size] as? NSNumber)?.int64Value ?? 0)
-    }
-    let totalBytes = max(1, sourceFiles.reduce(Int64(0)) { $0 + size($1.url) } + size(input.outputURL))
-    var doneBytes: Int64 = 0
-    func hash(_ url: URL) throws -> FileFingerprint {
-      try FileHasher.fingerprint(
-        of: url,
-        onBytes: { count in
-          doneBytes += Int64(count)
-          progress(min(0.95, Double(doneBytes) / Double(totalBytes) * 0.95))
-        },
-        shouldCancel: shouldCancel
-      )
-    }
-
-    var sources: [EvidenceSourceRecord] = []
-    for source in sourceFiles {
-      let fingerprint = try hash(source.url)
-      sources.append(EvidenceSourceRecord(
-        path: relativePath(of: source.url, roots: input.sourceRoots),
-        camera: source.camera.rawValue,
-        clipStart: source.clipStart,
-        byteCount: fingerprint.byteCount,
-        sha256: fingerprint.sha256
-      ))
-    }
-    let outputFingerprint = try hash(input.outputURL)
-
-    let samples = input.includeTelemetryFiles
-      ? try telemetrySamples(sets: input.sets, from: input.trimStartDate, to: input.trimEndDate, shouldCancel: shouldCancel)
-      : []
-    let stem = input.outputURL.deletingPathExtension().lastPathComponent
-    var pending: [(kind: String, url: URL, data: Data)] = []
-    if !samples.isEmpty {
-      let url = csvURL(for: input.outputURL)
-      pending.append(("telemetry_csv", url, TelemetryCSVWriter.data(samples: samples)))
-    }
-    if let gpx = GPXWriter.data(samples: samples, name: stem) {
-      pending.append(("gpx", gpxURL(for: input.outputURL), gpx))
-    }
-
-    var written: [URL] = []
-    func writeFile(_ data: Data, to url: URL) throws {
-      if shouldCancel() { throw EvidenceError.cancelled }
-      do {
-        try data.write(to: url, options: .atomic)
-        written.append(url)
-      } catch {
-        throw EvidenceError.writeFailed(file: url.lastPathComponent, detail: error.localizedDescription)
-      }
+    var temps: [EvidenceStreamFile] = []
+    var promoted: [URL] = []
+    func cleanup() {
+      temps.forEach { $0.discard() }
+      promoted.forEach { try? fm.removeItem(at: $0) }
     }
 
     do {
-      var companions: [(kind: String, file: EvidenceFileRecord)] = []
-      for item in pending {
-        try writeFile(item.data, to: item.url)
-        companions.append((item.kind, EvidenceFileRecord(
-          name: item.url.lastPathComponent,
-          byteCount: Int64(item.data.count),
-          sha256: FileHasher.sha256Hex(of: item.data)
-        )))
+      var sourceChecks: [EvidenceHashedSource] = []
+      func hashed(_ url: URL) throws -> EvidenceHashedSource {
+        let source = try prepared.sources[url.path]
+          ?? hashSource(url, onBytes: { _ in }, shouldCancel: shouldCancel)
+        sourceChecks.append(source)
+        return source
       }
+
+      // What the export actually read, not what was requested.
+      var sources: [EvidenceSourceRecord] = []
+      for entry in usage.entries {
+        let source = try hashed(entry.url)
+        sources.append(EvidenceSourceRecord(
+          path: relativePath(of: entry.url, roots: input.sourceRoots),
+          camera: entry.camera.rawValue,
+          clipStart: entry.clipStart,
+          byteCount: source.fingerprint.byteCount,
+          sha256: source.fingerprint.sha256
+        ))
+      }
+
+      let outputSize = max(1, stamp(input.outputURL).size)
+      var doneBytes: Int64 = 0
+      let outputFingerprint = try FileHasher.fingerprint(
+        of: input.outputURL,
+        onBytes: { count in
+          doneBytes += Int64(count)
+          progress(min(0.9, Double(doneBytes) / Double(outputSize) * 0.9))
+        },
+        shouldCancel: shouldCancel
+      )
+
+      let telemetry = try streamTelemetry(input, shouldCancel: shouldCancel)
+      var companions: [(kind: String, file: EvidenceFileRecord)] = []
+      if let csv = telemetry.csv {
+        temps.append(csv)
+        companions.append(("telemetry_csv", try csv.finish()))
+      }
+      if let gpx = telemetry.gpx {
+        temps.append(gpx)
+        companions.append(("gpx", try gpx.finish()))
+      }
+
+      var telemetrySources: [EvidenceSourceRecord] = []
+      for url in telemetry.sourceURLs {
+        let source = try hashed(url)
+        let owner = input.sets.first { $0.files.values.contains(url) }
+        telemetrySources.append(EvidenceSourceRecord(
+          path: relativePath(of: url, roots: input.sourceRoots),
+          camera: owner?.files.first { $0.value == url }?.key.rawValue ?? "unknown",
+          clipStart: owner?.date ?? input.trimStartDate,
+          byteCount: source.fingerprint.byteCount,
+          sha256: source.fingerprint.sha256
+        ))
+      }
+
       let manifest = try EvidenceManifest.data(EvidenceManifestInput(
         appName: appInfo.name,
         appVersion: appInfo.version,
@@ -604,20 +904,44 @@ nonisolated enum EvidenceExporter {
           byteCount: outputFingerprint.byteCount,
           sha256: outputFingerprint.sha256
         ),
-        companions: companions
+        companions: companions,
+        telemetrySources: telemetrySources,
+        telemetrySampleCount: telemetry.sampleCount,
+        telemetryEstimatedCount: telemetry.estimatedCount,
+        timeZone: input.timeZone
       ))
-      try writeFile(manifest, to: manifestURL(for: input.outputURL))
+      let manifestFile = try EvidenceStreamFile(finalURL: manifestURL(for: input.outputURL))
+      temps.append(manifestFile)
+      try manifestFile.append(manifest)
+      _ = try manifestFile.finish()
+
+      // A clip replaced or edited while the export ran means the video and the
+      // hashes disagree: refuse rather than publish a wrong fingerprint.
+      for source in sourceChecks {
+        let now = stamp(source.url)
+        if now.size != source.size || now.modified != source.modified {
+          throw EvidenceError.sourceChanged(file: source.url.lastPathComponent)
+        }
+      }
+      if shouldCancel() { throw EvidenceError.cancelled }
+
+      // Manifest last: its presence means the set is complete.
+      for file in temps.dropLast() + [manifestFile] {
+        try file.promote()
+        promoted.append(file.finalURL)
+      }
+      if shouldCancel() { throw EvidenceError.cancelled }
+      progress(1)
+      return promoted
     } catch let error as EvidenceError {
-      for url in written { try? fm.removeItem(at: url) }
+      cleanup()
       throw error
     } catch {
-      for url in written { try? fm.removeItem(at: url) }
+      cleanup()
       throw EvidenceError.writeFailed(
         file: manifestURL(for: input.outputURL).lastPathComponent,
         detail: error.localizedDescription
       )
     }
-    progress(1)
-    return written
   }
 }

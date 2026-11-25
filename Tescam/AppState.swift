@@ -863,12 +863,29 @@ final class AppState: ObservableObject {
 #endif
 
     #if os(macOS)
+    // The sandbox only grants the URL the save panel returns. With Evidence
+    // files on, the panel names an export folder instead and the video and its
+    // evidence files are written inside it, where the app may create them all.
+    let exportsFolder = evidenceFilesEnabled && !previewOnly
     PlatformFileAccess.presentSavePanel(
-      nameFieldStringValue: defaultExportFilename(),
-      allowedContentTypes: PlatformFileAccess.contentTypes(for: effectiveExportPreset),
+      title: exportsFolder ? "Save Export Folder" : "Save Export",
+      nameFieldStringValue: exportsFolder
+        ? (defaultExportFilename() as NSString).deletingPathExtension
+        : defaultExportFilename(),
+      allowedContentTypes: exportsFolder ? [] : PlatformFileAccess.contentTypes(for: effectiveExportPreset),
       directoryURL: rootURL?.deletingLastPathComponent() ?? sourceURLs.first?.deletingLastPathComponent()
     ) { [weak self] url in
-      self?.exportRange(to: url, previewOnly: previewOnly, queued: queued)
+      guard let self else { return }
+      if exportsFolder {
+        do {
+          try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
+        } catch {
+          self.errorMessage = "Could not create the export folder: \(error.localizedDescription)"
+          self.showError = true
+          return
+        }
+      }
+      self.exportRange(to: url, previewOnly: previewOnly, queued: queued)
     }
     #else
     // On iPad, export to app scratch space, then offer share.

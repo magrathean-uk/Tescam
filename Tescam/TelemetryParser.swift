@@ -36,6 +36,9 @@ nonisolated struct SeiMetadata: Hashable {
 nonisolated struct TelemetryFrame: Hashable {
   let timestampMs: Double
   let sei: SeiMetadata
+  /// True when the clip had no sample timing and `timestampMs` is a nominal
+  /// frame-interval guess rather than a time read from the file.
+  var isTimeEstimated = false
 }
 
 nonisolated struct TelemetryTimeline {
@@ -257,7 +260,7 @@ nonisolated private final class DashcamMP4 {
       let nal = data.subdata(in: cursor..<(cursor + len))
       if let sei = decodeSei(nal: nal) {
         let timestampMs = Double(frames.count) * 33.333
-        frames.append(TelemetryFrame(timestampMs: timestampMs, sei: sei))
+        frames.append(TelemetryFrame(timestampMs: timestampMs, sei: sei, isTimeEstimated: true))
       }
       cursor += len
     }

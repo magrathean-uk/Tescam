@@ -552,11 +552,22 @@ final class NativeExportController: ObservableObject {
         }
       }
 
+      // Evidence files: fingerprint the source clips before anything is read for
+      // the video, so the manifest describes the clips the export started from.
+      // A failure here is reported after the video is done; cancel stops now.
+      let usage = EvidenceSourceUsage()
+      var evidence: EvidenceRun?
+      if plan.evidenceFiles, !plan.isPreviewSample {
+        evidence = EvidenceRun(usage: usage, prepared: prepareEvidence(plan))
+        if cancelRequested { throw ExportError.cancelled }
+      }
+
       if plan.preset == .originalTracksMOV {
         appendLog("Mode: original camera tracks passthrough\n")
         do {
           try PassthroughMovieMuxer.export(
             plan: plan,
+            usage: usage,
             shouldCancel: { self.cancelRequested },
             progress: { progress in
               self.runOnMain {
@@ -573,7 +584,7 @@ final class NativeExportController: ObservableObject {
           throw ExportError.cancelled
         }
         try? fm.removeItem(at: tempRoot)
-        completeExport(plan: plan, request: request, renderDuration: plan.renderDuration)
+        completeExport(plan: plan, request: request, renderDuration: plan.renderDuration, evidence: evidence)
         return
       }
 
@@ -608,7 +619,8 @@ final class NativeExportController: ObservableObject {
       let composer = TimelineFrameComposer(
         layout: layout,
         enabledCameras: plan.enabledCameras,
-        overlayOptions: plan.overlayOptions
+        overlayOptions: plan.overlayOptions,
+        usage: usage
       )
       appendLog("Render pipeline: \(composer.pipelineDescription)\n")
       let frameCount = max(1, Int((frameProvider.totalDuration * fps).rounded(.up)))
@@ -711,15 +723,45 @@ final class NativeExportController: ObservableObject {
       }
       try? fm.removeItem(at: tempRoot)
 
-      completeExport(plan: plan, request: request, renderDuration: renderDuration)
+      completeExport(plan: plan, request: request, renderDuration: renderDuration, evidence: evidence)
+    }
+  }
+
+  private struct EvidenceRun {
+    let usage: EvidenceSourceUsage
+    let prepared: Result<EvidencePreparedSources, Error>
+  }
+
+  private func prepareEvidence(_ plan: ExportPlan) -> Result<EvidencePreparedSources, Error> {
+    runOnMain {
+      self.updateSession { $0.phaseLabel = "Fingerprinting source clips" }
+    }
+    var lastReported = 0.0
+    do {
+      return .success(try EvidenceExporter.prepare(
+        plan.evidenceInput,
+        shouldCancel: { self.cancelRequested },
+        progress: { fraction in
+          guard fraction - lastReported >= 0.01 || fraction >= 1 else { return }
+          lastReported = fraction
+          self.runOnMain {
+            self.updateSession { $0.progress = 0.05 + 0.05 * min(1, fraction) }
+          }
+        }
+      ))
+    } catch {
+      if error as? EvidenceError != .cancelled {
+        appendStructuredLogEvent("evidence_prepare_failed", fields: ["message": error.localizedDescription])
+      }
+      return .failure(error)
     }
   }
 
   /// Runs on the export thread once the video is final: writes the optional
   /// evidence files, then finishes the job. The video is kept whatever happens
   /// to the evidence files.
-  private func completeExport(plan: ExportPlan, request: ExportRequest, renderDuration: Double) {
-    guard plan.evidenceFiles, !plan.isPreviewSample else {
+  private func completeExport(plan: ExportPlan, request: ExportRequest, renderDuration: Double, evidence: EvidenceRun?) {
+    guard let evidence else {
       runOnMain {
         self.finishCompleted(request: request, outputURL: plan.outputURL, renderDuration: renderDuration)
       }
@@ -736,6 +778,8 @@ final class NativeExportController: ObservableObject {
     do {
       let urls = try EvidenceExporter.write(
         plan.evidenceInput,
+        prepared: try evidence.prepared.get(),
+        usage: evidence.usage,
         shouldCancel: { self.cancelRequested },
         progress: { fraction in
           guard fraction - lastReported >= 0.01 || fraction >= 1 else { return }
@@ -1938,8 +1982,16 @@ nonisolated private final class TimelineFrameComposer: @unchecked Sendable {
   private var telemetryFailures = Set<URL>()
   private var routeCache: [URL: [TelemetryRoutePoint]] = [:]
   private let pixelBufferPool: CVPixelBufferPool?
+  /// Notes every clip the render asks a frame from (for the evidence manifest).
+  private let usage: EvidenceSourceUsage?
 
-  init(layout: TimelineFrameLayout, enabledCameras: Set<Camera>, overlayOptions: ExportOverlayOptions = ExportOverlayOptions()) {
+  init(
+    layout: TimelineFrameLayout,
+    enabledCameras: Set<Camera>,
+    overlayOptions: ExportOverlayOptions = ExportOverlayOptions(),
+    usage: EvidenceSourceUsage? = nil
+  ) {
+    self.usage = usage
     self.layout = layout
     self.enabledCameras = enabledCameras
     self.overlayOptions = overlayOptions
@@ -2096,6 +2148,16 @@ nonisolated private final class TimelineFrameComposer: @unchecked Sendable {
   ) -> (requests: [FrameImageRequest], focusCamera: Camera?, focusRect: CGRect) {
     let focusRect = CGRect(origin: .zero, size: layout.canvasSize)
     guard let set else { return ([], nil, focusRect) }
+    let result = plannedFrameImageRequests(set: set, localSeconds: localSeconds, cameraOverride: cameraOverride, focusRect: focusRect)
+    for request in result.requests {
+      usage?.record(url: request.url, camera: request.camera, clipStart: set.date)
+    }
+    return result
+  }
+
+  private func plannedFrameImageRequests(
+    set: ClipSet, localSeconds: Double, cameraOverride: Camera?, focusRect: CGRect
+  ) -> (requests: [FrameImageRequest], focusCamera: Camera?, focusRect: CGRect) {
     let drawFocusCamera = cameraOverride.flatMap { camera in
       enabledCameras.contains(camera) && set.file(for: camera) != nil ? camera : nil
     }
@@ -2477,13 +2539,14 @@ nonisolated private enum PassthroughMovieMuxer {
 
   static func export(
     plan: ExportPlan,
+    usage: EvidenceSourceUsage,
     shouldCancel: @escaping () -> Bool,
     progress: @escaping (Double) -> Void
   ) throws {
     let completionState = Mutex((didFinish: false, result: Optional<Result<Void, Error>>.none))
     let exportTask = Task.detached(priority: .userInitiated) {
       do {
-        try await exportAsync(plan: plan, shouldCancel: shouldCancel, progress: progress)
+        try await exportAsync(plan: plan, usage: usage, shouldCancel: shouldCancel, progress: progress)
         completionState.withLock {
           $0.result = .success(())
           $0.didFinish = true
@@ -2530,6 +2593,7 @@ nonisolated private enum PassthroughMovieMuxer {
 
   private static func exportAsync(
     plan: ExportPlan,
+    usage: EvidenceSourceUsage,
     shouldCancel: @escaping () -> Bool,
     progress: @escaping (Double) -> Void
   ) async throws {
@@ -2583,6 +2647,7 @@ nonisolated private enum PassthroughMovieMuxer {
           duration: CMTime(seconds: durationSeconds, preferredTimescale: 600)
         )
         try compositionTrack.insertTimeRange(timeRange, of: source.track, at: renderCursor)
+        usage.record(url: url, camera: camera, clipStart: set.date)
         insertedSegmentCount += 1
       }
 
