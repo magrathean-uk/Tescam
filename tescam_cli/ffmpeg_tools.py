@@ -183,17 +183,13 @@ def _probe_json(
         return {}
 
 
-def _candidate_tools(explicit: Optional[str], env_var: str, default_name: str, repo_root: Path) -> Sequence[Path]:
+def _candidate_tools(explicit: Optional[str], env_var: str, default_name: str) -> Sequence[Path]:
     candidates = []
     if explicit:
         candidates.append(Path(explicit).expanduser())
     env_value = os.environ.get(env_var)
     if env_value:
         candidates.append(Path(env_value).expanduser())
-
-    if platform.system() == "Darwin":
-        bundled = repo_root / "Tescam" / "Resources" / "ffmpeg_bin" / default_name
-        candidates.append(bundled)
 
     which_path = shutil.which(default_name)
     if which_path:
@@ -216,19 +212,25 @@ def _candidate_tools(explicit: Optional[str], env_var: str, default_name: str, r
     return unique
 
 
-def _resolve_one_tool(explicit: Optional[str], env_var: str, default_name: str, repo_root: Path) -> Path:
-    for candidate in _candidate_tools(explicit, env_var, default_name, repo_root):
+def _resolve_one_tool(explicit: Optional[str], env_var: str, default_name: str) -> Path:
+    """Resolve a tool from the explicit flag, then the environment variable, then PATH."""
+    candidates = _candidate_tools(explicit, env_var, default_name)
+    for candidate in candidates:
         if executable_regular_file(candidate):
             return candidate.resolve()
-    searched = ", ".join(str(item) for item in _candidate_tools(explicit, env_var, default_name, repo_root)) or "none"
+    searched = ", ".join(str(item) for item in candidates) or "none (not on PATH)"
     raise ToolResolutionError(
-        f"Could not resolve {default_name}. Searched: {searched}. Install ffmpeg/ffprobe or pass --{default_name}."
+        f"Could not resolve {default_name}. Searched: {searched}. "
+        f"Install ffmpeg and ffprobe (for example `brew install ffmpeg` on macOS, "
+        f"`sudo apt install ffmpeg` on Debian or Ubuntu, `winget install ffmpeg` on Windows) "
+        f"so that {default_name} is on PATH, or pass --{default_name} /path/to/{default_name}, "
+        f"or set {env_var}."
     )
 
 
-def resolve_tools(repo_root: Path, ffmpeg_arg: Optional[str], ffprobe_arg: Optional[str]) -> tuple[Path, Path]:
-    ffmpeg = _resolve_one_tool(ffmpeg_arg, "TESCAM_FFMPEG", "ffmpeg", repo_root)
-    ffprobe = _resolve_one_tool(ffprobe_arg, "TESCAM_FFPROBE", "ffprobe", repo_root)
+def resolve_tools(ffmpeg_arg: Optional[str], ffprobe_arg: Optional[str]) -> tuple[Path, Path]:
+    ffmpeg = _resolve_one_tool(ffmpeg_arg, "TESCAM_FFMPEG", "ffmpeg")
+    ffprobe = _resolve_one_tool(ffprobe_arg, "TESCAM_FFPROBE", "ffprobe")
     return ffmpeg, ffprobe
 
 

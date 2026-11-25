@@ -7,15 +7,16 @@ Foundation. It is distributed in the hope that it will be useful, but WITHOUT AN
 without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See LICENSE for the full licence text.
 
-This repository includes third-party material:
+Earlier revisions (up to the 1.0 App Store release) included third-party material that
+this revision no longer ships:
 
-FFmpeg and FFprobe 7.1 (Tescam/Resources/ffmpeg_bin/) — GNU General Public License,
-version 2 or later. A third-party static build for Apple silicon, configured with
---enable-gpl, --enable-libx264 and --enable-libx265 among other libraries; `ffmpeg -version`
-prints the full configuration. The command-line tool uses them when no other FFmpeg is
-found; the app does not include them. FFmpeg 7.1 source:
+FFmpeg and FFprobe 7.1 (formerly Tescam/Resources/ffmpeg_bin/) — GNU General Public
+License, version 2 or later. A third-party static build for Apple silicon, configured with
+--enable-gpl, --enable-libx264 and --enable-libx265 among other libraries. The command-line
+tool now uses whichever FFmpeg you install; the app never included them. FFmpeg 7.1 source:
 https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz. For the complete corresponding source of
-these binaries, write to contact@magrathean.uk. See docs/legal/third-party-notices.md.
+the binaries in those earlier revisions, write to contact@magrathean.uk. See
+docs/legal/third-party-notices.md.
 
 Sentry-Six and tesla-sentry-viewer-frontend — MIT — reference projects credited in
 Tescam/Resources/LICENSES.md; their code is not included.

@@ -18,8 +18,8 @@ Tescam is maintained by Magrathean. The native SwiftUI app and the Python CLI bo
 dashcam clip trees, resolve camera names and duplicate clips, and plan a selected time
 range for export. The app is the shipping macOS, iPhone and iPad export path and adds
 synchronized playback; the CLI is a portable, dependency-light ffmpeg workflow for macOS,
-Linux and Windows. The App Store release is under review; the CLI ships from this
-repository's source.
+Linux and Windows. The app is on the App Store for iPhone, iPad and Mac; the CLI ships
+from this repository's source.
 
 ## Features
 
@@ -46,9 +46,9 @@ The current Xcode targets use native export and do not include FFmpeg in their r
 
 ## Requirements
 
-For the CLI, use Python 3.9 or newer, `ffmpeg`, and `ffprobe`. The CLI test suite and package build are verified with Python 3.14.7. Evidence and lossless HEVC modes require an ffmpeg build with `libx265`.
+For the CLI, use Python 3.9 or newer, plus `ffmpeg` and `ffprobe` installed separately (the repository does not ship them) and on `PATH`, or passed with `--ffmpeg`/`--ffprobe` or the `TESCAM_FFMPEG`/`TESCAM_FFPROBE` environment variables. The CLI test suite and package build are verified with Python 3.14.7. Evidence and lossless HEVC modes require an ffmpeg build with `libx265`.
 
-For the native app, use Xcode on macOS. The current project targets macOS 26 and iOS/iPadOS 26. The Xcode project is the version and build source of truth. The project currently declares version `1.0`, build `6`; this is not a claim about live App Store availability.
+For the native app, use Xcode on macOS. The current project targets macOS 26 and iOS/iPadOS 26. The Xcode project is the version and build source of truth. The version and build numbers are declared there, not in this file.
 
 ## CLI quick start
 
@@ -134,7 +134,7 @@ There is no dedicated lint, formatter, or Python typecheck configuration in this
 
 Tescam is free software under the [GNU General Public License, version 3](LICENSE)
 (GPL-3.0-only). Copyright © 2026 MAGRATHEAN UK LTD. You may use, study, change and share it
-on the terms of that licence. [NOTICE](NOTICE) lists the bundled FFmpeg build and where its
+on the terms of that licence. [NOTICE](NOTICE) records the FFmpeg build that earlier revisions shipped and where its
 source is; the full third-party inventory is in
 [docs/legal/third-party-notices.md](docs/legal/third-party-notices.md). The licence covers the
 code, not the Tescam name or icon: see [docs/legal/trademarks.md](docs/legal/trademarks.md).

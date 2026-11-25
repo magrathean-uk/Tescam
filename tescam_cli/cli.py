@@ -323,11 +323,10 @@ def main(argv: Optional[list[str]] = None) -> int:
     args = parser.parse_args(argv)
 
     try:
-        repo_root = Path(__file__).resolve().parent.parent
         interactive = args.interactive or args.source is None
         presenter = CliPresenter()
         media_probe = MediaProbe(probe_cache=RunProbeCache())
-        ffmpeg, ffprobe = resolve_tools(repo_root, args.ffmpeg, args.ffprobe)
+        ffmpeg, ffprobe = resolve_tools(args.ffmpeg, args.ffprobe)
         duplicate_policy = DuplicatePolicy(args.duplicate_policy)
         output_conflict = OutputConflictPolicy(args.output_conflict)
 

@@ -9,14 +9,13 @@ own licences, as [`NOTICE`](../../NOTICE) states.
 
 ## FFmpeg and FFprobe (GPL)
 
-`Tescam/Resources/ffmpeg_bin/ffmpeg` and `ffprobe` are FFmpeg 7.1 binaries: a third-party
-static build for Apple silicon, tracked in this repository. Their build configuration
-includes `--enable-gpl`, `--enable-libx264` and `--enable-libx265`, so they are licensed under
-the GNU General Public License, version 2 or later, which is compatible with Tescam's
-GPL-3.0-only. `ffmpeg -version` prints the full configuration.
-
-The command-line tool falls back to these binaries when no other FFmpeg is found. They are
-not part of either app target's Resources build phase, so the app does not include them.
+Earlier revisions (up to the 1.0 App Store release) tracked FFmpeg 7.1 binaries at
+`Tescam/Resources/ffmpeg_bin/ffmpeg` and `ffprobe`: a third-party static build for Apple
+silicon whose configuration included `--enable-gpl`, `--enable-libx264` and `--enable-libx265`,
+so they were licensed under the GNU General Public License, version 2 or later, compatible
+with Tescam's GPL-3.0-only. They are no longer in the repository: the command-line tool uses
+the FFmpeg you install (`--ffmpeg`/`--ffprobe`, `TESCAM_FFMPEG`/`TESCAM_FFPROBE`, then `PATH`).
+They were never part of either app target's Resources build phase, so the app never included them.
 
 Source: the FFmpeg 7.1 release is at <https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz>, and
 x264 and x265 are at <https://code.videolan.org/videolan/x264> and

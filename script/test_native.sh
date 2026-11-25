@@ -44,6 +44,12 @@ fi
 
 DERIVED_DATA="${TESCAM_DERIVED_DATA:-$XCODE_DERIVED_DATA_PATH/Tescam-tests}"
 
+# Optional: cap xcodebuild parallelism, e.g. TESCAM_XCODE_JOBS=4.
+JOBS_ARGS=()
+if [[ -n "${TESCAM_XCODE_JOBS:-}" ]]; then
+  JOBS_ARGS=(-jobs "$TESCAM_XCODE_JOBS")
+fi
+
 xcodebuild \
   -project Tescam.xcodeproj \
   -scheme Tescam \
@@ -52,6 +58,7 @@ xcodebuild \
   -destination 'platform=macOS' \
   -parallel-testing-enabled NO \
   -maximum-parallel-testing-workers 1 \
+  ${JOBS_ARGS[@]+"${JOBS_ARGS[@]}"} \
   build-for-testing
 
 xcodebuild \
@@ -62,8 +69,15 @@ xcodebuild \
   -destination 'platform=macOS' \
   -parallel-testing-enabled NO \
   -maximum-parallel-testing-workers 1 \
+  ${JOBS_ARGS[@]+"${JOBS_ARGS[@]}"} \
   -only-testing:TescamTests \
   test-without-building
+
+# Optional: TESCAM_SKIP_UI_TESTS=1 skips the UI tests (they drive the app's UI on screen).
+if [[ "${TESCAM_SKIP_UI_TESTS:-}" == "1" ]]; then
+  echo "Skipping TescamUITests (TESCAM_SKIP_UI_TESTS=1)."
+  exit 0
+fi
 
 xcodebuild \
   -project Tescam.xcodeproj \
@@ -73,5 +87,6 @@ xcodebuild \
   -destination 'platform=macOS' \
   -parallel-testing-enabled NO \
   -maximum-parallel-testing-workers 1 \
+  ${JOBS_ARGS[@]+"${JOBS_ARGS[@]}"} \
   -only-testing:TescamUITests \
   test-without-building

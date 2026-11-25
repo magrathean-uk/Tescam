@@ -9,6 +9,9 @@ FOUR_UP_SCRIPT="$RESOURCE_DIR/tescam_4up_all_max.sh"
 SIX_UP_SCRIPT="$RESOURCE_DIR/tescam_6up_all_max.sh"
 FFMPEG_BIN="$RESOURCE_DIR/ffmpeg_bin/ffmpeg"
 FFPROBE_BIN="$RESOURCE_DIR/ffmpeg_bin/ffprobe"
+# The bundled binaries are no longer in the repository; fall back to PATH.
+[[ -x "$FFMPEG_BIN" ]] || FFMPEG_BIN="$(command -v ffmpeg || print -r -- "$FFMPEG_BIN")"
+[[ -x "$FFPROBE_BIN" ]] || FFPROBE_BIN="$(command -v ffprobe || print -r -- "$FFPROBE_BIN")"
 OVERLAY_SRC="$SCRIPT_DIR/tools/TescamOverlayGenerator.swift"
 OVERLAY_BIN="$SCRIPT_DIR/bin/tescam-overlay-generator"
 
@@ -30,8 +33,8 @@ Flow:
   4. Enter extraction directory, or press Enter for the default:
      <source-folder>/output
 
-The script reuses the bundled ffmpeg/ffprobe binaries, so it can run on a
-bare macOS install without Homebrew.
+The script uses ffmpeg/ffprobe from the Resources folder if present, otherwise
+from PATH.
 USAGE
 }
 
