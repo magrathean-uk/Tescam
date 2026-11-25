@@ -1,37 +1,29 @@
-# Tescam project context
+# Tescam agent context
 
-Tescam contains a SwiftUI app for macOS, iPhone, and iPad, plus a dependency-light Python CLI. `README.md` has the product overview; `RUNBOOK.md` describes build and release procedures.
+<!-- clean-development-policy:v6 -->
+Purpose: multi-camera dashcam footage browser and exporter for macOS, iPhone and iPad (SwiftUI), plus a dependency-light Python CLI. `README.md` has the product overview; `docs/development/runbook.md` covers build and release.
 
-## Structure and behaviour
+## Commands
+- Python CLI: `python3 -m pip install -e .`, then `./tescam-cli`
+- Python tests: `python3 -m unittest discover tests` (shared contract only: `python3 -m unittest tests.test_domain_contract`)
+- Native tests: `script/test_native.sh`; build and run: `script/build_and_run.sh`
+- Regenerate shared fixtures: `python3 script/regen_fixtures.py`
+- Check: `git diff --check`. There is no lint, formatter or type-check config.
+- Native commands need `TESCAM_BUILD_ENV` or the project-supported local build environment; build output goes to `$CLEAN_DEV_BUILDS` (see `.clean-development.json`).
 
-- `Tescam/` contains the shared native engine, platform UI, export path, playback, and resources. Native export is the shipping app export implementation.
-- `TescamTests/` and `TescamUITests/` contain native tests.
-- `tescam_cli/` and `tests/` contain the Python CLI and its tests. CLI planning is separate from rendering and human-facing output adapters.
-- `fixtures/domain/cases/` and `docs/domain-contract.md` describe behaviour shared by Swift and Python.
-- `_legacy/` and `tescam_legacy_macos.sh` contain historical reference material.
-- Mobile UI uses the `AppState` API. The Xcode project has `Tescam` and `Tescam iPad` targets, with source membership recorded in `Tescam.xcodeproj/project.pbxproj`.
-- The app has a manual codec picker, opt-in telemetry engraving, and local diagnostics.
-- `Tescam/Resources/LICENSES.md` contains resource licences; `docs/development/` contains release and App Store information.
+## Conventions
+- `Tescam/` is the shared native engine, platform UI, export, playback and resources; native export is the shipping export implementation. Tests: `TescamTests/`, `TescamUITests/`.
+- `tescam_cli/` and `tests/` are the Python CLI; planning is separate from rendering and human-facing output adapters.
+- Swift and Python share behaviour through `fixtures/domain/cases/` and `docs/domain-contract.md`; change both sides together.
+- Mobile UI uses the `AppState` API. The Xcode project has `Tescam` and `Tescam iPad` targets; source membership is in `Tescam.xcodeproj/project.pbxproj`.
+- `_legacy/` and `tescam_legacy_macos.sh` are historical reference only.
+- Resource licences are in `Tescam/Resources/LICENSES.md`; release and App Store records are in `docs/development/`.
+- URL migration to `https://magrathean.uk/solutions/<slug>/` and `contact+<slug>@magrathean.uk`: `NEXT-RELEASE-URLS.md`.
 
-## Command reference
+## Versions
+- App: `MARKETING_VERSION` 1.0, build (`CURRENT_PROJECT_VERSION`) 7 in the Xcode project; this is the App Store version. Existing tag `v1` is a lightweight marker (commit 0d1a7b8).
+- CLI: `pyproject.toml` version 0.1.0 is a separate number for the Python package. Do not align the two.
+- No GitHub Releases. Release tags are annotated `vX.Y.Z` on the shipping commit; only `vX.Y.Z` tags are pushed (public repo).
 
-```sh
-python3 -m pip install -e .
-./tescam-cli
-python3 tescam.py
-./tescam.sh
-python3 -m unittest tests.test_domain_contract
-python3 -m unittest discover tests
-script/test_native.sh
-script/build_and_run.sh
-python3 script/regen_fixtures.py
-git diff --check
-```
-
-Native commands depend on `TESCAM_BUILD_ENV` or the project-supported local build environment. There is no dedicated lint, formatter, or Python type-check configuration.
-
-The workstation environment is loaded from `~/dev/machine/env.zsh`. Its routed locations include `$TMPDIR` for session scratch, `$CLEAN_DEV_BUILDS` for throwaway build output, and tool-specific cache variables. `.clean-development.json` describes this project's build and dependency directories.
-
-## URL migration reference
-
-[NEXT-RELEASE-URLS.md](NEXT-RELEASE-URLS.md) records the migration to `https://magrathean.uk/solutions/<slug>/` and `contact+<slug>@magrathean.uk`.
+## Continuity
+- Public repo: passover and decisions log live outside git in `~/dev/records/tescam/` (`PASSOVER.md`, `DECISIONS.md`).
