@@ -20,7 +20,7 @@ Purpose: multi-camera dashcam footage browser and exporter for macOS, iPhone and
 - Resource licences are in `Tescam/Resources/LICENSES.md`; release and App Store records are in `docs/development/`.
 
 ## Versions
-- App: `MARKETING_VERSION` 1.0.1, build (`CURRENT_PROJECT_VERSION`) 8 in the Xcode project; this is the App Store version (1.0 shipped as build 7). Existing tag `v1` is a lightweight marker (commit 0d1a7b8); the lead tags the 1.0.1 shipping commit `v1.0.1`.
+- App: `MARKETING_VERSION` 1.1, build (`CURRENT_PROJECT_VERSION`) 9 in the Xcode project; this is the App Store version (1.0 shipped as build 7, 1.0.1 as build 8). Existing tag `v1` is a lightweight marker (commit 0d1a7b8); the lead tags the 1.1 shipping commit `v1.1.0`.
 - CLI: `pyproject.toml` version 0.1.0 is a separate number for the Python package. Do not align the two.
 - No GitHub Releases. Release tags are annotated `vX.Y.Z` on the shipping commit; only `vX.Y.Z` tags are pushed (public repo).
 
